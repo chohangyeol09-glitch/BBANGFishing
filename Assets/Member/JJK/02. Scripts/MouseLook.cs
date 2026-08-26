@@ -1,16 +1,23 @@
+using Member.JJK._02._Scripts;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class MouseLook : MonoBehaviour
 {
-    [Header("Mouse Settings")]
-    [SerializeField] private float mouseSensitivity = 0.1f;
+    [SerializeField] private MouseSensitivitySO sensitivity;
     [SerializeField] private float verticalClamp = 80f;
-
-    [Header("References")]
     [SerializeField] private Transform playerBody;
 
-    private float xRotation = 0f;
+    private float _xRotation = 0f;
+
+    public void AddRecoil(Vector2 recoil)
+    {
+        _xRotation -= recoil.y;
+        _xRotation = Mathf.Clamp(_xRotation, -verticalClamp, verticalClamp);
+
+        if (playerBody != null)
+            playerBody.Rotate(Vector3.up * recoil.x);
+    }
 
     private void Start()
     {
@@ -21,13 +28,12 @@ public class MouseLook : MonoBehaviour
     private void Update()
     {
         Vector2 mouseDelta = Mouse.current.delta.ReadValue();
+        float mouseX = mouseDelta.x * sensitivity.Value;
+        float mouseY = mouseDelta.y * sensitivity.Value;
 
-        float mouseX = mouseDelta.x * mouseSensitivity;
-        float mouseY = mouseDelta.y * mouseSensitivity;
-
-        xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -verticalClamp, verticalClamp);
-        transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+        _xRotation -= mouseY;
+        _xRotation = Mathf.Clamp(_xRotation, -verticalClamp, verticalClamp);
+        transform.localRotation = Quaternion.Euler(_xRotation, 0f, 0f);
 
         if (playerBody != null)
             playerBody.Rotate(Vector3.up * mouseX);
