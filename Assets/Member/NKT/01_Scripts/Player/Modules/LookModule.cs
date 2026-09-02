@@ -6,6 +6,8 @@ namespace NKT.Player.Modules
 {
     public class LookModule : MonoBehaviour, IModule
     {
+        [SerializeField] private GameObject playerBody;
+
         [SerializeField] private float sensitivity = 0.1f;
         [SerializeField] private float pitchXLimit = 90f;
         [SerializeField] private float pitchUpLimit = 90f;
