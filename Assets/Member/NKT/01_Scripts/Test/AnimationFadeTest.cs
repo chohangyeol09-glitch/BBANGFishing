@@ -13,14 +13,7 @@ namespace NKT.Test
         
         private void Update()
         {
-            if (Keyboard.current.spaceKey.wasPressedThisFrame)
-            {
-                animator.Play(idle.name);
-            }
-            if (Keyboard.current.cKey.wasPressedThisFrame)
-            {
-                animator.Play(cast.name);
-            }
+            
         }
     }
 }

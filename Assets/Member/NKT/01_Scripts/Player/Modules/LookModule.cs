@@ -7,7 +7,6 @@ namespace NKT.Player.Modules
     public class LookModule : MonoBehaviour, IModule
     {
         [SerializeField] private GameObject playerBody;
-
         [SerializeField] private float sensitivity = 0.1f;
         [SerializeField] private float pitchXLimit = 90f;
         [SerializeField] private float pitchUpLimit = 90f;
@@ -29,6 +28,7 @@ namespace NKT.Player.Modules
                 Debug.LogError("카메라 어디갔어");
                 return;
             }
+
             _cameraTransform = mainCamera.transform;
         }
         
@@ -40,6 +40,11 @@ namespace NKT.Player.Modules
         public void LookUpdate()
         {
             HandleScreenRotate();
+            HandleBodyRotate();
+        }
+        private void HandleBodyRotate()
+        {
+            
         }
 
         private void HandleScreenRotate()
