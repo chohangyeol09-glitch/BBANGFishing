@@ -7,19 +7,19 @@ namespace NKT.Player.Modules
     {
         [SerializeField] private PlayerInputSO control;
         private LookModule _lookModule;
-        private RobEquipModule _equipModule;
+        private FishingModule _fishingModule;
 
         public void Initialize(ModuleOwner owner)
         {
             _lookModule = owner.GetModule<LookModule>();
-            _equipModule = owner.GetModule<RobEquipModule>();
+            _fishingModule = owner.GetModule<FishingModule>();
         }
 
         public void AfterInit()
         {
             control.OnLookChange += _lookModule.OnLookChange;
-            control.OnAttackPressed += _equipModule.OnChargeStart;
-            control.OnAttackReleased += _equipModule.OnChargeEnd;
+            control.OnAttackPressed += _fishingModule.OnAttackPressed;
+            control.OnAttackReleased += _fishingModule.OnAttackReleased;
         }
 
         private void OnDestroy()
@@ -27,8 +27,8 @@ namespace NKT.Player.Modules
             if (control == null) return;
 
             control.OnLookChange -= _lookModule.OnLookChange;
-            control.OnAttackPressed -= _equipModule.OnChargeStart;
-            control.OnAttackReleased -= _equipModule.OnChargeEnd;
+            control.OnAttackPressed -= _fishingModule.OnAttackPressed;
+            control.OnAttackReleased -= _fishingModule.OnAttackReleased;
         }
     }
 }

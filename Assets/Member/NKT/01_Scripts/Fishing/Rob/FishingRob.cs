@@ -5,11 +5,19 @@ using UnityEngine;
 
 namespace NKT.Fishing.Rob
 {
-    public class FishingRob : RobParent
+    //낚시대
+    public class FishingRob : MonoBehaviour
     {
-        public override void OnPrimaryAction(float power)
+        public FishingRobSO Data { get; private set; }
+    
+        public virtual void OnEquip(FishingRobSO data)
         {
-            //todo: 낚시대 던지기
+            Data = data;
+        }
+
+        public void Cast(float power)
+        {
+            
         }
     }
 }

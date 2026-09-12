@@ -1,69 +1,41 @@
-﻿using System;
-using DevLib.ModuleSystem;
-using NKT.Fishing;
+﻿using DevLib.ModuleSystem;
 using NKT.Fishing.Rob;
 using UnityEngine;
 
 namespace NKT.Player.Modules
 {
+    //낚시대 장착, 비장착만 관리
     public class RobEquipModule : MonoBehaviour, IModule
     {
-        [SerializeField] private CastCharger charger;
-        [SerializeField] private RobParent _currentRob;
+        [SerializeField] private Transform handSocket;
+        [SerializeField] private FishingRob _current;
         
-        private bool _isEquip => _currentRob != null;
+        public FishingRob Current => _current;
+        public bool IsEquip => _current != null;
 
-        public void Initialize(ModuleOwner owner)
-        {
-            Debug.Assert(charger != null, "차저 어디감?");
-            charger.OnCharged += OnPrimaryAction;
-            charger.OnChargeStarted += ChargerAnimation;
-        }
-
-        private void OnDestroy()
-        {
-            charger.OnChargeStarted -= ChargerAnimation;
-            charger.OnCharged -= OnPrimaryAction;
-        }
+        public void Initialize(ModuleOwner owner) { }
         
-        public void OnChargeStart()
-        {
-            if (!_isEquip) return;
-            //애니메이션 실행, 뒤로 당기기
-            charger.ProgressStart();
-        }
-
-        public void OnChargeEnd()
-        {
-            if (!_isEquip) return;
-            //애니메이션 실행, 던지기
-            charger.ProgressEnd();
-        }
-
         //낚시대 들때 이거 실행
-        public void Equip(RobParent parent)
-        {//여기서 차저에 구독 + 애니메이션 구독 하고
-            _currentRob = parent;
-            _currentRob.OnEquip(parent.Data);
+       //여기서 차저에 구독 + 애니메이션 구독 하고
+        public void Equip(FishingRob fishing)
+        {
+            Unequip();
+            
+            fishing.gameObject.SetActive(true);
+            fishing.gameObject.transform.SetParent(handSocket);
+            fishing.transform.localPosition = Vector3.zero;
+            fishing.transform.localRotation = Quaternion.identity;
+            
+            _current = fishing;
+            _current.OnEquip(fishing.Data);
         }
 
         //낚시대 집어넣을때 이거 실행
         public void Unequip()
         {
+            if (_current == null) return;
             
-            _currentRob = null;
-        }
-
-        private void OnPrimaryAction(float power)
-        {//지금 낚시대 들고 있는 판단
-            if (_currentRob == null) return;
-            
-            _currentRob?.OnPrimaryAction(power);
-        }
-
-        private void ChargerAnimation()
-        {
-            
+            _current = null;
         }
     }
 }

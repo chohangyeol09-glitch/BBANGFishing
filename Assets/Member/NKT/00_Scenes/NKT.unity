@@ -282,6 +282,51 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &140697477
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 140697478}
+  - component: {fileID: 140697479}
+  m_Layer: 0
+  m_Name: FishingModule
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &140697478
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 140697477}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1982488081}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &140697479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 140697477}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7b6df33b9634e3bbb41f16b16a9600d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NKT.Player.Modules.FishingModule
+  charger: {fileID: 432874610}
 --- !u!1 &432874605
 GameObject:
   m_ObjectHideFlags: 0
@@ -658,8 +703,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc6706839a394a90843c28cbfa3d479c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NKT.Player.Modules.RobEquipModule
-  charger: {fileID: 432874610}
-  _currentRob: {fileID: 432874611}
+  handSocket: {fileID: 1833709905282583060}
+  _current: {fileID: 432874611}
 --- !u!1 &1853258145
 GameObject:
   m_ObjectHideFlags: 0
@@ -797,6 +842,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2166753863898610082, guid: 8844c0cb96a52594fad3577265c17b5f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1698261242}
+    - targetCorrespondingSourceObject: {fileID: 2166753863898610082, guid: 8844c0cb96a52594fad3577265c17b5f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 140697478}
     - targetCorrespondingSourceObject: {fileID: 6801662421195010167, guid: 8844c0cb96a52594fad3577265c17b5f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1853258146}
