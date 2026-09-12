@@ -40,13 +40,7 @@ namespace NKT.Player.Modules
         public void LookUpdate()
         {
             HandleScreenRotate();
-            HandleBodyRotate();
         }
-        private void HandleBodyRotate()
-        {
-            
-        }
-
         private void HandleScreenRotate()
         {
             _yaw += _lookDelta.x * sensitivity;

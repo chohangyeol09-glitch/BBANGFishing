@@ -9,7 +9,8 @@ namespace NKT.Player.Modules
     {
         public Action<Vector2> OnMovement;
         public Action<Vector2> OnLookChange;
-        public Action OnAttackChange;
+        public Action OnAttackPressed;
+        public Action OnAttackReleased;
         public Action OnInteractChange;
       
         private Controls _control;
@@ -54,8 +55,10 @@ namespace NKT.Player.Modules
 
         public void OnAttack(InputAction.CallbackContext context)
         {
-            if(context.performed)
-                OnAttackChange?.Invoke();
+            if (context.performed)
+                OnAttackPressed?.Invoke();
+            else if (context.canceled)
+                OnAttackReleased?.Invoke();
         }
 
         public void OnInteract(InputAction.CallbackContext context)
