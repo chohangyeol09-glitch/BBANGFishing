@@ -44,6 +44,7 @@ namespace NKT.Fishing.Rob
             {
                 timer += Time.deltaTime * speed;
                 _power = (1f - Mathf.Cos(timer * Mathf.PI)) * 0.5f; // cos은 -1~1이니까 0~2로하고 반으로 나눠서 0~1
+                _power = Mathf.Max(0.01f, _power);
                 
                 OnValueChanged?.Invoke(_power);
                 

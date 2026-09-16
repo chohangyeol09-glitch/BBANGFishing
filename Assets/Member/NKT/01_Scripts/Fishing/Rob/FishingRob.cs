@@ -2,6 +2,7 @@
 using DevLib.ModuleSystem;
 using NKT.Fishing.UI;
 using UnityEngine;
+using UnityEngine.Rendering.UI;
 
 namespace NKT.Fishing.Rob
 {
@@ -17,7 +18,6 @@ namespace NKT.Fishing.Rob
 
         public void Cast(float power)
         {
-            
         }
     }
 }

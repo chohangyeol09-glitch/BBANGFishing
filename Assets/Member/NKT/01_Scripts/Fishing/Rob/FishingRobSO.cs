@@ -14,6 +14,6 @@ namespace NKT.Fishing.Rob
     public struct RobObject
     {
         public GameObject RobGameobject;
-        public GameObject FloatGameobject;
+        public GameObject BobberGameobject;
     }
 }

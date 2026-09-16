@@ -24,14 +24,19 @@ namespace NKT.Player.Modules
         
         private FishingState _state = FishingState.Idle;
         private RobEquipModule _robEquip;
+        private LookModule _lookModule;
+        
+        private Transform _cameraTransform;
         
         public void Initialize(ModuleOwner owner)
         {
             _robEquip = owner.GetModule<RobEquipModule>();
+            _lookModule = owner.GetModule<LookModule>();
         }
 
         public void AfterInit()
         {
+            _cameraTransform = _lookModule.CameraTransform;
             charger.OnCharged += OnCharged;
         }
 
