@@ -1,4 +1,4 @@
-﻿namespace CHG._02.Script
+﻿namespace CHG._02.Script.CoreSystem
 {
     public enum Grade
     {

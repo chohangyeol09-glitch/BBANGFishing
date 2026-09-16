@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using CHG._02.Script.CoreSystem;
+using UnityEngine;
 
 namespace CHG._02.Script.FishSystem
 {
