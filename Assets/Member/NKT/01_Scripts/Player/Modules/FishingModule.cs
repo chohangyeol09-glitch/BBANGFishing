@@ -58,6 +58,7 @@ namespace NKT.Player.Modules
             if (_state != FishingState.Charging) return;
             
             charger.ProgressEnd();
+            ChangeState(FishingState.Casting);
         }
 
         private void OnCharged(float power)
@@ -70,8 +71,13 @@ namespace NKT.Player.Modules
         {
             if (_state == state) return;
             
+            Debug.Log(state);
             _state = state;
             OnStateChanged?.Invoke(_state);
+        }
+        public void ChangeToWaiting()
+        {
+            ChangeState(FishingState.Waiting);
         }
     }
 }

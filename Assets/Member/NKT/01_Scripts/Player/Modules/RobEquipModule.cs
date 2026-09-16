@@ -16,7 +16,7 @@ namespace NKT.Player.Modules
         public void Initialize(ModuleOwner owner) { }
         
         //낚시대 들때 이거 실행
-       //여기서 차저에 구독 + 애니메이션 구독 하고
+        //여기서 차저에 구독 + 애니메이션 구독 하고
         public void Equip(FishingRob fishing)
         {
             Unequip();

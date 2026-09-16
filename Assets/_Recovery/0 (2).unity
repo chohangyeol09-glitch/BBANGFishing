@@ -284,7 +284,7 @@ RectTransform:
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &432874610 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7089950222313013424, guid: 8844c0cb96a52594fad3577265c17b5f, type: 3}
+  m_CorrespondingSourceObject: {fileID: 4877914444888198517, guid: 8844c0cb96a52594fad3577265c17b5f, type: 3}
   m_PrefabInstance: {fileID: 1833709905282583058}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}

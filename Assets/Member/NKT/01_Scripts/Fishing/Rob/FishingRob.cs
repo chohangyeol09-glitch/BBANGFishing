@@ -10,7 +10,7 @@ namespace NKT.Fishing.Rob
     {
         public FishingRobSO Data { get; private set; }
     
-        public virtual void OnEquip(FishingRobSO data)
+        public void OnEquip(FishingRobSO data)
         {
             Data = data;
         }

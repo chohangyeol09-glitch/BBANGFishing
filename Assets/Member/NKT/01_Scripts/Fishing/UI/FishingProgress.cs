@@ -20,6 +20,11 @@ namespace NKT.Fishing.UI
             castCharger.OnCharged += Hide;
         }
 
+        private void Start()
+        {
+            Hide(1);
+        }
+
         private void OnDestroy()
         {
             castCharger.OnChargeStarted -= Show;
