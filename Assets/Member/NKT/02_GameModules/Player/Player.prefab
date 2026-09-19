@@ -2371,7 +2371,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::NKT.Player.Modules.FishingModule
   charger: {fileID: 7089950222313013424}
   bobberObject: {fileID: 816758606299138097}
-  orbitHeight: 3
+  orbitHeight: 1.2
   flightTime: 1.2
   waterTransformY: 0
   minBiteDelay: 3
@@ -2424,7 +2424,7 @@ MonoBehaviour:
   playerBody: {fileID: 2824205253519451862}
   sensitivity: 0.1
   pitchXLimit: 80
-  pitchUpLimit: 90
+  pitchUpLimit: 80
   pitchDownLimit: 45
 --- !u!1 &6450381161912052216
 GameObject:
@@ -3233,11 +3233,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 711128197847352260, guid: 5a4fa9d409cbf9d48a6b97e282240e0e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 1.15
       objectReference: {fileID: 0}
     - target: {fileID: 711128197847352260, guid: 5a4fa9d409cbf9d48a6b97e282240e0e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0.35
       objectReference: {fileID: 0}
     - target: {fileID: 711128197847352260, guid: 5a4fa9d409cbf9d48a6b97e282240e0e, type: 3}
       propertyPath: m_LocalRotation.w
