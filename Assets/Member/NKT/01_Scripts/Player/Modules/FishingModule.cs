@@ -1,5 +1,7 @@
-﻿using System;
+using System;
+using System.Collections;
 using DevLib.ModuleSystem;
+using NKT.Fishing;
 using NKT.Fishing.Rob;
 using UnityEngine;
 
@@ -14,20 +16,31 @@ namespace NKT.Player.Modules
         Biting,     //물고기가 묾
         Reeling     //휠 감는중
     }
+
     //낚시 상태 관리, 낚시대 관리
     public class FishingModule : MonoBehaviour, IModule, IAfterInitModule
     {
         [SerializeField] private CastCharger charger;
-        
+        [SerializeField] private Bobber bobberObject;
+        [SerializeField] private float orbitHeight = 3f;
+        [SerializeField] private float flightTime = 1.2f;
+        [SerializeField] private float waterTransformY;
+
+        [Header("입질")]
+        [SerializeField] private float minBiteDelay = 3f;
+        [SerializeField] private float maxBiteDelay = 10f;
+        [SerializeField] private float biteWindow = 1f;
+
         public event Action<FishingState> OnStateChanged;
+        public event Action<CastAim> OnAimUpdated;   //차징 중 궤도 미리보기용
         public FishingState State => _state;
-        
+
         private FishingState _state = FishingState.Idle;
         private RobEquipModule _robEquip;
         private LookModule _lookModule;
         
-        private Transform _cameraTransform;
-        
+        private Coroutine _stateRoutine;
+
         public void Initialize(ModuleOwner owner)
         {
             _robEquip = owner.GetModule<RobEquipModule>();
@@ -36,8 +49,24 @@ namespace NKT.Player.Modules
 
         public void AfterInit()
         {
-            _cameraTransform = _lookModule.CameraTransform;
             charger.OnCharged += OnCharged;
+            charger.OnValueChanged += OnChargeValueChanged;
+            charger.OnChargeCanceled += OnChargeCanceled;
+            
+            bobberObject.OnLanded += ReportCastLanded;
+            bobberObject.OnBite += ReportBite;
+        }
+
+        private void OnDestroy()
+        {
+            if (charger == null) return;
+
+            charger.OnCharged -= OnCharged;
+            charger.OnValueChanged -= OnChargeValueChanged;
+            charger.OnChargeCanceled -= OnChargeCanceled;
+            
+            bobberObject.OnLanded -= ReportCastLanded;
+            bobberObject.OnBite -= ReportBite;
         }
 
         public void OnAttackPressed()
@@ -46,14 +75,15 @@ namespace NKT.Player.Modules
             {
                 case FishingState.Idle:
                     if (!_robEquip.IsEquip) return;
+
                     charger.ProgressStart();
                     ChangeState(FishingState.Charging);
                     break;
                 case FishingState.Waiting:
-                    ChangeState(FishingState.Idle);
+                    ChangeState(FishingState.Idle);     //회수
                     break;
                 case FishingState.Biting:
-                    ChangeState(FishingState.Reeling);
+                    ChangeState(FishingState.Reeling);  //후킹
                     break;
             }
         }
@@ -61,28 +91,130 @@ namespace NKT.Player.Modules
         public void OnAttackReleased()
         {
             if (_state != FishingState.Charging) return;
-            
-            charger.ProgressEnd();
-            ChangeState(FishingState.Casting);
+
+            charger.ProgressEnd();  //동기적으로 OnCharged 가 불리고 거기서 상태가 바뀐다
         }
+
+        //찌가 물에 닿았을때
+        public void ReportCastLanded()
+        {
+            if (_state != FishingState.Casting) return;
+
+            ChangeState(FishingState.Waiting);
+        }
+
+        //물고기가 물었을때
+        public void ReportBite()
+        {
+            if (_state != FishingState.Waiting) return;
+
+            ChangeState(FishingState.Biting);
+        }
+
+        //낚시대를 집어넣는 등 중간에 끊을때
+        public void CancelFishing()
+        {
+            ChangeState(FishingState.Idle);
+        }
+
+        //=== 내부 ===
 
         private void OnCharged(float power)
         {
-            _robEquip.Current.Cast(power);
-            ChangeState(FishingState.Charging);
+            CastAim aim = BuildAim(power);
+
+            bobberObject.Launch(aim, flightTime);
+
+            ChangeState(FishingState.Casting);
+        }
+
+        private void OnChargeValueChanged(float power)
+        {
+            if (_state != FishingState.Charging) return;
+
+            OnAimUpdated?.Invoke(BuildAim(power));
+        }
+
+        private void OnChargeCanceled()
+        {
+            if (_state != FishingState.Charging) return;
+
+            ChangeState(FishingState.Idle);
+        }
+
+        private CastAim BuildAim(float power)
+        {
+            Vector3 aim = _lookModule.CameraTransform.forward;
+            aim.y = 0f;
+            aim.Normalize();
+
+            FishingRobSO data = _robEquip.Current.Data;
+            float distance = Mathf.Lerp(data.minDistance, data.maxDistance, power);
+
+            Vector3 origin = _robEquip.Current.BobberTransform.position;
+            Vector3 landPoint = origin + aim * distance;
+            landPoint.y = waterTransformY;
+
+            return new CastAim
+            {
+                origin = origin,
+                landPoint = landPoint,
+                arcHeight = orbitHeight,
+            };
         }
 
         private void ChangeState(FishingState state)
         {
             if (_state == state) return;
-            
-            Debug.Log(state);
-            _state = state;
+
+            FishingState prev = _state;
+            _state = state;         //Exit 안에서 이벤트가 되돌아와도 재진입하지 않게 먼저 바꾼다
+
+            ExitState(prev);
+            EnterState(state);
+
             OnStateChanged?.Invoke(_state);
         }
-        public void ChangeToWaiting()
+
+        private void EnterState(FishingState state)
         {
-            ChangeState(FishingState.Waiting);
+            switch (state)
+            {
+                case FishingState.Idle:
+                    ClearBobber();
+                    break;
+                case FishingState.Biting:
+                    _stateRoutine = StartCoroutine(BiteWindowRoutine());
+                    break;
+            }
+        }
+
+        private void ExitState(FishingState state)
+        {
+            //상태에 걸려있던 타이머는 무조건 정리. 안 그러면 Idle 인데 갑자기 입질이 온다.
+            if (_stateRoutine != null)
+            {
+                StopCoroutine(_stateRoutine);
+                _stateRoutine = null;
+            }
+
+            if (state == FishingState.Charging)
+                charger.ProgressCancel();   //이미 던진 경우엔 코루틴이 없어서 그냥 통과한다
+        }
+
+        private void ClearBobber()
+        {
+            if (bobberObject == null) return;
+            
+            bobberObject.PositionInit();
+
+        }
+
+        private IEnumerator BiteWindowRoutine()
+        {
+            yield return new WaitForSeconds(biteWindow);
+
+            ChangeState(FishingState.Waiting);  //놓침
         }
     }
 }

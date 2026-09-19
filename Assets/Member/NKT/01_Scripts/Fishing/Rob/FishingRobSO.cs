@@ -8,6 +8,9 @@ namespace NKT.Fishing.Rob
     {
         public RobObject prefab;
         public float power = 1;
+        
+        public float maxDistance;
+        public float minDistance;
     }
 
     [Serializable]

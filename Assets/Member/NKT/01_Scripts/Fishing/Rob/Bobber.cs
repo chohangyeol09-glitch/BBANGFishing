@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -8,27 +8,40 @@ namespace NKT.Fishing.Rob
     {
         public event Action OnLanded;
         public event Action OnBite; //후에 물고기 SO 있으면 그거 받기
+        
+        [SerializeField] private ParticleSystem bobberParticle;
 
-        public void Launch(Vector3 from, Vector3 to, float height, float duration)
+        private Vector3 _initPosition;
+
+        private void Awake()
         {
-            StartCoroutine(FlyRoutine(from, to, height, duration));
+            _initPosition = transform.position; 
         }
 
-        private IEnumerator FlyRoutine(Vector3 from, Vector3 to, float height, float duration)
+        public void PositionInit()
+        {
+            bobberParticle.Pause();
+            transform.position = _initPosition;
+            bobberParticle.Play();
+        }
+        
+        public void Launch(CastAim aim, float duration)
+        {
+            StartCoroutine(FlyRoutine(aim, duration));
+        }
+
+        private IEnumerator FlyRoutine(CastAim aim, float duration)
         {
             float t = 0f;
 
             while (t < 1f)
             {
                 t = Mathf.Min(t + Time.deltaTime / duration, 1f);
-                
-                Vector3 pos = Vector3.Lerp(from, to, t);
-                pos.y += height * 4f * t * (1f - t);
-                
-                transform.position = pos;
+
+                transform.position = CastArc.Evaluate(aim, t);
                 yield return null;
             }
-            transform.position = to;
+
             OnLanded?.Invoke();
         }
     }

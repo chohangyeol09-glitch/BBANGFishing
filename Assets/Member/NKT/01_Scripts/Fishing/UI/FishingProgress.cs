@@ -1,5 +1,3 @@
-﻿using System;
-using System.Collections;
 using NKT.Fishing.Rob;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,18 +16,22 @@ namespace NKT.Fishing.UI
             castCharger.OnChargeStarted += Show;
             castCharger.OnValueChanged += GaugeCharging;
             castCharger.OnCharged += Hide;
+            castCharger.OnChargeCanceled += Hide;
         }
 
         private void Start()
         {
-            Hide(1);
+            Hide();
         }
 
         private void OnDestroy()
         {
+            if (castCharger == null) return;
+
             castCharger.OnChargeStarted -= Show;
             castCharger.OnValueChanged -= GaugeCharging;
             castCharger.OnCharged -= Hide;
+            castCharger.OnChargeCanceled -= Hide;
         }
 
         private void Show()
@@ -37,18 +39,20 @@ namespace NKT.Fishing.UI
             backgroundTransform.gameObject.SetActive(true);
         }
 
-        private void GaugeCharging(float obj)
+        private void GaugeCharging(float power)
         {
             float halfHeight = backgroundTransform.rect.height * 0.5f;
 
             Vector2 pos = arrowTransform.anchoredPosition;
-            pos.y = Mathf.Lerp(-halfHeight, halfHeight, obj);
+            pos.y = Mathf.Lerp(-halfHeight, halfHeight, power);
             arrowTransform.anchoredPosition = pos;
 
-            progressSprite.fillAmount = obj;
+            progressSprite.fillAmount = power;
         }
 
-        private void Hide(float obj)
+        private void Hide(float power) => Hide();
+
+        private void Hide()
         {
             backgroundTransform.gameObject.SetActive(false);
         }

@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::NKT.Fishing.Rob.FishingRobSO
   prefab:
     RobGameobject: {fileID: 995492234869721171, guid: 35aa94e85963ec64097935c4790f60b0, type: 3}
-    FloatGameobject: {fileID: 2751704840456773687, guid: bf3cffbc3b688e846949a7e4cdf9b84e, type: 3}
+    BobberGameobject: {fileID: 2751704840456773687, guid: bf3cffbc3b688e846949a7e4cdf9b84e, type: 3}
   power: 1
+  maxDistance: 10
+  minDistance: 2

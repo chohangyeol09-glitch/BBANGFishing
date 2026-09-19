@@ -173,7 +173,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 4229795438029717658}
         m_TargetAssemblyTypeName: NKT.Player.Modules.FishingModule, Assembly-CSharp
-        m_MethodName: ChangeToWaiting
+        m_MethodName: ReportCastLanded
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -878,6 +878,7 @@ Transform:
   - {fileID: 2289390363819824958}
   - {fileID: 2400152317715665122}
   - {fileID: 1139713760645653435}
+  - {fileID: 8527537159462398298}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1546427731693855003
@@ -892,8 +893,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efee8193aa23462db923142067a980c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  idle: {fileID: 11400000, guid: 990b2a94b326b384c8faf8c16722f385, type: 2}
-  cast: {fileID: 11400000, guid: 2e1853dc61a7e504eae2f506b9dee221, type: 2}
 --- !u!1 &2391012567222513344
 GameObject:
   m_ObjectHideFlags: 0
@@ -1864,14 +1863,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5084553092590108555}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.38268343, y: 0, z: 0, w: 0.92387956}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2487000393087985843}
   m_Father: {fileID: 6889770300120770372}
-  m_LocalEulerAnglesHint: {x: 45, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &7733381785638328580
 Camera:
   m_ObjectHideFlags: 0
@@ -2261,6 +2260,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0360677c3134346bb25d47e742552f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NKT.Fishing.Rob.FishingRob
+  data: {fileID: 11400000, guid: e1ced4423d26e9b409702e7df2a82449, type: 2}
+  bobberTransform: {fileID: 8527537159462398298}
 --- !u!1 &6115991180281412644
 GameObject:
   m_ObjectHideFlags: 0
@@ -2369,6 +2370,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NKT.Player.Modules.FishingModule
   charger: {fileID: 7089950222313013424}
+  bobberObject: {fileID: 816758606299138097}
+  orbitHeight: 3
+  flightTime: 1.2
+  waterTransformY: 0
+  minBiteDelay: 3
+  maxBiteDelay: 10
+  biteWindow: 1
 --- !u!1 &6292490479423401540
 GameObject:
   m_ObjectHideFlags: 0
@@ -3210,4 +3218,85 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 476082235563414249, guid: 35aa94e85963ec64097935c4790f60b0, type: 3}
   m_PrefabInstance: {fileID: 6754192014145844844}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &9190028838204582558
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 2166753863898610082}
+    m_Modifications:
+    - target: {fileID: 711128197847352260, guid: 5a4fa9d409cbf9d48a6b97e282240e0e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 711128197847352260, guid: 5a4fa9d409cbf9d48a6b97e282240e0e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 711128197847352260, guid: 5a4fa9d409cbf9d48a6b97e282240e0e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 711128197847352260, guid: 5a4fa9d409cbf9d48a6b97e282240e0e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 711128197847352260, guid: 5a4fa9d409cbf9d48a6b97e282240e0e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 711128197847352260, guid: 5a4fa9d409cbf9d48a6b97e282240e0e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 711128197847352260, guid: 5a4fa9d409cbf9d48a6b97e282240e0e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 711128197847352260, guid: 5a4fa9d409cbf9d48a6b97e282240e0e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 711128197847352260, guid: 5a4fa9d409cbf9d48a6b97e282240e0e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -180
+      objectReference: {fileID: 0}
+    - target: {fileID: 711128197847352260, guid: 5a4fa9d409cbf9d48a6b97e282240e0e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -180
+      objectReference: {fileID: 0}
+    - target: {fileID: 2236759373585398173, guid: 5a4fa9d409cbf9d48a6b97e282240e0e, type: 3}
+      propertyPath: InitialModule.maxNumParticles
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 2236759373585398173, guid: 5a4fa9d409cbf9d48a6b97e282240e0e, type: 3}
+      propertyPath: EmissionModule.rateOverDistance.scalar
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 3506138368610051022, guid: 5a4fa9d409cbf9d48a6b97e282240e0e, type: 3}
+      propertyPath: m_Name
+      value: Bobber
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5a4fa9d409cbf9d48a6b97e282240e0e, type: 3}
+--- !u!114 &816758606299138097 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8420674851210240687, guid: 5a4fa9d409cbf9d48a6b97e282240e0e, type: 3}
+  m_PrefabInstance: {fileID: 9190028838204582558}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f77dc3019a704974a1796902aa0ef7f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NKT.Fishing.Rob.Bobber
+--- !u!4 &8527537159462398298 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 711128197847352260, guid: 5a4fa9d409cbf9d48a6b97e282240e0e, type: 3}
+  m_PrefabInstance: {fileID: 9190028838204582558}
   m_PrefabAsset: {fileID: 0}

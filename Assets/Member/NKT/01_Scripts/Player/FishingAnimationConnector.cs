@@ -9,6 +9,7 @@ namespace NKT.Player
 
         public void OnAnimationEvent()
         {
+            Debug.Log("OnAnimationEvent");
             OnCastChange?.Invoke();
         }
     }
