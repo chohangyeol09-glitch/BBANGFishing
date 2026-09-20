@@ -8,8 +8,10 @@ namespace NKT.Fishing.UI
     {
         [SerializeField] private CastCharger castCharger;
         [SerializeField] private Image progressSprite;
-        [SerializeField] private RectTransform arrowTransform;
         [SerializeField] private RectTransform backgroundTransform;
+        [SerializeField] private RectTransform arrowPivot;
+        [SerializeField] private float startAngle = 0f;
+        [SerializeField] private float sweepAngle = -180f;
 
         private void Awake()
         {
@@ -41,13 +43,10 @@ namespace NKT.Fishing.UI
 
         private void GaugeCharging(float power)
         {
-            float halfHeight = backgroundTransform.rect.height * 0.5f;
-
-            Vector2 pos = arrowTransform.anchoredPosition;
-            pos.y = Mathf.Lerp(-halfHeight, halfHeight, power);
-            arrowTransform.anchoredPosition = pos;
-
-            progressSprite.fillAmount = power;
+            progressSprite.fillAmount = power * 0.5f;
+            
+            float angle = startAngle + sweepAngle * power;
+            arrowPivot.rotation = Quaternion.Euler(0f, 0f, angle);
         }
 
         private void Hide(float power) => Hide();

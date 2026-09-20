@@ -5,12 +5,8 @@ namespace NKT.Player
 {
     public class FishingAnimationConnector : MonoBehaviour
     {
-        public UnityEvent OnCastChange;
+        public UnityEvent OnRetrieveEnd;
 
-        public void OnAnimationEvent()
-        {
-            Debug.Log("OnAnimationEvent");
-            OnCastChange?.Invoke();
-        }
+        public void OnRetrieveEndEvent() => OnRetrieveEnd?.Invoke();
     }
 }

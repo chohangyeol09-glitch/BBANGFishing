@@ -13,8 +13,9 @@ namespace NKT.Player.Modules
         Charging,   //차징 중
         Casting,    //던지는 중
         Waiting,    //입질 기다리는중
+        Retrieving, //물고기가 안 물었는데 다시 가져옴
         Biting,     //물고기가 묾
-        Reeling     //휠 감는중
+        Reeling,    //휠 감는중
     }
 
     //낚시 상태 관리, 낚시대 관리
@@ -22,18 +23,20 @@ namespace NKT.Player.Modules
     {
         [SerializeField] private CastCharger charger;
         [SerializeField] private Bobber bobberObject;
+        
         [SerializeField] private float orbitHeight = 3f;
         [SerializeField] private float flightTime = 1.2f;
+        [SerializeField] private float returnTime = 0.8f;
+        
         [SerializeField] private float waterTransformY;
 
         [Header("입질")]
-        [SerializeField] private float minBiteDelay = 3f;
-        [SerializeField] private float maxBiteDelay = 10f;
         [SerializeField] private float biteWindow = 1f;
 
         public event Action<FishingState> OnStateChanged;
         public event Action<CastAim> OnAimUpdated;   //차징 중 궤도 미리보기용
         public FishingState State => _state;
+        public Bobber Bobber => bobberObject;
 
         private FishingState _state = FishingState.Idle;
         private RobEquipModule _robEquip;
@@ -75,12 +78,11 @@ namespace NKT.Player.Modules
             {
                 case FishingState.Idle:
                     if (!_robEquip.IsEquip) return;
-
                     charger.ProgressStart();
                     ChangeState(FishingState.Charging);
                     break;
                 case FishingState.Waiting:
-                    ChangeState(FishingState.Idle);     //회수
+                    ChangeState(FishingState.Retrieving);     //회수
                     break;
                 case FishingState.Biting:
                     ChangeState(FishingState.Reeling);  //후킹
@@ -103,6 +105,14 @@ namespace NKT.Player.Modules
             ChangeState(FishingState.Waiting);
         }
 
+        //물고기가 안 물고 회수할때
+        public void ReportRetrieveFinished()
+        {
+            if (_state != FishingState.Retrieving) return;
+
+            ChangeState(FishingState.Idle);
+        }
+        
         //물고기가 물었을때
         public void ReportBite()
         {
@@ -168,7 +178,7 @@ namespace NKT.Player.Modules
             if (_state == state) return;
 
             FishingState prev = _state;
-            _state = state;         //Exit 안에서 이벤트가 되돌아와도 재진입하지 않게 먼저 바꾼다
+            _state = state;
 
             ExitState(prev);
             EnterState(state);
@@ -183,6 +193,9 @@ namespace NKT.Player.Modules
                 case FishingState.Idle:
                     ClearBobber();
                     break;
+                case FishingState.Retrieving:
+                    ReturnBobber();
+                    break;
                 case FishingState.Biting:
                     _stateRoutine = StartCoroutine(BiteWindowRoutine());
                     break;
@@ -191,7 +204,6 @@ namespace NKT.Player.Modules
 
         private void ExitState(FishingState state)
         {
-            //상태에 걸려있던 타이머는 무조건 정리. 안 그러면 Idle 인데 갑자기 입질이 온다.
             if (_stateRoutine != null)
             {
                 StopCoroutine(_stateRoutine);
@@ -199,9 +211,16 @@ namespace NKT.Player.Modules
             }
 
             if (state == FishingState.Charging)
-                charger.ProgressCancel();   //이미 던진 경우엔 코루틴이 없어서 그냥 통과한다
+                charger.ProgressCancel();
         }
 
+
+        private void ReturnBobber()
+        {
+            if (bobberObject == null) return;
+            
+            bobberObject.Return(returnTime, orbitHeight);
+        }
         private void ClearBobber()
         {
             if (bobberObject == null) return;

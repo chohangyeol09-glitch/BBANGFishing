@@ -29,6 +29,32 @@ namespace NKT.Fishing.Rob
         {
             StartCoroutine(FlyRoutine(aim, duration));
         }
+        public void Return(float duration, float arcHeight)
+        {
+            StopAllCoroutines();
+            StartCoroutine(ReturnRoutine(duration, arcHeight));
+        }
+
+        private IEnumerator ReturnRoutine(float duration, float arcHeight)
+        {
+            Vector3 from = transform.position;
+            float t = 0f;
+
+            while (t < 1f)
+            {
+                t = Mathf.Min(t + Time.deltaTime / duration, 1f);
+
+                CastAim aim = new CastAim
+                {
+                    origin = from,
+                    landPoint = _initPosition,
+                    arcHeight = arcHeight,
+                };
+
+                transform.position = CastArc.Evaluate(aim, t);
+                yield return null;
+            }
+        }
 
         private IEnumerator FlyRoutine(CastAim aim, float duration)
         {

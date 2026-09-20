@@ -11,6 +11,7 @@ namespace NKT.Player.Modules
         [SerializeField] private HashDataSO idleAnim;
         [SerializeField] private HashDataSO chargeAnim;
         [SerializeField] private HashDataSO castAnim;
+        [SerializeField] private HashDataSO retrieveAnim;
         [SerializeField] private HashDataSO biteAnim;
         [SerializeField] private HashDataSO reelAnim;
 
@@ -41,7 +42,7 @@ namespace NKT.Player.Modules
         
         private void OnStateChanged(FishingState state)
         {
-            Debug.Log("OnStateChanged" + state);
+            Debug.Log("OnStateChanged : " + state);
             switch (state)
             {
                 case FishingState.Idle:
@@ -52,6 +53,9 @@ namespace NKT.Player.Modules
                     break;
                 case FishingState.Casting:
                     _renderer.PlayClip(castAnim.HashValue, 0,0, 1);
+                    break;
+                case FishingState.Retrieving:
+                    _renderer.PlayClip(retrieveAnim.HashValue, 0,0.5f, 1);
                     break;
                 case FishingState.Waiting:
                     _renderer.PlayClip(idleAnim.HashValue, 0,0.5f, 1);
