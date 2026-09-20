@@ -13,9 +13,6 @@ namespace NKT.Player
         public LookModule Look { get; private set; }
         public IRenderer Renderer { get; private set; }
         
-        [SerializeField] private HashDataSO idle;
-        [SerializeField] private HashDataSO cast;
-        
         protected override void Awake()
         {
             base.Awake();
@@ -31,17 +28,9 @@ namespace NKT.Player
             Renderer = GetModule<IRenderer>();
         }
 
-        private void Update()
+        private void LateUpdate()
         {
             Look.LookUpdate();
-            if (Keyboard.current.spaceKey.wasPressedThisFrame)
-            {
-                Renderer.PlayClip(idle.HashValue, 0, 0.3f, 1);
-            }
-            if (Keyboard.current.cKey.wasPressedThisFrame)
-            {
-                Renderer.PlayClip(cast.HashValue, 0, 0.2f, 1);
-            }
         }
     }
 }
