@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 94a2ddd8ba28464dbff889cf8506b8e1, type: 3}
-  m_Name: PoolManager
+  m_Name: _Fish PoolManager
   m_EditorClassIdentifier: PoolRuntime::DevLib.ObjectPool.Runtime.PoolManagerSO
   itemList:
-  - {fileID: 11400000, guid: dde73c7805698034b97fde3725eed332, type: 2}
-  - {fileID: 11400000, guid: 755fb7597504c1b43b7e75a3ab5d96ea, type: 2}
-  - {fileID: 11400000, guid: eae7d11fed7e03f419c5f5d318758fae, type: 2}
+  - {fileID: 11400000, guid: 17b3a4a77df6df44f900e5653782be6c, type: 2}
+  - {fileID: 11400000, guid: 3cd8d61320fff7748966100b6ba27ae3, type: 2}
+  - {fileID: 11400000, guid: e88f4056dd3a2c340ba231db9e049d30, type: 2}

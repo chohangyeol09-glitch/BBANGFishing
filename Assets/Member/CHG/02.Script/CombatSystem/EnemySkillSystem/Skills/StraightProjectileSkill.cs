@@ -15,13 +15,15 @@ namespace CHG._02.Script.CombatSystem.EnemySkillSystem.Skills
 
         [SerializeField] private float speed;
         [SerializeField] private float lifeTime;
+        [SerializeField] private float health;
         
         protected override IEnumerator ExecuteSkill(GameObject target)
         {
             Vector3 dir = (target.transform.position - transform.position).normalized;
             StraightProjectile projectile = poolManager.Pop<StraightProjectile>(PoolItem);
-            var template = new DamageData(Owner, Vector3.zero, Vector3.zero, dir, Data.Damage, Data.KbForce);
-            projectile.Launch(transform.position, dir, speed, lifeTime, template, poolManager);
+            var template = new DamageData(Owner, Vector3.zero, Vector3.zero, dir, Data.Damage, 0f);
+            Debug.Log(projectile == null);
+            projectile.Launch(transform.position, dir, speed, lifeTime, health, template, poolManager);
             yield break;
         }
 

@@ -15,6 +15,7 @@ namespace CHG._02.Script.CombatSystem.EnemySkillSystem.Skills
         [SerializeField] private PoolItemSO poolItem;
         [SerializeField] private float travelDuration;
         [SerializeField] private float curveOffset;
+        [SerializeField] private float health;
         
         protected override IEnumerator ExecuteSkill(GameObject target)
         {
@@ -25,9 +26,9 @@ namespace CHG._02.Script.CombatSystem.EnemySkillSystem.Skills
             Vector3 perpendicular = Vector3.Cross(lineDir, Vector3.up).normalized;
             Vector3 controlPoint = mid + perpendicular * curveOffset;
 
-            var projectile = poolManager.Pop<CurvedProjectile>(PoolItem);
-            var template = new DamageData(Owner, Vector3.zero, Vector3.zero, lineDir, Data.Damage, Data.KbForce);
-            projectile.Launch(start, controlPoint, end, travelDuration, template,new DamageData(Owner), poolManager);
+            CurvedProjectile projectile = poolManager.Pop<CurvedProjectile>(PoolItem);
+            DamageData template = new DamageData(Owner, Vector3.zero, Vector3.zero, lineDir, Data.Damage, 0f);
+                projectile.Launch(start, controlPoint, end, travelDuration, health, template, poolManager);
             yield break;
         }
 

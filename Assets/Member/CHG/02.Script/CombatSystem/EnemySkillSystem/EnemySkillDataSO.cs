@@ -17,7 +17,6 @@ namespace CHG._02.Script.CombatSystem.EnemySkillSystem
         public HashDataSO SkillAnimHash;
         public EnemySkillType SkillType;
         public float Damage;
-        public float KbForce; //넉백
         public float WarningTime; //이펙트, 모션 등 경고시간
         
         [Header("CoolTime")]

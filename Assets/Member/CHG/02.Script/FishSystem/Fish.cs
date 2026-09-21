@@ -4,10 +4,11 @@ using CHG._02.Script.CombatSystem;
 using CHG._02.Script.CoreSystem;
 using DevLib.ModuleSystem;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace CHG._02.Script.FishSystem
 {
-    public class Fish : Agent
+    public class Fish : Agent, IParryable
     {
         public bool IsJumping = false;
         public override float MaxHealth => Data.Health;
@@ -20,14 +21,18 @@ namespace CHG._02.Script.FishSystem
         
         [SerializeField] private float minJumpHeight = 0.8f;
         
+        public bool IsParryable => _lunge != null && _lunge.IsParryable;
+
         private Rigidbody _rb;
+        private LungeModule _lunge;
 
 
         protected override void InitializeModules()
         {
             base.InitializeModules();
             _rb = GetComponent<Rigidbody>();
-            
+            _lunge = GetModule<LungeModule>();
+
             if (isKnockBack)
                 OnDamaged += OnKnockBack;
 
@@ -42,8 +47,8 @@ namespace CHG._02.Script.FishSystem
             IsJumping = true;
 
             Vector3 dir = pullForce.normalized;
-            float floor = dir.y > 0.1f ?  ForceUtil.SpeedForHeight(minJumpHeight) / dir.y : 0f;
-            float deltaV = ForceUtil.ResolveDeltaV(pullForce.magnitude, _rb.mass, weightInfluence, floor);
+            float floor = dir.y > 0.1f ?  PhysicsUtil.SpeedForHeight(minJumpHeight) / dir.y : 0f;
+            float deltaV = PhysicsUtil.ResolveDeltaV(pullForce.magnitude, _rb.mass, weightInfluence, floor);
             float minSpeed = Mathf.Sqrt(2f * Mathf.Abs(Physics.gravity.y) * minJumpHeight);
 
             if (dir.y > 0.1f)
@@ -51,6 +56,8 @@ namespace CHG._02.Script.FishSystem
             
             _rb.AddForce(dir * deltaV, ForceMode.VelocityChange);
         }
+
+        public bool TryParry(DamageData data) => _lunge != null && _lunge.TryParry(data);
 
         public override void Dead()
         {
@@ -68,7 +75,7 @@ namespace CHG._02.Script.FishSystem
         {
             if (_rb == null) return;
 
-            float impulse = ForceUtil.ResolveImpulse(data.KnockbackPower, _rb.mass, weightInfluence);
+            float impulse = PhysicsUtil.ResolveImpulse(data.KnockbackPower, _rb.mass, weightInfluence);
 
             _rb.AddForceAtPosition(data.HitDirection.normalized * impulse,
                 data.HitPoint, ForceMode.Impulse);
@@ -77,14 +84,32 @@ namespace CHG._02.Script.FishSystem
         
         private void OnTriggerEnter(Collider collision)
         {
+                Debug.Log("Collision");
             if (collision.CompareTag("Sea"))
             {
+                Debug.Log(collision.name);
                 if (IsJumping)
                 {
                     IsJumping = false;
+                    if (Data.CanLunge && _lunge != null)
+                    {
+                        _lunge.StartLunge();
+                    }
+                    else Debug.LogError("Lunge can't be lunge");
                 }
             }
         }
+        
+#if UNITY_EDITOR
+        [Header("Test")]
+        [SerializeField] private float testUpSpeed = 8f;
+
+        private void Update()
+        {
+            if (Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame)
+                _rb.AddForce(Vector3.up * testUpSpeed, ForceMode.VelocityChange);
+        }
+#endif
 
     }
 }
