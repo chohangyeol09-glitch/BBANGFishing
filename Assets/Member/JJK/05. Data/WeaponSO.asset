@@ -15,5 +15,8 @@ MonoBehaviour:
   <Damage>k__BackingField: 10
   <FireRate>k__BackingField: 0.1
   <MagazineSize>k__BackingField: 300
+  <ReloadTime>k__BackingField: 2
   <Recoil>k__BackingField: {x: 0, y: 0.5}
   <RecoilRecovery>k__BackingField: 8
+  <MuzzleFlashPrefab>k__BackingField: {fileID: 199458, guid: 51b76f616384d4946bed4ecc9a6c2c3e, type: 3}
+  <ImpactVfxPrefab>k__BackingField: {fileID: 199458, guid: 51b76f616384d4946bed4ecc9a6c2c3e, type: 3}

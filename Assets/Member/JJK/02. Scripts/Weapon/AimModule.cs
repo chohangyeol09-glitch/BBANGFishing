@@ -26,14 +26,13 @@ namespace Member.JJK._02._Scripts.Weapon
         [SerializeField] private float weaponRecoilSnapSpeed = 15f;
         [SerializeField] private float weaponRecoilRecovery = 8f;
 
-        private WeaponSO _weaponData;
+
         private Vector3 _baseLocalRotation;
         private float _currentTilt;
         private float _targetTilt;
         private float _tiltVelocity;
         private bool _isAiming;
         private ModuleOwner _owner;
-
         private Vector3 _weaponPosRecoilCurrent;
         private Vector3 _weaponPosRecoilTarget;
         private float _weaponRotRecoilCurrent;
@@ -42,7 +41,6 @@ namespace Member.JJK._02._Scripts.Weapon
         public void Initialize(ModuleOwner owner)
         {
             _owner = owner;
-            _weaponData = owner.GetComponent<WeaponController>().WeaponData;
             hipPosition = _owner.transform.localPosition;
         }
 
@@ -52,6 +50,8 @@ namespace Member.JJK._02._Scripts.Weapon
             _weaponPosRecoilTarget += new Vector3(0f, weaponKickUp, -weaponKickBack);
             _weaponRotRecoilTarget += weaponRotRecoil;
         }
+
+        public bool IsAiming => _isAiming;
 
         public void SetAiming(bool isAiming) => _isAiming = isAiming;
 
