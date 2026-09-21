@@ -1,13 +1,17 @@
 using System;
+using DevLib.AnimatorSystem;
 using DevLib.ModuleSystem;
+using NKT.Agent;
 using NKT.Player.Modules;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace NKT.Player
 {
     public class Player : ModuleOwner
     {
         public LookModule Look { get; private set; }
+        public IRenderer Renderer { get; private set; }
         
         protected override void Awake()
         {
@@ -21,9 +25,10 @@ namespace NKT.Player
             base.InitializeModules();
             
             Look = GetModule<LookModule>();
+            Renderer = GetModule<IRenderer>();
         }
 
-        private void Update()
+        private void LateUpdate()
         {
             Look.LookUpdate();
         }
