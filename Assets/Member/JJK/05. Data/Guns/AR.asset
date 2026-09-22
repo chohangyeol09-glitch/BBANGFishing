@@ -10,13 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5b041ddbe63e494e9b7a47861ab38fb4, type: 3}
-  m_Name: WeaponSO
+  m_Name: AR
   m_EditorClassIdentifier: 
   <Damage>k__BackingField: 10
   <FireRate>k__BackingField: 0.1
-  <MagazineSize>k__BackingField: 300
-  <ReloadTime>k__BackingField: 2
+  <Durability>k__BackingField: 100
   <Recoil>k__BackingField: {x: 0, y: 0.5}
   <RecoilRecovery>k__BackingField: 8
+  <IsAuto>k__BackingField: 1
+  <IsUnbreakable>k__BackingField: 0
   <MuzzleFlashPrefab>k__BackingField: {fileID: 199458, guid: 51b76f616384d4946bed4ecc9a6c2c3e, type: 3}
   <ImpactVfxPrefab>k__BackingField: {fileID: 199458, guid: 51b76f616384d4946bed4ecc9a6c2c3e, type: 3}

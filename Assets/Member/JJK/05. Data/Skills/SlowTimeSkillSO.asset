@@ -15,5 +15,5 @@ MonoBehaviour:
   <SkillName>k__BackingField: Slow Time
   <Cooldown>k__BackingField: 15
   <Duration>k__BackingField: 5
-  <Icon>k__BackingField: {fileID: 21300000, guid: 60d582773c278b54ab3a9f2f00ae644e, type: 3}
+  <Icon>k__BackingField: {fileID: 21300000, guid: ab278071729b84f4d88a0375646d295c, type: 3}
   timeScale: 0.3

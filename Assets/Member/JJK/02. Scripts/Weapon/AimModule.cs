@@ -51,6 +51,12 @@ namespace Member.JJK._02._Scripts.Weapon
             _weaponRotRecoilTarget += weaponRotRecoil;
         }
 
+        private void OnDestroy()
+        {
+            if (playerCamera != null)
+                playerCamera.fieldOfView = defaultFov;
+        }
+
         public bool IsAiming => _isAiming;
 
         public void SetAiming(bool isAiming) => _isAiming = isAiming;

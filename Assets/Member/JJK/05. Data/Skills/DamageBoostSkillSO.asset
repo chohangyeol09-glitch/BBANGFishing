@@ -15,5 +15,5 @@ MonoBehaviour:
   <SkillName>k__BackingField: Damage Boost
   <Cooldown>k__BackingField: 20
   <Duration>k__BackingField: 8
-  <Icon>k__BackingField: {fileID: 21300000, guid: 1649c25fdc834d140b6e55527e9ebc3b, type: 3}
+  <Icon>k__BackingField: {fileID: 21300000, guid: c3845c64636b2b14ebd030bb22480d08, type: 3}
   damageMultiplier: 2

@@ -8,14 +8,6 @@ namespace Member.JJK._02._Scripts.Skill
         private Animator[] _animators;
         private float[] _animatorSpeeds;
 
-        private NavMeshAgent[] _agents;
-        private float[] _agentSpeeds;
-        private float[] _agentAccelerations;
-        private float[] _agentAngularSpeeds;
-
-        private ParticleSystem[] _particleSystems;
-        private float[] _particleSpeeds;
-
         private Rigidbody[] _bodies;
         private bool[] _bodyUseGravity;
         private float[] _bodyLinearDamping;
@@ -28,22 +20,6 @@ namespace Member.JJK._02._Scripts.Skill
             _animatorSpeeds = new float[_animators.Length];
             for (int i = 0; i < _animators.Length; i++)
                 _animatorSpeeds[i] = _animators[i].speed;
-
-            _agents = GetComponentsInChildren<NavMeshAgent>(true);
-            _agentSpeeds = new float[_agents.Length];
-            _agentAccelerations = new float[_agents.Length];
-            _agentAngularSpeeds = new float[_agents.Length];
-            for (int i = 0; i < _agents.Length; i++)
-            {
-                _agentSpeeds[i] = _agents[i].speed;
-                _agentAccelerations[i] = _agents[i].acceleration;
-                _agentAngularSpeeds[i] = _agents[i].angularSpeed;
-            }
-
-            _particleSystems = GetComponentsInChildren<ParticleSystem>(true);
-            _particleSpeeds = new float[_particleSystems.Length];
-            for (int i = 0; i < _particleSystems.Length; i++)
-                _particleSpeeds[i] = _particleSystems[i].main.simulationSpeed;
 
             _bodies = GetComponentsInChildren<Rigidbody>(true);
             _bodyUseGravity = new bool[_bodies.Length];
@@ -71,8 +47,7 @@ namespace Member.JJK._02._Scripts.Skill
         private void FixedUpdate()
         {
             if (Mathf.Approximately(_appliedScale, 1f)) return;
-
-            // 시간이 s배로 느려지면 중력 가속도는 s^2배가 되어야 같은 궤적을 느리게 그린다.
+            
             Vector3 scaledGravity = Physics.gravity * (_appliedScale * _appliedScale);
             for (int i = 0; i < _bodies.Length; i++)
             {
@@ -85,19 +60,6 @@ namespace Member.JJK._02._Scripts.Skill
         {
             for (int i = 0; i < _animators.Length; i++)
                 _animators[i].speed = _animatorSpeeds[i] * scale;
-
-            for (int i = 0; i < _agents.Length; i++)
-            {
-                _agents[i].speed = _agentSpeeds[i] * scale;
-                _agents[i].acceleration = _agentAccelerations[i] * scale;
-                _agents[i].angularSpeed = _agentAngularSpeeds[i] * scale;
-            }
-
-            for (int i = 0; i < _particleSystems.Length; i++)
-            {
-                ParticleSystem.MainModule main = _particleSystems[i].main;
-                main.simulationSpeed = _particleSpeeds[i] * scale;
-            }
 
             ApplyToBodies(scale);
         }

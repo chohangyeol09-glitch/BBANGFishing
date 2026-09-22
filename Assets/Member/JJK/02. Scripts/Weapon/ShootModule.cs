@@ -1,5 +1,5 @@
-﻿using DevLib.ModuleSystem;
-using Member.CHG._02.Script;
+﻿using CHG._02.Script.CombatSystem;
+using DevLib.ModuleSystem;
 using UnityEngine;
 
 namespace Member.JJK._02._Scripts.Weapon
@@ -11,7 +11,7 @@ namespace Member.JJK._02._Scripts.Weapon
 
         private WeaponController _weaponController;
         private WeaponSO _weaponData;
-        private AmmoRuntimeState _ammoState;
+        private DurabilityRuntimeState _durabilityState;
         private AimModule _aimModule;
         private BulletTracerModule _tracerModule;
         private float _lastFireTime;
@@ -20,7 +20,7 @@ namespace Member.JJK._02._Scripts.Weapon
         {
             _weaponController = owner.GetComponent<WeaponController>();
             _weaponData = _weaponController.WeaponData;
-            _ammoState = _weaponController.AmmoState;
+            _durabilityState = _weaponController.DurabilityState;
             _aimModule = owner.GetModule<AimModule>();
             _tracerModule = owner.GetModule<BulletTracerModule>();
         }
@@ -30,8 +30,13 @@ namespace Member.JJK._02._Scripts.Weapon
             if (Time.time - _lastFireTime < _weaponData.FireRate) return;
 
             _lastFireTime = Time.time;
-            _ammoState.currentAmmo--;
             FireRayCast();
+
+            if (_weaponData.IsUnbreakable) return;
+
+            _durabilityState.Consume(1);
+            if (_durabilityState.IsBroken)
+                _weaponController.Break();
         }
 
         private void FireRayCast()
@@ -58,7 +63,7 @@ namespace Member.JJK._02._Scripts.Weapon
         private void ApplyDamage(Collider hitCollider)
         {
             IDamageable damageable = hitCollider.GetComponentInParent<IDamageable>();
-            damageable?.TakeDamage(_weaponController.CurrentDamage);
+            //damageable?.TakeDamage(_weaponController.CurrentDamage); //DamageData
         }
 
         private void SpawnMuzzleFlash()
