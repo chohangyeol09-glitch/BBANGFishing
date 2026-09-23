@@ -12,8 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 592353fc72b047b4937b7131d0174f33, type: 3}
   m_Name: Common Bait
   m_EditorClassIdentifier: Assembly-CSharp::NKT.Fishing.Bait.BaitSO
-  baitName: 
+  baitName: Common
   grade: 0
-  maxUses: 1
-  weights: []
+  maxUses: 0
+  weights:
+  - grade: 0
+    weight: 0
+  - grade: 1
+    weight: 0
+  - grade: 2
+    weight: 0
+  - grade: 3
+    weight: 0
   bossFishData: {fileID: 0}
