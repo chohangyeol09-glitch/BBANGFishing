@@ -1,20 +1,14 @@
-using System;
-using DevLib.AnimatorSystem;
-using DevLib.ModuleSystem;
+using CHG._02.Script.CombatSystem;
 using NKT.Agent;
 using NKT.Player.Modules;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace NKT.Player
 {
-    public class Player : ModuleOwner
+    public class Player : CHG._02.Script.Agents.Agent
     {
         public LookModule Look { get; private set; }
         public IRenderer Renderer { get; private set; }
-        
-        [SerializeField] private HashDataSO idle;
-        [SerializeField] private HashDataSO cast;
         
         protected override void Awake()
         {
@@ -31,17 +25,9 @@ namespace NKT.Player
             Renderer = GetModule<IRenderer>();
         }
 
-        private void Update()
+        private void LateUpdate()
         {
             Look.LookUpdate();
-            if (Keyboard.current.spaceKey.wasPressedThisFrame)
-            {
-                Renderer.PlayClip(idle.HashValue, 0, 0.3f, 1);
-            }
-            if (Keyboard.current.cKey.wasPressedThisFrame)
-            {
-                Renderer.PlayClip(cast.HashValue, 0, 0.2f, 1);
-            }
         }
     }
 }
