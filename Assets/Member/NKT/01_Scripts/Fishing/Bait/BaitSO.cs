@@ -27,6 +27,10 @@ namespace NKT.Fishing.Bait
         
         public GradeWeight[] weights;
         
+        [Header("보스 미끼용")]
         public FishDataSO bossFishData;
+
+        [Header("UI용")]
+        public FishDataSO[] fishesToBuy;
     }
 }
