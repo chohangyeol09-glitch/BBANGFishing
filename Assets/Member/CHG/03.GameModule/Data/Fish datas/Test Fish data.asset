@@ -13,6 +13,13 @@ MonoBehaviour:
   m_Name: Test Fish data
   m_EditorClassIdentifier: 
   Grade: 0
-  Health: 0
-  Weight: 0
-  Price: 0
+  Health: 10
+  Weight: 3
+  JumpPower: 100
+  Price: 5
+  CanLunge: 1
+  LungeFlightTime: 1
+  LungeFrontDistance: 1.5
+  LungeHeightOffset: 0
+  ParryRange: 3
+  ReturnFlightTime: 1

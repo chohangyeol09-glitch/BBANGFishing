@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: PoolManager
   m_EditorClassIdentifier: PoolRuntime::DevLib.ObjectPool.Runtime.PoolManagerSO
   itemList:
-  - {fileID: 11400000, guid: 89473eb4ccda4804089a63abc48f8736, type: 2}
-  - {fileID: 11400000, guid: b2a38c727daebd741afea273b5548c8b, type: 2}
+  - {fileID: 11400000, guid: aaab9069c946481439209b897ca5d8a8, type: 2}
+  - {fileID: 11400000, guid: ca979f3db450fcb43a6fe68358af316d, type: 2}
+  - {fileID: 11400000, guid: ad200067cc1ea54499d176d4cabbdf95, type: 2}

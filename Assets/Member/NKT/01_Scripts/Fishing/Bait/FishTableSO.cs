@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using CHG._02.Script;
+using CHG._02.Script.CoreSystem;
 using CHG._02.Script.FishSystem;
 using UnityEngine;
 

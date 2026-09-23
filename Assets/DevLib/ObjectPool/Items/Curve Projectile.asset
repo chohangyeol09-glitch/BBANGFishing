@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3f61c1a0d4e44ac1be7cdd2389d5879d, type: 3}
-  m_Name: Bullet
+  m_Name: Curve Projectile
   m_EditorClassIdentifier: PoolRuntime::DevLib.ObjectPool.Runtime.PoolItemSO
-  poolingName: Bullet
-  prefab: {fileID: 2477981225707629076, guid: 415b1faeec06d2848a90fdc8a47c0686, type: 3}
-  initCount: 20
+  poolingName: Curve Projectile
+  prefab: {fileID: 4937012070613996201, guid: 22209fca97d828042bbc0090682d9c2f, type: 3}
+  initCount: 5
