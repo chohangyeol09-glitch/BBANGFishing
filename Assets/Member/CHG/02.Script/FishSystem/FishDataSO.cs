@@ -10,8 +10,9 @@ namespace CHG._02.Script.FishSystem
         public float Health;
         public float Weight;
         public float JumpPower;
-        
 
+        public Sprite Sprite;
+        
         public int Price;
 
         [Header("Lunge")]
