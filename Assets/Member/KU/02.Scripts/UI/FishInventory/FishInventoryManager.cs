@@ -44,6 +44,8 @@ public class FishInventoryManager : MonoBehaviour
     private void Awake()
     {
         FindSlots();
+
+        ResetUIState();
     }
 
 
@@ -62,8 +64,6 @@ public class FishInventoryManager : MonoBehaviour
         }
 
 
-        // 세로 부모 안에 있는 행들을
-        // 위에서 아래 순서대로 확인
         for (int rowIndex = 0;
              rowIndex < rowsParent.childCount;
              rowIndex++)
@@ -75,8 +75,6 @@ public class FishInventoryManager : MonoBehaviour
             int foundSlotCount = 0;
 
 
-            // 한 행 안의 슬롯들을
-            // 왼쪽에서 오른쪽 순서대로 확인
             for (int slotIndex = 0;
                  slotIndex < row.childCount;
                  slotIndex++)
@@ -123,7 +121,6 @@ public class FishInventoryManager : MonoBehaviour
     }
 
 
-    // FishSO만 전달하면 무게를 랜덤 생성
     public bool AddFish(FishSO fish)
     {
         if (fish == null)
@@ -141,7 +138,6 @@ public class FishInventoryManager : MonoBehaviour
     }
 
 
-    // 무게까지 직접 지정해서 넣는 경우
     public bool AddFish(
         FishSO fish,
         float weight)
@@ -220,5 +216,22 @@ public class FishInventoryManager : MonoBehaviour
     public bool IsFull()
     {
         return FindEmptySlot() == null;
+    }
+
+
+    // 인벤토리를 열거나 닫을 때
+    // 부가 UI들을 처음 상태로 초기화
+    public void ResetUIState()
+    {
+        if (tooltipUI != null)
+        {
+            tooltipUI.Hide();
+        }
+
+
+        if (detailUI != null)
+        {
+            detailUI.Hide();
+        }
     }
 }
