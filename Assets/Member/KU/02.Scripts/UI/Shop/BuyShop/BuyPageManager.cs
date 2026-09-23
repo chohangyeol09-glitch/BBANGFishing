@@ -1,142 +1,144 @@
+using NKT.Fishing.Bait;
+using NKT.Fishing.Rob;
 using UnityEngine;
 
 public class BuyPageManager : MonoBehaviour
 {
-    //[Header("카테고리 페이지")]
-    //[SerializeField]
-    //private GameObject baitPage;
+    [Header("카테고리 페이지")]
+    [SerializeField]
+    private GameObject baitPage;
 
-    //[SerializeField]
-    //private GameObject rodPage;
-
-
-    //[Header("카드가 생성될 부모")]
-    //[SerializeField]
-    //private Transform baitContent;
-
-    //[SerializeField]
-    //private Transform rodContent;
+    [SerializeField]
+    private GameObject rodPage;
 
 
-    //[Header("카드 프리팹")]
-    //[SerializeField]
-    //private BaitShopCard baitCardPrefab;
+    [Header("카드가 생성될 부모")]
+    [SerializeField]
+    private Transform baitContent;
 
-    //[SerializeField]
-    //private FishingRodShopCard rodCardPrefab;
-
-
-    //[Header("판매할 미끼")]
-    //[SerializeField]
-    //private BaitSO[] baits;
+    [SerializeField]
+    private Transform rodContent;
 
 
-    //[Header("판매할 낚싯대")]
-    //[SerializeField]
-    //private FishingRodSO[] rods;
+    [Header("카드 프리팹")]
+    [SerializeField]
+    private BaitShopCard baitCardPrefab;
+
+    [SerializeField]
+    private FishingRodShopCard rodCardPrefab;
 
 
-    //private bool isCreated = false;
+    [Header("판매할 미끼")]
+    [SerializeField]
+    private BaitSO[] baits;
 
 
-    //private void OnEnable()
-    //{
-    //    if (!isCreated)
-    //    {
-    //        CreateShopItems();
-
-    //        isCreated = true;
-    //    }
+    [Header("판매할 낚싯대")]
+    [SerializeField]
+    private FishingRobSO[] rods;
 
 
-    //    OpenBaitPage();
-    //}
+    private bool isCreated = false;
 
 
-    //private void CreateShopItems()
-    //{
-    //    CreateBaitCards();
+    private void OnEnable()
+    {
+        if (!isCreated)
+        {
+            CreateShopItems();
 
-    //    CreateRodCards();
-    //}
-
-
-    //private void CreateBaitCards()
-    //{
-    //    if (baitContent == null ||
-    //        baitCardPrefab == null)
-    //        return;
+            isCreated = true;
+        }
 
 
-    //    foreach (BaitSO bait in baits)
-    //    {
-    //        if (bait == null)
-    //            continue;
+        OpenBaitPage();
+    }
 
 
-    //        BaitShopCard card =
-    //            Instantiate(
-    //                baitCardPrefab,
-    //                baitContent
-    //            );
+    private void CreateShopItems()
+    {
+        CreateBaitCards();
+
+        CreateRodCards();
+    }
 
 
-    //        card.Setup(bait);
-    //    }
-    //}
+    private void CreateBaitCards()
+    {
+        if (baitContent == null ||
+            baitCardPrefab == null)
+            return;
 
 
-    //private void CreateRodCards()
-    //{
-    //    if (rodContent == null ||
-    //        rodCardPrefab == null)
-    //        return;
+        foreach (BaitSO bait in baits)
+        {
+            if (bait == null)
+                continue;
 
 
-    //    foreach (FishingRodSO rod in rods)
-    //    {
-    //        if (rod == null)
-    //            continue;
+            BaitShopCard card =
+                Instantiate(
+                    baitCardPrefab,
+                    baitContent
+                );
 
 
-    //        FishingRodShopCard card =
-    //            Instantiate(
-    //                rodCardPrefab,
-    //                rodContent
-    //            );
+            card.Setup(bait);
+        }
+    }
 
 
-    //        card.Setup(rod);
-    //    }
-    //}
+    private void CreateRodCards()
+    {
+        if (rodContent == null ||
+            rodCardPrefab == null)
+            return;
 
 
-    //public void OpenBaitPage()
-    //{
-    //    if (baitPage != null)
-    //    {
-    //        baitPage.SetActive(true);
-    //    }
+        foreach (FishingRobSO rod in rods)
+        {
+            if (rod == null)
+                continue;
 
 
-    //    if (rodPage != null)
-    //    {
-    //        rodPage.SetActive(false);
-    //    }
-    //}
+            FishingRodShopCard card =
+                Instantiate(
+                    rodCardPrefab,
+                    rodContent
+                );
 
 
-    //public void OpenRodPage()
-    //{
-    //    if (baitPage != null)
-    //    {
-    //        baitPage.SetActive(false);
-    //    }
+            card.Setup(rod);
+        }
+    }
 
 
-    //    if (rodPage != null)
-    //    {
-    //        rodPage.SetActive(true);
-    //    }
-    //}
+    public void OpenBaitPage()
+    {
+        if (baitPage != null)
+        {
+            baitPage.SetActive(true);
+        }
+
+
+        if (rodPage != null)
+        {
+            rodPage.SetActive(false);
+        }
+    }
+
+
+    public void OpenRodPage()
+    {
+        if (baitPage != null)
+        {
+            baitPage.SetActive(false);
+        }
+
+
+        if (rodPage != null)
+        {
+            rodPage.SetActive(true);
+        }
+    }
 }

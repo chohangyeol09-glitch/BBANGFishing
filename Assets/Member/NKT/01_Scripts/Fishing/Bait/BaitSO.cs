@@ -21,7 +21,11 @@ namespace NKT.Fishing.Bait
     public class BaitSO : ScriptableObject
     {
         public string baitName;
+        public Sprite baitSprite;
+
         public BaitGrade grade;
+        public ShopItemRarity rarity;
+
         public int maxUses = 1;
         public bool isInfinite => maxUses <= 0;
         
@@ -30,7 +34,7 @@ namespace NKT.Fishing.Bait
         [Header("보스 미끼용")]
         public FishDataSO bossFishData;
 
-        [Header("UI용")]
+        [Header("필요한물고기")]
         public FishDataSO[] fishesToBuy;
     }
 }
