@@ -16,20 +16,31 @@ public partial class UseFishSkillAction : Action
     [SerializeReference] public BlackboardVariable<GameObject> Target;
 
     private EnemySkillModule _skillModule;
+    private bool _started;
     
     protected override Status OnStart()
     {
+        _started = false;
         if (Fish.Value == null || Skill.Value == null) return Status.Failure;
 
         _skillModule = Fish.Value.GetModule<EnemySkillModule>();
         if (_skillModule == null) return Status.Failure;
-        
-        return _skillModule.UseSkill(Skill.Value.HashValue, Target.Value) ? Status.Running : Status.Failure;
+
+        bool used = _skillModule.UseSkill(Skill.Value.HashValue, Target.Value);
+        _started = used;
+
+        return used ? Status.Running : Status.Failure;
     }
 
     protected override Status OnUpdate()
     {
         return _skillModule.CurrentSkill == null ? Status.Success : Status.Running;
+    }
+
+    protected override void OnEnd()
+    {
+        if (_started && _skillModule != null && _skillModule.CurrentSkill)
+            _skillModule.CurrentSkill.StopSkill();        
     }
 }
 
