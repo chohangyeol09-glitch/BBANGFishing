@@ -125,4 +125,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71b725f27c3745578d25d1f7f8cd2b43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CHG._02.Script.CombatSystem.Projectile.Bomb
-  <PoolItem>k__BackingField: {fileID: 11400000, guid: e88f4056dd3a2c340ba231db9e049d30, type: 2}
+  <PoolItem>k__BackingField: {fileID: 11400000, guid: ad200067cc1ea54499d176d4cabbdf95, type: 2}

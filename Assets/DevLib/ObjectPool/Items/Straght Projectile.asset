@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3f61c1a0d4e44ac1be7cdd2389d5879d, type: 3}
-  m_Name: Bomb
+  m_Name: Straght Projectile
   m_EditorClassIdentifier: PoolRuntime::DevLib.ObjectPool.Runtime.PoolItemSO
-  poolingName: Bomb
-  prefab: {fileID: 4678239321261724830, guid: c8768f0c848974f498cd0f7f3fb26ea3, type: 3}
-  initCount: 3
+  poolingName: Straght Projectile
+  prefab: {fileID: 1685871216492515845, guid: 06262f3d6c430214a98144c679ab4b7c, type: 3}
+  initCount: 5

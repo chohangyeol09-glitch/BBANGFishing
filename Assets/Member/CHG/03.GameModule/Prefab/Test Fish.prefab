@@ -46,7 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CHG._02.Script.CombatSystem.EnemySkillSystem.Skills.StraightProjectileSkill
   <Data>k__BackingField: {fileID: 11400000, guid: ee39ac5dc073c55478a3170b867de154, type: 2}
   poolManager: {fileID: 11400000, guid: baebfac5b535afc4b9f1753c62a2bd78, type: 2}
-  poolItem: {fileID: 11400000, guid: 3cd8d61320fff7748966100b6ba27ae3, type: 2}
+  poolItem: {fileID: 11400000, guid: aaab9069c946481439209b897ca5d8a8, type: 2}
   speed: 8
   lifeTime: 10
   health: 5
@@ -186,7 +186,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CHG._02.Script.CombatSystem.EnemySkillSystem.Skills.BombSkill
   <Data>k__BackingField: {fileID: 11400000, guid: bb826e5594111264aa23e9c81f9b8212, type: 2}
   poolManager: {fileID: 11400000, guid: baebfac5b535afc4b9f1753c62a2bd78, type: 2}
-  poolItem: {fileID: 11400000, guid: e88f4056dd3a2c340ba231db9e049d30, type: 2}
+  poolItem: {fileID: 11400000, guid: ad200067cc1ea54499d176d4cabbdf95, type: 2}
   fuseTime: 3
   health: 1
 --- !u!1 &7508470401073962212
@@ -284,7 +284,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CHG._02.Script.CombatSystem.EnemySkillSystem.Skills.CurvedProjectileSkill
   <Data>k__BackingField: {fileID: 11400000, guid: bfcccd2dc1ce8c84a8d9de2210f2a7b0, type: 2}
   poolManager: {fileID: 11400000, guid: baebfac5b535afc4b9f1753c62a2bd78, type: 2}
-  poolItem: {fileID: 11400000, guid: 17b3a4a77df6df44f900e5653782be6c, type: 2}
+  poolItem: {fileID: 11400000, guid: ca979f3db450fcb43a6fe68358af316d, type: 2}
   travelDuration: 3
   curveOffset: 5
   health: 2
@@ -302,6 +302,7 @@ GameObject:
   - component: {fileID: 4613639120452689548}
   - component: {fileID: 8128988414135870033}
   - component: {fileID: 3327164176552031042}
+  - component: {fileID: 7209831857583618527}
   m_Layer: 0
   m_Name: Test Fish
   m_TagString: Untagged
@@ -395,12 +396,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxHealth: 100
-  IsJumping: 0
   <Data>k__BackingField: {fileID: 11400000, guid: 7e24ce73261f4f1459c2718f9bcf401c, type: 2}
   isKnockBack: 1
-  weightInfluence: 0.5
+  weightInfluence: 0.156
   minJumpHeight: 0.8
   testUpSpeed: 8
+  testParryDamage: 3.47
 --- !u!54 &8128988414135870033
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -451,6 +452,35 @@ CapsuleCollider:
   m_Height: 2.17
   m_Direction: 0
   m_Center: {x: 0.017011702, y: -0.06647068, z: 0}
+--- !u!114 &7209831857583618527
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8553800013382490053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0038c16c34866b4f9e25c9c0dc0f7e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Behavior::Unity.Behavior.BehaviorGraphAgent
+  m_Graph: {fileID: 2469360410170277985, guid: 8e7969e81dae379438d8d34c615fd455, type: 2}
+  m_BlackboardVariableOverridesList:
+  - rid: 2954227747868901553
+  m_OriginalGraph: {fileID: 0}
+  m_IsInitialised: 0
+  m_IsStarted: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 2954227747868901553
+      type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 1
+          m_Value1: 0
+        Name: Self
+        m_Value: {fileID: 8553800013382490053}
 --- !u!1 &8605045258451332693
 GameObject:
   m_ObjectHideFlags: 0
@@ -461,7 +491,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1159397479655153262}
   - component: {fileID: 6540326532207370089}
-  - component: {fileID: 3587055697165530426}
   m_Layer: 0
   m_Name: EnemySkillModule
   m_TagString: Untagged
@@ -503,17 +532,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CHG._02.Script.CombatSystem.EnemySkillSystem.EnemySkillModule
   baseSkillCoolTime: 3
---- !u!114 &3587055697165530426
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8605045258451332693}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 444e4eff763d4d73bd8b7249f5232539, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CHG._02.Script.CombatSystem.EnemySkillSystem.AttackDecisionModule
-  initialStrategy: {fileID: 11400000, guid: d79023acb99b5704890c17a60b14605e, type: 2}
-  startDelay: 0

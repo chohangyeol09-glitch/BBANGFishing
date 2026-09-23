@@ -11,7 +11,6 @@ namespace CHG._02.Script.FishSystem
         [SerializeField] private FishSpawnListSO fishSpawnList;
         [SerializeField] private Transform spawnPoint;
         [SerializeField] private bool allowDowngrade;
-        [SerializeField] private Vector3 headDir;
         [SerializeField] private GameObject attackTarget;
         
         public Fish TrySpawnFish(Grade grade, Vector3 pullForce)
@@ -66,15 +65,9 @@ namespace CHG._02.Script.FishSystem
         {
             Fish fish = Instantiate(prefab, spawnPoint.position, Quaternion.identity);
 
-            var decision = fish.GetModule<AttackDecisionModule>();
-            if (decision != null) decision.Target = attackTarget;
-
-            var lunge = fish.GetModule<LungeModule>();
-            if (lunge != null) lunge.Target = attackTarget;
-
-            fish.OnSpawn(pullForce);
-            fish.transform.rotation = Quaternion.LookRotation(headDir, pullForce.normalized);
+            fish.OnSpawn(pullForce, attackTarget);
             return fish;
         }
+        
     }
 }

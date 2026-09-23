@@ -153,4 +153,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b33e02dfeee24fd8abf0e3196ed2e1dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CHG._02.Script.CombatSystem.Projectile.CurvedProjectile
-  <PoolItem>k__BackingField: {fileID: 11400000, guid: dde73c7805698034b97fde3725eed332, type: 2}
+  <PoolItem>k__BackingField: {fileID: 11400000, guid: ca979f3db450fcb43a6fe68358af316d, type: 2}

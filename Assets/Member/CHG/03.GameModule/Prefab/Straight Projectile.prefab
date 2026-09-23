@@ -153,4 +153,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcfffafb980c43fbbe616431178e56d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CHG._02.Script.CombatSystem.Projectile.StraightProjectile
-  <PoolItem>k__BackingField: {fileID: 11400000, guid: 755fb7597504c1b43b7e75a3ab5d96ea, type: 2}
+  <PoolItem>k__BackingField: {fileID: 11400000, guid: aaab9069c946481439209b897ca5d8a8, type: 2}
