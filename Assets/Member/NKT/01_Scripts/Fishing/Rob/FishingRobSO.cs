@@ -11,6 +11,9 @@ namespace NKT.Fishing.Rob
         
         public float maxDistance;
         public float minDistance;
+
+        public float price;
+        public RobGrade grade;
     }
 
     [Serializable]
@@ -18,5 +21,10 @@ namespace NKT.Fishing.Rob
     {
         public GameObject RobGameobject;
         public GameObject BobberGameobject;
+    }
+
+    public enum RobGrade
+    {
+        Common, Rare, Epic, Legendary
     }
 }
