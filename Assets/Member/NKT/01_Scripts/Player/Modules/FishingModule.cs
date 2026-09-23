@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using CHG._02.Script.FishSystem;
 using DevLib.ModuleSystem;
 using NKT.Fishing;
 using NKT.Fishing.Rob;
@@ -37,17 +38,21 @@ namespace NKT.Player.Modules
         public event Action<CastAim> OnAimUpdated;   //차징 중 궤도 미리보기용
         public FishingState State => _state;
         public Bobber Bobber => bobberObject;
+        public FishDataSO CurrentFish => _currentFish;
 
         private FishingState _state = FishingState.Idle;
         private RobEquipModule _robEquip;
         private LookModule _lookModule;
-        
+        private BaitModule _bait;
+
+        private FishDataSO _currentFish;
         private Coroutine _stateRoutine;
 
         public void Initialize(ModuleOwner owner)
         {
             _robEquip = owner.GetModule<RobEquipModule>();
             _lookModule = owner.GetModule<LookModule>();
+            _bait = owner.GetModule<BaitModule>();
         }
 
         public void AfterInit()
@@ -114,10 +119,11 @@ namespace NKT.Player.Modules
         }
         
         //물고기가 물었을때
-        public void ReportBite()
+        public void ReportBite(FishDataSO fish)
         {
             if (_state != FishingState.Waiting) return;
 
+            _currentFish = fish;
             ChangeState(FishingState.Biting);
         }
 
@@ -133,7 +139,7 @@ namespace NKT.Player.Modules
         {
             CastAim aim = BuildAim(power);
 
-            bobberObject.Launch(aim, flightTime);
+            bobberObject.Launch(aim, flightTime, _bait.CurrentBait);
 
             ChangeState(FishingState.Casting);
         }
@@ -181,17 +187,19 @@ namespace NKT.Player.Modules
             _state = state;
 
             ExitState(prev);
-            EnterState(state);
+            EnterState(state, prev);
 
             OnStateChanged?.Invoke(_state);
         }
 
-        private void EnterState(FishingState state)
+        private void EnterState(FishingState state, FishingState prev)
         {
             switch (state)
             {
                 case FishingState.Idle:
                     ClearBobber();
+                    if(prev != FishingState.Charging)//안전용
+                        _bait.Consume();
                     break;
                 case FishingState.Retrieving:
                     ReturnBobber();
@@ -214,7 +222,6 @@ namespace NKT.Player.Modules
                 charger.ProgressCancel();
         }
 
-
         private void ReturnBobber()
         {
             if (bobberObject == null) return;
@@ -231,6 +238,7 @@ namespace NKT.Player.Modules
 
         private IEnumerator BiteWindowRoutine()
         {
+            //float window = _currentFish != null ? _currentFish.Window : biteWindow; //나중에 SO에 window 넣기
             yield return new WaitForSeconds(biteWindow);
 
             ChangeState(FishingState.Waiting);  //놓침

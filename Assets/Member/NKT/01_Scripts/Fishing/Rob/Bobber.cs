@@ -1,5 +1,7 @@
 using System;
 using System.Collections;
+using CHG._02.Script.FishSystem;
+using NKT.Fishing.Bait;
 using UnityEngine;
 
 namespace NKT.Fishing.Rob
@@ -7,11 +9,12 @@ namespace NKT.Fishing.Rob
     public class Bobber : MonoBehaviour
     {
         public event Action OnLanded;
-        public event Action OnBite; //후에 물고기 SO 있으면 그거 받기
+        public event Action<FishDataSO> OnBite; //후에 물고기 SO 있으면 그거 받기
         
         [SerializeField] private ParticleSystem bobberParticle;
 
         private Vector3 _initPosition;
+        private BaitSO _bait;
 
         private void Awake()
         {
@@ -25,8 +28,9 @@ namespace NKT.Fishing.Rob
             bobberParticle.Play();
         }
         
-        public void Launch(CastAim aim, float duration)
+        public void Launch(CastAim aim, float duration, BaitSO bait)
         {
+            _bait = bait;
             StartCoroutine(FlyRoutine(aim, duration));
         }
         public void Return(float duration, float arcHeight)
