@@ -9,12 +9,11 @@ namespace NKT.Fishing.Rob
     public class Bobber : MonoBehaviour
     {
         public event Action OnLanded;
-        public event Action<FishDataSO> OnBite; //후에 물고기 SO 있으면 그거 받기
+        public event Action OnBite;
         
         [SerializeField] private ParticleSystem bobberParticle;
         [SerializeField] private Transform restPoint;
         
-        private BaitSO _bait;
         private bool _isAttached = true;
 
         private void Awake()
@@ -31,11 +30,15 @@ namespace NKT.Fishing.Rob
             transform.localPosition = Vector3.zero;
             transform.localRotation = Quaternion.identity;
         }
+
+        public void PlayBite()
+        {
+            OnBite?.Invoke();
+        }
         
-        public void Launch(CastAim aim, float duration, BaitSO bait)
+        public void Launch(CastAim aim, float duration)
         {
             bobberParticle.Play();
-            _bait = bait;
             _isAttached = false;
             transform.SetParent(null, true);
             StartCoroutine(FlyRoutine(aim, duration));

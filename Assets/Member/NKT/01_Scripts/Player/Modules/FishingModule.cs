@@ -34,23 +34,24 @@ namespace NKT.Player.Modules
 
         [Header("물고기 관련")]
         [SerializeField] private FishSpawner fishSpawner;
-        [SerializeField] private float pullForce;
-        [SerializeField] private float biteWindow = 1f;
+        [SerializeField] private float biteWindow = 1f; //놓침 시간
 
         public event Action<FishingState> OnStateChanged;
         public event Action<CastAim> OnAimUpdated;   //차징 중 궤도 미리보기용
+        public event Action OnReelPressed;
+        public event Action OnReelReleased;
+        
         public FishingState State => _state;
         public Bobber Bobber => bobberObject;
-        public FishDataSO CurrentFishSO => _currentFishSO;
+        public Grade Grade => _grade;
 
         private FishingState _state = FishingState.Idle;
         private RobEquipModule _robEquip;
         private LookModule _lookModule;
         private BaitModule _bait;
 
-        private FishDataSO _currentFishSO;
         private Coroutine _stateRoutine;
-        private Fish _currentFish;
+        private Grade _grade;
 
         public void Initialize(ModuleOwner owner)
         {
@@ -66,7 +67,6 @@ namespace NKT.Player.Modules
             charger.OnChargeCanceled += OnChargeCanceled;
             
             bobberObject.OnLanded += ReportCastLanded;
-            bobberObject.OnBite += ReportBite;
         }
 
         private void OnDestroy()
@@ -78,7 +78,6 @@ namespace NKT.Player.Modules
             charger.OnChargeCanceled -= OnChargeCanceled;
             
             bobberObject.OnLanded -= ReportCastLanded;
-            bobberObject.OnBite -= ReportBite;
         }
 
         public void OnAttackPressed()
@@ -93,6 +92,9 @@ namespace NKT.Player.Modules
                 case FishingState.Waiting:
                     ChangeState(FishingState.Retrieving);     //회수
                     break;
+                case FishingState.Reeling:
+                    OnReelPressed?.Invoke();
+                    break;
                 case FishingState.Biting:
                     ChangeState(FishingState.Reeling);  //후킹
                     break;
@@ -101,6 +103,12 @@ namespace NKT.Player.Modules
 
         public void OnAttackReleased()
         {
+            if (_state == FishingState.Reeling)
+            {
+                OnReelReleased?.Invoke();
+                return;
+            }
+            
             if (_state != FishingState.Charging) return;
 
             charger.ProgressEnd();
@@ -123,12 +131,23 @@ namespace NKT.Player.Modules
         }
         
         //물고기가 물었을때
-        public void ReportBite(FishDataSO fish)
+        public void ReportBite()
         {
             if (_state != FishingState.Waiting) return;
-
-            _currentFishSO = fish;
+            
+            Debug.Log("물었음");
             ChangeState(FishingState.Biting);
+        }
+
+        //미니게임과 연결
+        public void ReportReelFinished(bool success)
+        {
+            if (_state != FishingState.Reeling) return;
+            
+            if(success)
+                SpawnFish();
+            
+            ChangeState(FishingState.Idle);
         }
 
         //낚시대를 집어넣는 등 중간에 끊을때
@@ -143,7 +162,7 @@ namespace NKT.Player.Modules
         {
             CastAim aim = BuildAim(power);
 
-            bobberObject.Launch(aim, flightTime, _bait.CurrentBait);
+            bobberObject.Launch(aim, flightTime);
 
             ChangeState(FishingState.Casting);
         }
@@ -208,11 +227,14 @@ namespace NKT.Player.Modules
                 case FishingState.Retrieving:
                     ReturnBobber();
                     break;
+                case FishingState.Waiting:
+                    _stateRoutine = StartCoroutine(WaitForBiteDelay());
+                    break;
                 case FishingState.Biting:
                     _stateRoutine = StartCoroutine(BiteWindowRoutine());
                     break;
                 case FishingState.Reeling:
-                    SpawnFish();
+                    _grade = _bait.CurrentBait.PickGrade();
                     break;
             }
         }
@@ -228,10 +250,24 @@ namespace NKT.Player.Modules
             if (state == FishingState.Charging)
                 charger.ProgressCancel();
         }
-
+        
+        private IEnumerator WaitForBiteDelay()
+        {
+            yield return new WaitForSeconds(_robEquip.Current.Data.GetBiteDelay());
+            
+            bobberObject.PlayBite();
+            ReportBite();
+        }
+        
         private void SpawnFish()
         {
-           // Grade grade = _bait.CurrentBait.Pi
+            if (fishSpawner == null) return;
+            
+            Vector3 dir = (transform.position - bobberObject.transform.position).normalized;
+            dir.y = Mathf.Max(dir.y, 0.4f);
+            dir.Normalize();
+            
+            fishSpawner.TrySpawnFish(_grade, dir * _robEquip.Current.Data.power);
         }
 
         private void ReturnBobber()
@@ -250,9 +286,9 @@ namespace NKT.Player.Modules
 
         private IEnumerator BiteWindowRoutine()
         {
-            //float window = _currentFish != null ? _currentFish.Window : biteWindow; //나중에 SO에 window 넣기
             yield return new WaitForSeconds(biteWindow);
-
+            
+            Debug.Log("놓쳤어");
             ChangeState(FishingState.Waiting);  //놓침
         }
     }
