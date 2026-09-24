@@ -190,29 +190,28 @@ public override void Dead()
 5. 채널 변수(`StateChannel`)에 에셋을 할당하지 않는다 (§3-5).
 6. 노드는 에디터에서 만들거나, 직접 만들 때는 **고유한 `id`(GUID)** 를 준다. 이미 그래프에 넣은 노드의 클래스 이름/네임스페이스를 바꾸지 않는다.
 7. 풀링되는 물고기는 스폰마다 `BTAgent.Restart()`를 부른다 (§3-6). 초기 상태는 그래프의 `On Start → Send "Jump"`가 다시 보내준다.
-8. 노드 story의 단어가 블랙보드 변수 이름과 같으면 그 변수가 자동 연결된다. 새 변수를 원하면 다른 이름을 쓴다 (예: 블랙보드에 `State`가 있으니 노드 필드는 `NewState`).
+8. **`On StateChannel (Restart)` 노드의 `Assign State to …`는 반드시 블랙보드 `State` 변수에 링크한다** (링크 아이콘을 눌러 `State` 선택). 드롭다운에 `Jump` 같은 값이 보이면 링크가 안 된 상수라서 메시지의 값이 블랙보드에 들어가지 않고, `Switch`가 항상 처음 값의 가지만 실행한다. 저장된 에셋에서는 `LinkedVariable: rid: -2`(링크 없음)로 보인다. PDF 스크린샷에서는 이 칸에 `State`라는 변수 이름이 표시된다.
+9. C#이 `_phase`처럼 자기 상태를 갖는 모듈(`LungeModule`)은 **그 값을 실제로 세팅하는지**를 확인한다. 값을 읽는 프로퍼티(`IsFlying` 등)만 만들고 세팅을 빠뜨리면 항상 `Idle`로 보여서 모듈이 아무것도 하지 않는다.
+10. 노드 story의 단어가 블랙보드 변수 이름과 같으면 그 변수가 자동 연결된다. 새 변수를 원하면 다른 이름을 쓴다 (예: 블랙보드에 `State`가 있으니 노드 필드는 `NewState`).
 
 ---
 
 ## 8. 마이그레이션 체크리스트 (현재 구조 → 목표 구조)
 
-**현재 구조 (마이그레이션 전)**: 시작점 하나. `Try In Order` → [`Pass If [State == Dead]`(Abort Lower Priority), `Repeat → Switch(State)`]. 상태는 `Fish.ChangeState`가 C#에서 바꾸고(점프 종료, 런지 시작/복귀, 사망), 그 안에서 채널로도 보낸다(듣는 노드는 없음).
+**진행 상태**: 코드와 그래프 재구성은 끝났고(코드 리뷰와 저장된 그래프 값 확인 완료), 스폰 → 낙하 → 스킬 사용(투사체 발사)까지 실행 확인됨. 남은 것은 아래의 미완료 항목(런지/패링/사망/풀 재사용 실행 검증)이다. 옛 구조는 `Fish.ChangeState`가 C#에서 상태를 바꾸는 방식이었다.
 
-- [ ] **`FishStateEnum` / 채널**: 그대로 사용 (`Return`은 목표 구조에서도 사용)
-- [ ] **`Fish.cs`**
-  - [ ] `HasStartedFalling` 추가, `FixedUpdate`는 사실만 갱신 (`ChangeState` 호출 제거)
-  - [ ] §6의 `BindStateChannel` / `HandleStateChanged` / `SendState` 추가, `Dead()`는 `SendState(Dead)`
-  - [ ] `ChangeState` 삭제, `OnSpawn`의 `SetVariableValue("State", …)` 삭제, `ResetItem`에 `State = Jump; HasStartedFalling = false;`
-- [ ] **`LungeModule.cs`**: 모듈 자체의 비행 단계(`Idle/Approach/Return`)를 두고 `_fish.ChangeState` 호출 제거. `IsFlying`, `IsApproaching`, `IsReturning` 공개. `IsParryable`은 `Approach` 단계로 판단. 비행이 끝나면 반드시 `Idle`로 되돌린다(예전 "영원히 얼어붙는" 버그의 원인이 이 값을 안 되돌린 것).
-- [ ] **`FishFacingModule.cs`**: `State == Dead` 대신 `_fish.IsDead`
-- [ ] **노드**
-  - [ ] `FishFallingCondition` 신규 (`Fish.HasStartedFalling`)
-  - [ ] `StartLungeAction`: 접근 단계가 끝날 때까지 `Running` (상태는 안 바꿈)
-  - [ ] `WaitLungeEndAction` 신규: 비행이 끝날 때까지 `Running`
-  - [ ] 상태 전이는 기본 제공 **`Send Event Message`** 사용
-- [ ] **그래프** (`Fish BT.asset`): §5 구조로 재구성, 기존 `Pass If [State == Dead]` + Abort 구조 삭제
-- [ ] **검증**: 스폰 → Jump → 낙하 시 Combat(넉백 켜짐) → 바다 접촉 시 Lunge → Return → Combat → 바다에서 반납, 그리고 런지/스킬 도중 사망 시 즉시 Dead 가지로
-- [ ] `CLAUDE.md`의 "Behavior graph" 항목을 새 구조로 갱신하고 이 체크리스트를 정리
+- [x] **`FishStateEnum` / 채널**: 그대로 사용 (`Return`은 목표 구조에서도 사용)
+- [x] **`Fish.cs`**: `HasStartedFalling`, `BindStateChannel`/`HandleStateChanged`/`SendState`, `Dead()`는 `SendState(Dead)`, `ChangeState` 삭제, `ResetItem` 초기화, `OnDestroy` 구독 해제
+- [x] **`LungeModule.cs`**: 자체 비행 단계(`Idle/Approach/Return`), `_fish.ChangeState` 제거, `IsFlying/IsApproaching/IsReturning`, `HandleDeath`는 `_phase != Idle`일 때만 `EndFlight(true)`
+- [x] **`FishFacingModule.cs`**: `_fish.IsDead`
+- [x] **노드**: `FishFallingCondition`, `StartLungeAction`(접근 동안 `Running`), `WaitLungeEndAction`, 상태 전이는 기본 `Send Event Message`
+- [x] **그래프** (`Fish BT.asset`): 시작점 2개(`On Start → Send Jump`, `On StateChannel (Restart)` → `Repeat → Switch`), `Assign State to State` 링크됨, 옛 `Pass If [State == Dead]` + Abort 구조 삭제됨
+- [x] **`Repeat` 위치**: `Repeat`는 `Jump`와 `Combat` 가지 안에만 있다 (저장된 그래프로 확인: `Switch`의 자식이 `Repeat → Sequence`, `Repeat → Selector`). `Lunge`/`Return`/`Dead`는 한 번만 실행된다. `Switch` 위에 `Repeat`를 다시 두지 않는다.
+- [x] **`Dead` 가지**: 지금은 `Log Message` → `Release Fish` 카드. 죽음 연출/드롭 같은 실제 죽음 로직은 이 카드의 `Release Fish` **앞**에 추가한다.
+- [x] **검증** (사용자가 실행해서 확인): 스폰 → Jump → 낙하 시 Combat → 스킬 발사, 패링 성공 시 정상 복귀, 런지 도중 사망 처리, 풀에서 재사용해도 Jump부터 정상 동작
+- [x] `CLAUDE.md`의 "Behavior graph" / "Object pooling" / "Fish" 항목을 새 구조로 갱신
+
+**물고기 그래프 마이그레이션 완료.** 남은 후속 작업: 실제 죽음 연출을 `Dead` 카드에 추가, 재사용 시 스킬 쿨타임 초기화(필요할 때), 보스(`BossSystem`)를 같은 패턴으로 옮기기.
 
 ---
 
@@ -235,5 +234,5 @@ public override void Dead()
 ## 10. 확인하지 못한 것
 
 - PDF 06·07에는 **피격/사망 상태를 채널로 보내는 방법**과 **애니메이션 채널 서브그래프의 상세**가 나오지 않는다(`Agent.OnHit/OnDeath`만 선언). 이 문서의 "외부 사건은 C#이 채널로 보낸다"는 부분은 PDF가 아니라 이 프로젝트에서의 설계 판단이다.
-- 한 그래프에 시작점이 두 개(`On Start`, `On StateChannel`) 있는 구성은 PDF 스크린샷으로 확인했다. 런타임에서는 시작점마다 별도 그래프 모듈로 병렬 실행되는 것으로 보이나(`BehaviorGraphAgent`가 `m_Graph.Graphs`를 순회함) 우리 프로젝트에서 직접 실행해 보고 확인해야 한다.
+- (확인됨) 한 그래프에 시작점이 두 개(`On Start`, `On StateChannel`) 있는 구성은 저장된 `Fish BT.asset`에서 두 시작점이 **최상위 `ParallelAll` 아래로 묶여** 저장되는 것으로 확인했다. 즉 에디터가 자동으로 병렬 실행하도록 컴파일한다. 다만 `On Start`가 보낸 첫 `Jump` 메시지를 `On StateChannel`이 받는 것은 실행해서 확인해야 한다.
 - 에디터의 노드/옵션 표기(`Pass If`, `Fail If`, Abort 옵션 이름 등)는 소스와 스크린샷 기준이라 실제 화면과 조금 다를 수 있다.

@@ -49,307 +49,6 @@ MonoBehaviour:
   modelEulerOffset: {x: 0, y: -90, z: 0}
   turnSpeed: 720
   minSpeed: 0.5
---- !u!1 &2320095332937975573
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1446330355292670969}
-  - component: {fileID: 4215740443578093106}
-  m_Layer: 0
-  m_Name: Bomb Skill
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1446330355292670969
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2320095332937975573}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 648973707995850391}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4215740443578093106
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2320095332937975573}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 22d5d1a8dedc45be9dfb3af0b9926cca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CHG._02.Script.CombatSystem.EnemySkillSystem.Skills.BombSkill
-  <Data>k__BackingField: {fileID: 11400000, guid: bb826e5594111264aa23e9c81f9b8212, type: 2}
-  poolManager: {fileID: 11400000, guid: baebfac5b535afc4b9f1753c62a2bd78, type: 2}
-  poolItem: {fileID: 11400000, guid: ad200067cc1ea54499d176d4cabbdf95, type: 2}
-  fuseTime: 3
-  health: 1
---- !u!1 &2556520909384918606
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 9139421279861134437}
-  - component: {fileID: 4753637178109889780}
-  m_Layer: 0
-  m_Name: StraightProjectile Skill
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &9139421279861134437
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2556520909384918606}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 648973707995850391}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4753637178109889780
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2556520909384918606}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2406e836d73e40428fdb17abfc8b0f10, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CHG._02.Script.CombatSystem.EnemySkillSystem.Skills.StraightProjectileSkill
-  <Data>k__BackingField: {fileID: 11400000, guid: ee39ac5dc073c55478a3170b867de154, type: 2}
-  poolManager: {fileID: 11400000, guid: baebfac5b535afc4b9f1753c62a2bd78, type: 2}
-  poolItem: {fileID: 11400000, guid: aaab9069c946481439209b897ca5d8a8, type: 2}
-  speed: 8
-  lifeTime: 10
-  health: 5
-  shots:
-  - AimAngle: 0
-    Delay: 0
---- !u!1 &3687282211504805470
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2366944184170846450}
-  - component: {fileID: 699528050627997888}
-  m_Layer: 0
-  m_Name: CurveProjectile Skill
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2366944184170846450
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3687282211504805470}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 648973707995850391}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &699528050627997888
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3687282211504805470}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62c61da0af264ecfbd21520c6501ad70, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CHG._02.Script.CombatSystem.EnemySkillSystem.Skills.CurvedProjectileSkill
-  <Data>k__BackingField: {fileID: 11400000, guid: bfcccd2dc1ce8c84a8d9de2210f2a7b0, type: 2}
-  poolManager: {fileID: 11400000, guid: baebfac5b535afc4b9f1753c62a2bd78, type: 2}
-  poolItem: {fileID: 11400000, guid: ca979f3db450fcb43a6fe68358af316d, type: 2}
-  travelDuration: 3
-  curveOffset: 5
-  shots:
-  - CurveAngle: 0
-    AimAngle: 0
-    Delay: 0
-  health: 2
---- !u!1 &6071710584551245007
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 648973707995850391}
-  - component: {fileID: 7620883786937904870}
-  m_Layer: 0
-  m_Name: EnemySkillModule
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &648973707995850391
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6071710584551245007}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.90579, y: -0.76585007, z: -0.25658}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 4955371859838898835}
-  - {fileID: 9139421279861134437}
-  - {fileID: 2366944184170846450}
-  - {fileID: 1446330355292670969}
-  - {fileID: 6942229063891737451}
-  - {fileID: 630548736144677240}
-  m_Father: {fileID: 4261942614255834578}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7620883786937904870
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6071710584551245007}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 54b458402e1642b2ad0f843b22d66462, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CHG._02.Script.CombatSystem.EnemySkillSystem.EnemySkillModule
-  baseSkillCoolTime: 3
---- !u!1 &6269848716324369369
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4955371859838898835}
-  - component: {fileID: 7726398690829591849}
-  m_Layer: 0
-  m_Name: Dash Skill
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4955371859838898835
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6269848716324369369}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 648973707995850391}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7726398690829591849
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6269848716324369369}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cf610857957b40d893a6409700c4d0ed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CHG._02.Script.CombatSystem.EnemySkillSystem.Skills.DashSkill
-  <Data>k__BackingField: {fileID: 11400000, guid: 66b503f6b0026a442b0174ce408ff895, type: 2}
-  dashImpulse: 6
-  dashDuration: 0.5
-  deceleration: 6
-  minSideAngle: 60
-  maxSideAngle: 120
---- !u!1 &7140926485702526534
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 630548736144677240}
-  - component: {fileID: 4114063102103859083}
-  m_Layer: 0
-  m_Name: LungeModule
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &630548736144677240
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7140926485702526534}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 648973707995850391}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4114063102103859083
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7140926485702526534}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ae329d6a8223e5d45ad8a1ab4c486b32, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CHG._02.Script.FishSystem.LungeModule
 --- !u!1 &8206896408910450230
 GameObject:
   m_ObjectHideFlags: 0
@@ -414,7 +113,7 @@ MonoBehaviour:
         GUID:
           m_Value0: 1
           m_Value1: 0
-        Name: s\
+        Name: Self
         m_Value: {fileID: 8206896408910450230}
 --- !u!114 &4371269290107166124
 MonoBehaviour:
@@ -463,52 +162,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!1 &8287557157565126281
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6942229063891737451}
-  - component: {fileID: 4560054207550608986}
-  m_Layer: 0
-  m_Name: HealSkill
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6942229063891737451
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8287557157565126281}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 648973707995850391}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4560054207550608986
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8287557157565126281}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 984d8aab209d455b9d01eaf613410b2e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CHG._02.Script.CombatSystem.EnemySkillSystem.Skills.HealSkill
-  <Data>k__BackingField: {fileID: 11400000, guid: 0e9b2e46bf0748b4790a616c62b89740, type: 2}
-  healPercent: 0.2
 --- !u!1 &9209142703439847503
 GameObject:
   m_ObjectHideFlags: 0
@@ -623,3 +276,65 @@ CapsuleCollider:
   m_Height: 0.66
   m_Direction: 2
   m_Center: {x: 0, y: 0.025397327, z: -0.051301166}
+--- !u!1001 &6059409580434139678
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 4261942614255834578}
+    m_Modifications:
+    - target: {fileID: 23736754117291729, guid: 4c8c98db71f08004caa6d29b5beffda9, type: 3}
+      propertyPath: m_Name
+      value: EnemySkillModule
+      objectReference: {fileID: 0}
+    - target: {fileID: 6707767286902099081, guid: 4c8c98db71f08004caa6d29b5beffda9, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.90579
+      objectReference: {fileID: 0}
+    - target: {fileID: 6707767286902099081, guid: 4c8c98db71f08004caa6d29b5beffda9, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.76585007
+      objectReference: {fileID: 0}
+    - target: {fileID: 6707767286902099081, guid: 4c8c98db71f08004caa6d29b5beffda9, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.25658
+      objectReference: {fileID: 0}
+    - target: {fileID: 6707767286902099081, guid: 4c8c98db71f08004caa6d29b5beffda9, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6707767286902099081, guid: 4c8c98db71f08004caa6d29b5beffda9, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6707767286902099081, guid: 4c8c98db71f08004caa6d29b5beffda9, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6707767286902099081, guid: 4c8c98db71f08004caa6d29b5beffda9, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6707767286902099081, guid: 4c8c98db71f08004caa6d29b5beffda9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6707767286902099081, guid: 4c8c98db71f08004caa6d29b5beffda9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6707767286902099081, guid: 4c8c98db71f08004caa6d29b5beffda9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 4c8c98db71f08004caa6d29b5beffda9, type: 3}
+--- !u!4 &648973707995850391 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6707767286902099081, guid: 4c8c98db71f08004caa6d29b5beffda9, type: 3}
+  m_PrefabInstance: {fileID: 6059409580434139678}
+  m_PrefabAsset: {fileID: 0}

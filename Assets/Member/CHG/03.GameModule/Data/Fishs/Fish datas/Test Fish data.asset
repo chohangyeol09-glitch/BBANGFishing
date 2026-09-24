@@ -26,7 +26,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 1d30d13e316fbf64ea8a7f8d4b7e8259, type: 2}
   Sprite: {fileID: 0}
   Price: 5
-  CanLunge: 0
+  CanLunge: 1
   LungeFlightTime: 1
   LungeFrontDistance: 1.5
   LungeHeightOffset: 0

@@ -19,6 +19,7 @@ namespace CHG._02.Script.FishSystem
         public bool IsInSea { get; private set; } = false;
         [field:SerializeField] public PoolItemSO PoolItem { get; set; }
         public GameObject GameObject => this != null ? this.gameObject : null;
+        public bool HasStartedFalling { get; private set; }
         
         public override float MaxHealth => Data.Health;
         public SkillEntry[] SkillEntries => Data.Skills;
@@ -39,6 +40,7 @@ namespace CHG._02.Script.FishSystem
         private bool _hasRisen; //처음에 올라갔는가
         private PoolManagerSO _poolManager;
         private bool _released;
+        private StateChannel _stateChannel;
 
         protected override void InitializeModules()
         {
@@ -63,7 +65,7 @@ namespace CHG._02.Script.FishSystem
             
             BTAgent.SetVariableValue("Fish", this);
             BTAgent.SetVariableValue("Target", target);
-            BTAgent.SetVariableValue("State", State);
+            BindStateChannel();
             BTAgent.Restart();
             
             _lunge.Target = target;
@@ -89,8 +91,8 @@ namespace CHG._02.Script.FishSystem
                 _hasRisen = true;
                 return;
             }
-            
-            if (_hasRisen) ChangeState(FishStateEnum.Combat);
+
+            if (_hasRisen) HasStartedFalling = true;
         }
 
         public bool TryParry(DamageData data) => _lunge != null && _lunge.TryParry(data);
@@ -98,13 +100,15 @@ namespace CHG._02.Script.FishSystem
         public override void Dead()
         {
             base.Dead();   
-            ChangeState(FishStateEnum.Dead);
+            SendState(FishStateEnum.Dead);
         }
 
         private void OnDestroy()
         {
             if (isKnockBack)
                 OnDamaged -= OnKnockBack;
+            if (_stateChannel != null)
+                _stateChannel.Event -= HandleStateChanged;
         }
 
         private void OnKnockBack(DamageData data)
@@ -126,18 +130,6 @@ namespace CHG._02.Script.FishSystem
                 IsInSea = true;
             }
         }
-
-        public void ChangeState(FishStateEnum newState)
-        {
-            if (State == FishStateEnum.Dead || State == newState) return;
-            
-            State = newState;
-            BTAgent.SetVariableValue("State", State);
-            if (BTAgent.GetVariable("StateChannel", out BlackboardVariable<StateChannel> channel))
-                channel.Value.SendEventMessage(newState);
-            else
-                Debug.LogWarning("State Channel not found");
-        }
         
         public void ResetItem()
         {
@@ -145,6 +137,7 @@ namespace CHG._02.Script.FishSystem
             IsInSea = false;
             _hasRisen = false;
             _released = false;
+            HasStartedFalling = false;
 
             _rb.isKinematic = false;
             _rb.linearVelocity = Vector3.zero;
@@ -171,6 +164,34 @@ namespace CHG._02.Script.FishSystem
         }
 
         public void ConsumeSeaTouch() => IsInSea = false;
+
+        private void BindStateChannel()
+        {
+            if (_stateChannel == null)
+            {
+                if (!BTAgent.GetVariable("StateChannel", out BlackboardVariable<StateChannel> channel) ||
+                    channel.Value == null)
+                {
+                    Debug.LogWarning("Channel not found");
+                    return;
+                }
+
+                _stateChannel = channel.Value;
+            }
+
+            _stateChannel.Event -= HandleStateChanged;
+            _stateChannel.Event += HandleStateChanged;
+        }
+
+        private void HandleStateChanged(FishStateEnum newState) => State = newState;
+
+        public void SendState(FishStateEnum newState)
+        {
+            if (_stateChannel != null) _stateChannel.SendEventMessage(newState);
+        }
+        
+        
+        
 #if UNITY_EDITOR
         [Header("Test")]
         [SerializeField] private float testUpSpeed = 8f;

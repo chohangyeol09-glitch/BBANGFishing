@@ -13,6 +13,8 @@ namespace CHG._02.Script.BossSystem
 
         public float GroggyMaxGauge = 100f; //게이지가 이만큼 쌓이면 그로기
         public float GroggyDuration; 
+        
+        public BreakableSkillEntry[] BreakableSkills;
 
     }
 }

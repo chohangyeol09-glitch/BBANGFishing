@@ -24,7 +24,7 @@ namespace CHG._02.Script.FishSystem
 
         private void LateUpdate()
         {
-            if (_fish.State == FishStateEnum.Dead) return;
+            if (_fish.IsDead) return;
 
             Vector3 velocity = _rb.isKinematic && _lunge != null ? _lunge.FlightVelocity : _rb.linearVelocity;
             if (velocity.sqrMagnitude < minSpeed * minSpeed) return;

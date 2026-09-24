@@ -20,24 +20,21 @@ public partial class UseSkillAction : Action
     protected override Status OnStart()
     {
         _started = false;
-        if (Agent.Value == null || Target.Value == null) return Status.Failure;
+        if (Agent.Value == null || Target.Value == null) { Debug.Log("UseSkill 실패: Agent/Target 없음"); return Status.Failure; }
         if (Agent.Value is not ISkillEntrySource skillEntry)  return Status.Failure;
             
         SkillEntry[] entries = skillEntry.SkillEntries;
         if (entries == null || entries.Length == 0) return Status.Failure;
 
         _skillModule = Agent.Value.GetModule<EnemySkillModule>();
-        if (_skillModule == null) return Status.Failure;
+        if (_skillModule == null) { Debug.Log("UseSkill 실패: EnemySkillModule 없음"); return Status.Failure; }
             
         SkillConditionContext context = new SkillConditionContext(Agent.Value, Target.Value);
         int? skillId = SelectSkillId(entries, context);
-        if (!skillId.HasValue) return Status.Failure;
+        if (!skillId.HasValue) { Debug.Log("UseSkill 실패: 쓸 수 있는 스킬 없음(해시/쿨타임/조건)"); return Status.Failure; }
 
         _started = _skillModule.UseSkill(skillId.Value, Target.Value);
         return _started ? Status.Running : Status.Failure;
-        
-        
-        return Status.Running;
     }
 
     protected override Status OnUpdate()

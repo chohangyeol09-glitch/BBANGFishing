@@ -12,9 +12,7 @@ namespace CHG._02.Script.BossSystem
     {
         public event Action<BossStateEnum> OnStateChanged;
 
-        public BossStateEnum State =>
-            BTAgent.GetVariable("State", out BlackboardVariable<BossStateEnum> state)
-                ? state.Value : BossStateEnum.Appear;
+        public BossStateEnum State { get; private set; } = BossStateEnum.Appear;
         public BehaviorGraphAgent BTAgent { get; private set; }
 
         public override float MaxHealth => Data.Health;
@@ -22,6 +20,8 @@ namespace CHG._02.Script.BossSystem
         
         [field: SerializeField] public BossDataSO Data { get; private set; }
 
+        private BossStateChannel _stateChannel;
+        
         protected override void InitializeModules()
         {
             
@@ -32,11 +32,57 @@ namespace CHG._02.Script.BossSystem
         public void OnSpawn(GameObject target)
         {
             CurrentHealth = MaxHealth;
-            BTAgent.SetVariableValue("Self", this);
+            State = BossStateEnum.Appear;
+            
+            BTAgent.SetVariableValue("Boss", this);
             BTAgent.SetVariableValue("Target", target);
             BTAgent.SetVariableValue("State", BossStateEnum.Appear);
             BTAgent.SetVariableValue("AppearDuration", Data.AppearDuration);
             BTAgent.SetVariableValue("GroggyDuration", Data.GroggyDuration);
+
+            BindStateChannel();
+            BTAgent.Restart();
+        }
+
+        public override void Dead()
+        {
+            base.Dead();
+            SendState(BossStateEnum.Dead);
+        }
+
+        public void SendState(BossStateEnum newState)
+        {
+            if (_stateChannel != null) _stateChannel.SendEventMessage(newState);
+        }
+        
+        private void BindStateChannel()
+        {
+            if (_stateChannel == null)
+            {
+                if (!BTAgent.GetVariable("StateChannel", out BlackboardVariable<BossStateChannel> channel) ||
+                    channel.Value == null)
+                {
+                    Debug.LogWarning("boss StateChannel is not found");
+                    return;
+                }
+                
+                _stateChannel = channel.Value;
+            }
+
+            _stateChannel.Event -= HandleStateChanged;
+            _stateChannel.Event += HandleStateChanged;
+        }
+
+        private void HandleStateChanged(BossStateEnum newState)
+        {
+            State = newState;
+            OnStateChanged?.Invoke(newState);
+        }
+
+        private void OnDestroy()
+        {
+            if (_stateChannel != null)
+                _stateChannel.Event -= HandleStateChanged;
         }
     }
 }
