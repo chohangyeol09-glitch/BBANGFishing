@@ -11,8 +11,8 @@ namespace NKT.Fishing.Rob
         public RobObject prefab;
         public float power = 12;
         
-        public float maxDistance;
         public float minDistance;
+        public float maxDistance;
 
         public float minBiteDelay;
         public float maxBiteDelay;
