@@ -850,6 +850,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 71713389859400741, guid: 8844c0cb96a52594fad3577265c17b5f, type: 3}
+      propertyPath: m_WarningMessage
+      value: "\nBinding warning: Some generic clip(s) animate transforms that are
+        already bound by a Humanoid avatar. These transforms can only be changed
+        by Humanoid clips.\n\tTransform 'mixamorig:RightForeArm'\n\tTransform 'mixamorig:RightForeArm'\n\tFrom
+        animation clip 'Fishing Cast'\n\tFrom animation clip 'Fishing Charging'"
+      objectReference: {fileID: 0}
     - target: {fileID: 2166753863898610082, guid: 8844c0cb96a52594fad3577265c17b5f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -894,10 +901,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 3185532411252534258, guid: 8844c0cb96a52594fad3577265c17b5f, type: 3}
+      propertyPath: reelAnim
+      value: 
+      objectReference: {fileID: 11400000, guid: 6bd533b43d0778240b9eb28b40aae66b, type: 2}
     - target: {fileID: 4229795438029717658, guid: 8844c0cb96a52594fad3577265c17b5f, type: 3}
       propertyPath: charger
       value: 
       objectReference: {fileID: 2049575399}
+    - target: {fileID: 6889770300120770372, guid: 8844c0cb96a52594fad3577265c17b5f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.0045531634
+      objectReference: {fileID: 0}
+    - target: {fileID: 6889770300120770372, guid: 8844c0cb96a52594fad3577265c17b5f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.6223885
+      objectReference: {fileID: 0}
+    - target: {fileID: 6889770300120770372, guid: 8844c0cb96a52594fad3577265c17b5f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.0045490004
+      objectReference: {fileID: 0}
     - target: {fileID: 8343973566861758610, guid: 8844c0cb96a52594fad3577265c17b5f, type: 3}
       propertyPath: volume
       value: 
