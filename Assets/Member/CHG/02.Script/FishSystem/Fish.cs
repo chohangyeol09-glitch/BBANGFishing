@@ -2,6 +2,7 @@ using System;
 using CHG._02.Script.Agents;
 using CHG._02.Script.CombatSystem;
 using CHG._02.Script.CombatSystem.BT.Channel;
+using CHG._02.Script.CombatSystem.EnemySkillSystem;
 using CHG._02.Script.CoreSystem;
 using Unity.Behavior;
 using UnityEngine;
@@ -10,12 +11,14 @@ using UnityEngine.InputSystem;
 namespace CHG._02.Script.FishSystem
 {
     [RequireComponent(typeof(BehaviorGraphAgent))]
-    public class Fish : Agent, IParryable
+    public class Fish : Agent, IParryable, ISkillEntrySource
     {
         public FishStateEnum State { get; private set; } = FishStateEnum.Jump;
         public BehaviorGraphAgent BTAgent { get; private set; }
         public bool IsInSea { get; private set; } = false;
         public override float MaxHealth => Data.Health;
+        public SkillEntry[] SkillEntries => Data.Skills;
+        
         [field:SerializeField] public FishDataSO Data { get; private set; }
 
         [SerializeField] private bool isKnockBack = true;
@@ -142,6 +145,9 @@ namespace CHG._02.Script.FishSystem
                 bool parried = TryParry(data);
                 Debug.Log($"parry success? : {parried}");
             }
+            
+            if (Keyboard.current.hKey.wasPressedThisFrame)
+                TakeDamage(new DamageData(this, transform.position, Vector3.up, Vector3.up, 4f, 0f));
         }
 #endif
 

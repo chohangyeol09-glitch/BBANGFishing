@@ -52,8 +52,12 @@ namespace CHG._02.Script.CombatSystem.EnemySkillSystem
         public void StopSkill()
         {
             if (_routine != null) StopCoroutine(_routine);
+            OnStopped();
             CleanUpSkillData();
         }
+
+        //강제 종료(StopSkill)로 끊겼을 때 하위 스킬이 정리할 게 있으면 override (정상 종료에서는 호출되지 않음)
+        protected virtual void OnStopped() { }
         
         private void CleanUpSkillData()
         {

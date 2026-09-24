@@ -6,13 +6,7 @@ using UnityEngine;
 
 namespace CHG._02.Script.FishSystem
 {
-    [Serializable]
-    public class SkillEntry
-    {
-        public HashDataSO Skill;
-        public int Priority;
-        public AbstractSkillCondition[] Conditions;
-    }
+    
     
     [CreateAssetMenu(fileName = "Fish data", menuName = "CHG/Fish/Fish data", order = 0)]
     public class FishDataSO : ScriptableObject

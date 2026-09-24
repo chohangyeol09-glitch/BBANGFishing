@@ -21,7 +21,7 @@ MonoBehaviour:
     Priority: 0
     Conditions: []
   - Skill: {fileID: 11400000, guid: 06476c5f60916ad4ea2667a41ccc9964, type: 2}
-    Priority: 0
+    Priority: 6
     Conditions:
     - {fileID: 11400000, guid: 1d30d13e316fbf64ea8a7f8d4b7e8259, type: 2}
   Sprite: {fileID: 0}
