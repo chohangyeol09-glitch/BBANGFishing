@@ -1,112 +1,113 @@
+using NKT.Fishing.Rob;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class FishingRodShopCard : MonoBehaviour
 {
-    //[Header("이미지")]
-    //[SerializeField]
-    //private Image rodImage;
+    [Header("이미지")]
+    [SerializeField]
+    private Image rodImage;
 
 
-    //[Header("텍스트")]
-    //[SerializeField]
-    //private TMP_Text rodNameText;
+    [Header("텍스트")]
+    [SerializeField]
+    private TMP_Text rodNameText;
 
-    //[SerializeField]
-    //private TMP_Text rarityText;
+    [SerializeField]
+    private TMP_Text rarityText;
 
-    //[SerializeField]
-    //private TMP_Text priceText;
-
-
-    //[Header("구매 버튼")]
-    //[SerializeField]
-    //private Button buyButton;
+    [SerializeField]
+    private TMP_Text priceText;
 
 
-    //private FishingRodSO rodData;
+    [Header("구매 버튼")]
+    [SerializeField]
+    private Button buyButton;
 
 
-    //public void Setup(FishingRodSO rod)
-    //{
-    //    if (rod == null)
-    //        return;
+    private FishingRobSO rodData;
 
 
-    //    rodData = rod;
+    public void Setup(FishingRobSO rod)
+    {
+        if (rod == null)
+            return;
 
 
-    //    if (rodImage != null)
-    //    {
-    //        rodImage.sprite =
-    //            rod.RodSprite;
-    //    }
+        rodData = rod;
 
 
-    //    if (rodNameText != null)
-    //    {
-    //        rodNameText.text =
-    //            rod.RodName;
-    //    }
+        if (rodImage != null)
+        {
+            rodImage.sprite =
+                rod.rodSprite;
+        }
 
 
-    //    if (rarityText != null)
-    //    {
-    //        rarityText.text =
-    //            GetRarityText(rod.Rarity);
-    //    }
+        if (rodNameText != null)
+        {
+            rodNameText.text =
+                rod.rodName;
+        }
 
 
-    //    if (priceText != null)
-    //    {
-    //        priceText.text =
-    //            rod.Price.ToString();
-    //    }
+        if (rarityText != null)
+        {
+            rarityText.text =
+                GetRarityText(rod.rarity);
+        }
 
 
-    //    if (buyButton != null)
-    //    {
-    //        buyButton.onClick.RemoveAllListeners();
-
-    //        buyButton.onClick.AddListener(
-    //            Buy
-    //        );
-    //    }
-    //}
+        if (priceText != null)
+        {
+            priceText.text =
+                rod.price.ToString();
+        }
 
 
-    //private string GetRarityText(
-    //    ShopItemRarity rarity)
-    //{
-    //    switch (rarity)
-    //    {
-    //        case ShopItemRarity.Common:
-    //            return "Common 낚싯대";
+        if (buyButton != null)
+        {
+            buyButton.onClick.RemoveAllListeners();
 
-    //        case ShopItemRarity.Rare:
-    //            return "Rare 낚싯대";
-
-    //        case ShopItemRarity.Epic:
-    //            return "Epic 낚싯대";
-
-    //        case ShopItemRarity.Legendary:
-    //            return "Legendary 낚싯대";
-    //    }
+            buyButton.onClick.AddListener(
+                Buy
+            );
+        }
+    }
 
 
-    //    return "";
-    //}
+    private string GetRarityText(
+        ShopItemRarity rarity)
+    {
+        switch (rarity)
+        {
+            case ShopItemRarity.Common:
+                return "Common 낚싯대";
+
+            case ShopItemRarity.Rare:
+                return "Rare 낚싯대";
+
+            case ShopItemRarity.Epic:
+                return "Epic 낚싯대";
+
+            case ShopItemRarity.Legendary:
+                return "Legendary 낚싯대";
+        }
 
 
-    //private void Buy()
-    //{
-    //    if (rodData == null)
-    //        return;
+        return "";
+    }
 
 
-    //    Debug.Log(
-    //        $"{rodData.RodName} 구매 버튼 클릭"
-    //    );
-    //}
+    private void Buy()
+    {
+        if (rodData == null)
+            return;
+
+
+        Debug.Log(
+            $"{rodData.rodName} 구매 버튼 클릭"
+        );
+    }
 }
