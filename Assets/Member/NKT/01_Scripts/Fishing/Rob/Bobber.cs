@@ -8,11 +8,11 @@ namespace NKT.Fishing.Rob
 {
     public class Bobber : MonoBehaviour
     {
-        public event Action OnLanded;
-        public event Action OnBite;
-        
         [SerializeField] private ParticleSystem bobberParticle;
         [SerializeField] private Transform restPoint;
+        
+        public event Action OnLanded;
+        public event Action OnBite;
         
         private bool _isAttached = true;
 
@@ -92,6 +92,7 @@ namespace NKT.Fishing.Rob
                 yield return null;
             }
 
+            transform.rotation = Quaternion.identity;
             OnLanded?.Invoke();
         }
     }

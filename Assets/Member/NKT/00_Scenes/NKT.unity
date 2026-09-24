@@ -312,25 +312,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 321217975549179712, guid: 0b912e9003fba894faa88cf964a6fb8a, type: 3}
-      propertyPath: playOnAwake
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3323387954473017891, guid: 0b912e9003fba894faa88cf964a6fb8a, type: 3}
       propertyPath: m_Name
       value: Water_Splash_B
-      objectReference: {fileID: 0}
-    - target: {fileID: 5968734593309141945, guid: 0b912e9003fba894faa88cf964a6fb8a, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5968734593309141945, guid: 0b912e9003fba894faa88cf964a6fb8a, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5968734593309141945, guid: 0b912e9003fba894faa88cf964a6fb8a, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 5968734593309141945, guid: 0b912e9003fba894faa88cf964a6fb8a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -342,7 +326,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5968734593309141945, guid: 0b912e9003fba894faa88cf964a6fb8a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5968734593309141945, guid: 0b912e9003fba894faa88cf964a6fb8a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -370,26 +354,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5968734593309141945, guid: 0b912e9003fba894faa88cf964a6fb8a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6557816248862506811, guid: 0b912e9003fba894faa88cf964a6fb8a, type: 3}
-      propertyPath: playOnAwake
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6888595612418114805, guid: 0b912e9003fba894faa88cf964a6fb8a, type: 3}
-      propertyPath: playOnAwake
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7248977575302777661, guid: 0b912e9003fba894faa88cf964a6fb8a, type: 3}
-      propertyPath: playOnAwake
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7526061987682906424, guid: 0b912e9003fba894faa88cf964a6fb8a, type: 3}
-      propertyPath: playOnAwake
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9102416919201996325, guid: 0b912e9003fba894faa88cf964a6fb8a, type: 3}
-      propertyPath: playOnAwake
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -476,6 +440,39 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &810365559 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5702054985871198544, guid: 8844c0cb96a52594fad3577265c17b5f, type: 3}
+  m_PrefabInstance: {fileID: 1833709905282583058}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &810365560 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 816758606299138097, guid: 8844c0cb96a52594fad3577265c17b5f, type: 3}
+  m_PrefabInstance: {fileID: 1833709905282583058}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 810365559}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f77dc3019a704974a1796902aa0ef7f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NKT.Fishing.Rob.Bobber
+--- !u!114 &810365562
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 810365559}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 938128e80ac64324b7275b0173ec19a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NKT.Fishing.Rob.BobberProduct
+  bobber: {fileID: 810365560}
+  biteParticle: {fileID: 2049642818}
+  bobCount: 6
+  bobDepth: 0.25
+  bobDuration: 0.3
 --- !u!1 &1079706896
 GameObject:
   m_ObjectHideFlags: 0
@@ -773,6 +770,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d4dfd101d974f25909bdd8f413e7dd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NKT.Fishing.Rob.CastCharger
+--- !u!198 &2049642818 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 9102416919201996325, guid: 0b912e9003fba894faa88cf964a6fb8a, type: 3}
+  m_PrefabInstance: {fileID: 668815778}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1042971888570385938
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -950,6 +952,10 @@ PrefabInstance:
         by Humanoid clips.\n\tTransform 'mixamorig:RightForeArm'\n\tTransform 'mixamorig:RightForeArm'\n\tFrom
         animation clip 'Fishing Cast'\n\tFrom animation clip 'Fishing Charging'"
       objectReference: {fileID: 0}
+    - target: {fileID: 816758606299138097, guid: 8844c0cb96a52594fad3577265c17b5f, type: 3}
+      propertyPath: biteParticle
+      value: 
+      objectReference: {fileID: 2049642818}
     - target: {fileID: 2166753863898610082, guid: 8844c0cb96a52594fad3577265c17b5f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1004,7 +1010,7 @@ PrefabInstance:
       objectReference: {fileID: 2049575399}
     - target: {fileID: 4229795438029717658, guid: 8844c0cb96a52594fad3577265c17b5f, type: 3}
       propertyPath: biteWindow
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6889770300120770372, guid: 8844c0cb96a52594fad3577265c17b5f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1025,7 +1031,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5702054985871198544, guid: 8844c0cb96a52594fad3577265c17b5f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 810365562}
   m_SourcePrefab: {fileID: 100100000, guid: 8844c0cb96a52594fad3577265c17b5f, type: 3}
 --- !u!224 &4788418071336822796 stripped
 RectTransform:
