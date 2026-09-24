@@ -1,3 +1,4 @@
+using CHG._02.Script.FishSystem;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,7 +8,7 @@ public class FishInventoryTest : MonoBehaviour
     private FishInventoryManager inventory;
 
     [SerializeField]
-    private FishSO testFish;
+    private FishDataSO testFish;
 
 
     private void Update()

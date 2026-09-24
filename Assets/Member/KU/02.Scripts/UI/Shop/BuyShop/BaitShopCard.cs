@@ -51,7 +51,7 @@ public class BaitShopCard : MonoBehaviour
         if (baitNameText != null)
         {
             baitNameText.text =
-                bait.name;
+                bait.baitName;
         }
 
 
@@ -65,7 +65,7 @@ public class BaitShopCard : MonoBehaviour
         if (priceText != null)
         {
             priceText.text =
-                bait.baitSprite.ToString();
+                bait.price.ToString() + "$ 구매";
         }
 
 
@@ -73,8 +73,8 @@ public class BaitShopCard : MonoBehaviour
         {
             if (bait.fishesToBuy != null)
             {
-                //requiredFishImage.sprite =
-                //    bait.fishesToBuy.FishSprite;
+                requiredFishImage.sprite =
+                    bait.fishesToBuy.Sprite;
 
                 requiredFishImage.gameObject.SetActive(true);
             }
@@ -102,16 +102,16 @@ public class BaitShopCard : MonoBehaviour
         switch (rarity)
         {
             case ShopItemRarity.Common:
-                return "Common 미끼";
+                return "Common";
 
             case ShopItemRarity.Rare:
-                return "Rare 미끼";
+                return "Rare";
 
             case ShopItemRarity.Epic:
-                return "Epic 미끼";
+                return "Epic";
 
             case ShopItemRarity.Legendary:
-                return "Legendary 미끼";
+                return "Legendary";
         }
 
 

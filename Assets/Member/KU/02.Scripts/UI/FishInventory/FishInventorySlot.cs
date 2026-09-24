@@ -21,6 +21,8 @@ public class FishInventorySlot :
 
     public bool HasItem => item != null;
 
+    public FishInventoryItem Item => item;
+
 
     public void Initialize(
         FishTooltipUI tooltip,
@@ -40,7 +42,7 @@ public class FishInventorySlot :
 
 
         if (item == null ||
-            item.Fish == null)
+            item.FishData == null)
         {
             Clear();
             return;
@@ -50,7 +52,7 @@ public class FishInventorySlot :
         if (fishImage != null)
         {
             fishImage.sprite =
-                item.Fish.FishSprite;
+                item.FishSprite;
 
             fishImage.enabled = true;
         }
@@ -65,7 +67,6 @@ public class FishInventorySlot :
         if (fishImage != null)
         {
             fishImage.sprite = null;
-
             fishImage.enabled = false;
         }
     }
