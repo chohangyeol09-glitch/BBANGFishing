@@ -12,7 +12,6 @@ namespace NKT.Player.Modules
         [SerializeField] private HashDataSO chargeAnim;
         [SerializeField] private HashDataSO castAnim;
         [SerializeField] private HashDataSO retrieveAnim;
-        [SerializeField] private HashDataSO biteAnim;
         [SerializeField] private HashDataSO reelAnim;
 
         private ModuleOwner _owner;
@@ -59,9 +58,6 @@ namespace NKT.Player.Modules
                     break;
                 case FishingState.Waiting:
                     _renderer.PlayClip(idleAnim.HashValue, 0,0.5f, 1);
-                    break;
-                case FishingState.Biting:
-                    _renderer.PlayClip(biteAnim.HashValue, 0,0, 1);
                     break;
                 case FishingState.Reeling:
                     _renderer.PlayClip(reelAnim.HashValue, 0,0, 1);

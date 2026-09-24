@@ -8,35 +8,53 @@ namespace NKT.Fishing.Rob
 {
     public class Bobber : MonoBehaviour
     {
-        public event Action OnLanded;
-        public event Action<FishDataSO> OnBite; //후에 물고기 SO 있으면 그거 받기
-        
         [SerializeField] private ParticleSystem bobberParticle;
-
-        private Vector3 _initPosition;
-        private BaitSO _bait;
+        [SerializeField] private Transform restPoint;
+        
+        public event Action OnLanded;
+        public event Action OnBite;
+        
+        private bool _isAttached = true;
 
         private void Awake()
         {
-            _initPosition = transform.position; 
+            bobberParticle.Pause();
+            restPoint = transform.parent;
         }
 
         public void PositionInit()
         {
-            bobberParticle.Pause();
-            transform.position = _initPosition;
-            bobberParticle.Play();
+            StopAllCoroutines();
+            _isAttached = true;
+            transform.SetParent(restPoint, false);
+            transform.localPosition = Vector3.zero;
+            transform.localRotation = Quaternion.identity;
+        }
+
+        public void PlayBite()
+        {
+            OnBite?.Invoke();
         }
         
-        public void Launch(CastAim aim, float duration, BaitSO bait)
+        public void Launch(CastAim aim, float duration)
         {
-            _bait = bait;
+            bobberParticle.Play();
+            _isAttached = false;
+            transform.SetParent(null, true);
             StartCoroutine(FlyRoutine(aim, duration));
         }
         public void Return(float duration, float arcHeight)
         {
+            bobberParticle.Stop();
             StopAllCoroutines();
             StartCoroutine(ReturnRoutine(duration, arcHeight));
+        }
+
+        private void LateUpdate()
+        {
+            if(!_isAttached || restPoint == null) return;
+            
+            transform.position = restPoint.position;
         }
 
         private IEnumerator ReturnRoutine(float duration, float arcHeight)
@@ -51,13 +69,15 @@ namespace NKT.Fishing.Rob
                 CastAim aim = new CastAim
                 {
                     origin = from,
-                    landPoint = _initPosition,
+                    landPoint = restPoint.position,
                     arcHeight = arcHeight,
                 };
 
                 transform.position = CastArc.Evaluate(aim, t);
                 yield return null;
             }
+            
+            _isAttached = true;
         }
 
         private IEnumerator FlyRoutine(CastAim aim, float duration)
@@ -72,6 +92,7 @@ namespace NKT.Fishing.Rob
                 yield return null;
             }
 
+            transform.rotation = Quaternion.identity;
             OnLanded?.Invoke();
         }
     }

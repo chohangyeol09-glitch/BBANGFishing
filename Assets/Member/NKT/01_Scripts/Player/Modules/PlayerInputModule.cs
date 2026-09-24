@@ -20,6 +20,7 @@ namespace NKT.Player.Modules
             control.OnLookChange += _lookModule.OnLookChange;
             control.OnAttackPressed += _fishingModule.OnAttackPressed;
             control.OnAttackReleased += _fishingModule.OnAttackReleased;
+            control.OnInputLocked += _fishingModule.CancelFishing;
         }
 
         private void OnDestroy()
@@ -29,6 +30,7 @@ namespace NKT.Player.Modules
             control.OnLookChange -= _lookModule.OnLookChange;
             control.OnAttackPressed -= _fishingModule.OnAttackPressed;
             control.OnAttackReleased -= _fishingModule.OnAttackReleased;
+            control.OnInputLocked -= _fishingModule.CancelFishing;
         }
     }
 }
