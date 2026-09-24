@@ -4,6 +4,11 @@ using UnityEngine.InputSystem;
 
 public class FishTooltipUI : MonoBehaviour
 {
+    [Header("Tooltip Root")]
+    [SerializeField]
+    private GameObject tooltipRoot;
+
+
     [Header("Canvas")]
     [SerializeField]
     private Canvas canvas;
@@ -36,7 +41,11 @@ public class FishTooltipUI : MonoBehaviour
 
     private void Update()
     {
-        if (!gameObject.activeSelf)
+        if (tooltipRoot == null)
+            return;
+
+
+        if (!tooltipRoot.activeSelf)
             return;
 
 
@@ -49,8 +58,10 @@ public class FishTooltipUI : MonoBehaviour
         if (Mouse.current == null)
             return;
 
+
         if (canvas == null)
             return;
+
 
         if (tooltipRect == null)
             return;
@@ -66,7 +77,8 @@ public class FishTooltipUI : MonoBehaviour
         if (canvas.renderMode !=
             RenderMode.ScreenSpaceOverlay)
         {
-            uiCamera = canvas.worldCamera;
+            uiCamera =
+                canvas.worldCamera;
         }
 
 
@@ -91,17 +103,20 @@ public class FishTooltipUI : MonoBehaviour
         FishInventoryItem item)
     {
         if (item == null ||
-            item.Fish == null)
+            item.FishData == null)
             return;
 
 
-        gameObject.SetActive(true);
+        if (tooltipRoot != null)
+        {
+            tooltipRoot.SetActive(true);
+        }
 
 
         if (fishNameText != null)
         {
             fishNameText.text =
-                item.Fish.FishName;
+                item.FishName;
         }
 
 
@@ -115,6 +130,9 @@ public class FishTooltipUI : MonoBehaviour
 
     public void Hide()
     {
-        gameObject.SetActive(false);
+        if (tooltipRoot != null)
+        {
+            tooltipRoot.SetActive(false);
+        }
     }
 }

@@ -62,7 +62,7 @@ public class FishingRodShopCard : MonoBehaviour
         if (priceText != null)
         {
             priceText.text =
-                rod.price.ToString();
+                rod.price.ToString() + "$ 구매";
         }
 
 

@@ -828,7 +828,23 @@ PlayerSettings:
   webGLCloseOnQuit: 0
   webWasm2023: 0
   webEnableSubmoduleStrippingCompatibility: 0
-  scriptingDefineSymbols: {}
+  scriptingDefineSymbols:
+    Android: MK_TOON_STYLIZE_SYSTEM_SHADOWS
+    EmbeddedLinux: MK_TOON_STYLIZE_SYSTEM_SHADOWS
+    GameCoreScarlett: MK_TOON_STYLIZE_SYSTEM_SHADOWS
+    GameCoreXboxOne: MK_TOON_STYLIZE_SYSTEM_SHADOWS
+    Kepler: MK_TOON_STYLIZE_SYSTEM_SHADOWS
+    LinuxHeadlessSimulation: MK_TOON_STYLIZE_SYSTEM_SHADOWS
+    Nintendo Switch: MK_TOON_STYLIZE_SYSTEM_SHADOWS
+    Nintendo Switch 2: MK_TOON_STYLIZE_SYSTEM_SHADOWS
+    PS4: MK_TOON_STYLIZE_SYSTEM_SHADOWS
+    PS5: MK_TOON_STYLIZE_SYSTEM_SHADOWS
+    QNX: MK_TOON_STYLIZE_SYSTEM_SHADOWS
+    Standalone: MK_TOON_STYLIZE_SYSTEM_SHADOWS
+    VisionOS: MK_TOON_STYLIZE_SYSTEM_SHADOWS
+    WebGL: MK_TOON_STYLIZE_SYSTEM_SHADOWS
+    XboxOne: MK_TOON_STYLIZE_SYSTEM_SHADOWS
+    tvOS: MK_TOON_STYLIZE_SYSTEM_SHADOWS
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend:
