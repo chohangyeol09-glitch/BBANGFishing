@@ -6,11 +6,18 @@ namespace NKT.Fishing.Rob
     [CreateAssetMenu(fileName = "FishingRob SO", menuName = "KT/Fishing/Rob", order = 0)]
     public class FishingRobSO : ScriptableObject
     {
+        
         public RobObject prefab;
         public float power = 1;
         
         public float maxDistance;
         public float minDistance;
+
+        public string rodName;
+        public Sprite rodSprite;
+        public ShopItemRarity rarity;
+        public float price;
+        public RobGrade grade;
     }
 
     [Serializable]
@@ -18,5 +25,10 @@ namespace NKT.Fishing.Rob
     {
         public GameObject RobGameobject;
         public GameObject BobberGameobject;
+    }
+
+    public enum RobGrade
+    {
+        Common, Rare, Epic, Legendary
     }
 }

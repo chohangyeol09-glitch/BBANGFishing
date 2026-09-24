@@ -12,4 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2ed95e09ad448659e854474fe99e226, type: 3}
   m_Name: Fish spawn list
   m_EditorClassIdentifier: 
-  Entries: []
+  entries:
+  - Prefab: {fileID: 4371269290107166124, guid: 967577513da6c4e48854c9482da2c3cf, type: 3}
+    Weight: 1

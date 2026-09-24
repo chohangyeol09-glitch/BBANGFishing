@@ -12,9 +12,11 @@ namespace NKT.Player.Modules
         public Action OnAttackPressed;
         public Action OnAttackReleased;
         public Action OnInteractChange;
+        public Action OnInputLocked;
       
         private Controls _control;
         private Camera _mainCam;
+        private int _lockCount;
 
         public Camera MainCam
         {
@@ -33,12 +35,15 @@ namespace NKT.Player.Modules
                 _control = new Controls();
                 _control.Player.SetCallbacks(this);
             }
+            _lockCount = 0;
+            _control.UI.Disable();
             _control.Player.Enable();
         }
         
         private void OnDisable()
         {
             _control.Player.Disable();
+            _control.UI.Disable();
         }
         
         public void OnMove(InputAction.CallbackContext context)
@@ -65,6 +70,31 @@ namespace NKT.Player.Modules
         {
             if(context.performed)
                 OnInteractChange?.Invoke();
+        }
+
+        public void PushLock()
+        {
+            _lockCount++;
+            if (_lockCount > 1) return;
+            
+            OnInputLocked?.Invoke();
+            _control.Player.Disable();
+            _control.UI.Enable();
+            
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+
+        public void PopLock()
+        {
+            _lockCount = Mathf.Max(0, _lockCount - 1);
+            if (_lockCount > 0) return;
+            
+            _control.UI.Disable();
+            _control.Player.Enable();
+            
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
     }
 }
