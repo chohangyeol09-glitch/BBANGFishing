@@ -799,6 +799,7 @@ Transform:
   - {fileID: 7349694109616429222}
   - {fileID: 3523599952737890349}
   - {fileID: 4434447578965643768}
+  - {fileID: 2805190019406177602}
   m_Father: {fileID: 157104635040872707}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3410503991525728494
@@ -1372,7 +1373,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2805190019406177602}
   m_Layer: 0
-  m_Name: ' Rhnad Rob Grab'
+  m_Name: Lhnad Rob Grab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1386,14 +1387,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5491169349365644290}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.47787318, y: -0.44960436, z: 0.5181892, w: 0.5486102}
-  m_LocalPosition: {x: 0.0734, y: 0.106, z: 0.0221}
+  m_LocalRotation: {x: 0.48901132, y: -0.55662477, z: -0.53090286, w: 0.41131377}
+  m_LocalPosition: {x: 0.0886, y: 0.1011, z: 0.0304}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8202820321792071956}
-  m_Father: {fileID: 3690400728560288660}
-  m_LocalEulerAnglesHint: {x: -3.346, y: -81.997, z: 89.642}
+  m_Father: {fileID: 8144789302845092082}
+  m_LocalEulerAnglesHint: {x: 349.12, y: -95.72299, z: 267.55}
 --- !u!1 &5511316622269521187
 GameObject:
   m_ObjectHideFlags: 0
@@ -1428,7 +1429,6 @@ Transform:
   - {fileID: 2625926276915821816}
   - {fileID: 5105479374333501872}
   - {fileID: 4406296441272252175}
-  - {fileID: 2805190019406177602}
   m_Father: {fileID: 8059608481141017455}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5639488356471555450
