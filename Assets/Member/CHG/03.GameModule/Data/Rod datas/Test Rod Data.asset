@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gradeWeight:
   - 3
-  - 1
-  - 1
-  - 1
+  - 0
+  - 0
+  - 0
+  <PullPower>k__BackingField: 21.86

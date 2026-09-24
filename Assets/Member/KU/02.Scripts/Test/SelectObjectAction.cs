@@ -28,6 +28,27 @@ public class SelectObjectAction : InteractionAction
     private float moveDuration = 0.3f;
 
 
+    [Header("첫 번째 활성화 오브젝트")]
+    [SerializeField]
+    private GameObject firstDelayedObject;
+
+    [SerializeField]
+    private float firstActiveDelay = 0.3f;
+
+
+    [Header("두 번째 활성화 오브젝트")]
+    [SerializeField]
+    private GameObject secondDelayedObject;
+
+    [SerializeField]
+    private float secondActiveDelay = 2f;
+
+
+    [Header("상점")]
+    [SerializeField]
+    private ShopSelectManager shopSelectManager;
+
+
     private Vector3 originalPosition;
     private Quaternion originalRotation;
     private Transform originalParent;
@@ -42,17 +63,32 @@ public class SelectObjectAction : InteractionAction
 
     private void Awake()
     {
-        if (mainCamera == null)
-        {
-            mainCamera = Camera.main;
-        }
-        targetObject = gameObject.transform;
+        mainCamera = Camera.main;
 
-        cameraLook = mainCamera.GetComponent<CameraLook>();
+        targetObject = transform;
+
+
+        if (mainCamera != null)
+        {
+            cameraLook =
+                mainCamera.GetComponent<CameraLook>();
+        }
 
 
         interactionTarget =
             GetComponent<InteractionTarget>();
+
+
+        if (firstDelayedObject != null)
+        {
+            firstDelayedObject.SetActive(false);
+        }
+
+
+        if (secondDelayedObject != null)
+        {
+            secondDelayedObject.SetActive(false);
+        }
     }
 
 
@@ -68,8 +104,32 @@ public class SelectObjectAction : InteractionAction
 
         if (Keyboard.current.escapeKey.wasPressedThisFrame)
         {
-            CloseObject();
+            HandleEscape();
         }
+    }
+
+
+    private void HandleEscape()
+    {
+        // 상점의 서브 페이지에서 ESC를 눌렀다면
+        // 메뉴 화면으로만 돌아가기
+        if (shopSelectManager != null)
+        {
+            bool handled =
+                shopSelectManager.TryHandleEscape();
+
+
+            if (handled)
+            {
+                return;
+            }
+        }
+
+
+        // 메뉴 화면에서 ESC를 눌렀거나
+        // ShopSelectManager가 없는 경우
+        // 상호작용 자체 종료
+        CloseObject();
     }
 
 
@@ -78,40 +138,57 @@ public class SelectObjectAction : InteractionAction
         if (isSelected || isMoving)
             return;
 
+
         SelectObject();
     }
 
 
     private void SelectObject()
     {
-        if (mainCamera == null || targetObject == null)
+        if (mainCamera == null ||
+            targetObject == null)
             return;
 
 
         isSelected = true;
 
 
-        // 원래 위치 저장
-        originalPosition = targetObject.position;
-        originalRotation = targetObject.rotation;
-        originalParent = targetObject.parent;
+        originalPosition =
+            targetObject.position;
+
+        originalRotation =
+            targetObject.rotation;
+
+        originalParent =
+            targetObject.parent;
 
 
-        // 상호작용 중 다시 E가 뜨지 않도록
         if (interactionTarget != null)
         {
             interactionTarget.SetInteractable(false);
         }
 
 
-        // 카메라 움직임 정지
         if (cameraLook != null)
         {
             cameraLook.LockLook();
         }
 
 
+        if (firstDelayedObject != null)
+        {
+            firstDelayedObject.SetActive(false);
+        }
+
+
+        if (secondDelayedObject != null)
+        {
+            secondDelayedObject.SetActive(false);
+        }
+
+
         StopAllCoroutines();
+
 
         StartCoroutine(
             MoveToCamera()
@@ -151,13 +228,13 @@ public class SelectObjectAction : InteractionAction
         {
             elapsedTime += Time.deltaTime;
 
+
             float t =
                 Mathf.Clamp01(
                     elapsedTime / moveDuration
                 );
 
 
-            // 부드러운 이동
             t = Mathf.SmoothStep(
                 0f,
                 1f,
@@ -193,6 +270,41 @@ public class SelectObjectAction : InteractionAction
 
 
         isMoving = false;
+
+
+        StartCoroutine(
+            ActivateObjectAfterDelay(
+                firstDelayedObject,
+                firstActiveDelay
+            )
+        );
+
+
+        StartCoroutine(
+            ActivateObjectAfterDelay(
+                secondDelayedObject,
+                secondActiveDelay
+            )
+        );
+    }
+
+
+    private IEnumerator ActivateObjectAfterDelay(
+        GameObject target,
+        float delay)
+    {
+        if (target == null)
+            yield break;
+
+
+        yield return new WaitForSeconds(delay);
+
+
+        if (!isSelected)
+            yield break;
+
+
+        target.SetActive(true);
     }
 
 
@@ -203,6 +315,19 @@ public class SelectObjectAction : InteractionAction
 
 
         StopAllCoroutines();
+
+
+        if (firstDelayedObject != null)
+        {
+            firstDelayedObject.SetActive(false);
+        }
+
+
+        if (secondDelayedObject != null)
+        {
+            secondDelayedObject.SetActive(false);
+        }
+
 
         StartCoroutine(
             ReturnObject()
@@ -228,6 +353,7 @@ public class SelectObjectAction : InteractionAction
         while (elapsedTime < moveDuration)
         {
             elapsedTime += Time.deltaTime;
+
 
             float t =
                 Mathf.Clamp01(
@@ -268,6 +394,7 @@ public class SelectObjectAction : InteractionAction
         targetObject.rotation =
             originalRotation;
 
+
         targetObject.SetParent(
             originalParent
         );
@@ -277,14 +404,12 @@ public class SelectObjectAction : InteractionAction
         isMoving = false;
 
 
-        // 다시 상호작용 가능
         if (interactionTarget != null)
         {
             interactionTarget.SetInteractable(true);
         }
 
 
-        // 카메라 회전 다시 활성화
         if (cameraLook != null)
         {
             cameraLook.UnlockLook();
