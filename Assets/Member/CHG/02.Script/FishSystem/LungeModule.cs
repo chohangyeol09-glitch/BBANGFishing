@@ -125,5 +125,7 @@ namespace CHG._02.Script.FishSystem
             _rb.isKinematic = false;
             _rb.linearVelocity = velocity;
         }
+        
+        public void ResetLunge() => _used = false;
     }
 }

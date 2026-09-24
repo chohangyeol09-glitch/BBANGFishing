@@ -12,7 +12,9 @@ namespace CHG._02.Script.BossSystem
     {
         public event Action<BossStateEnum> OnStateChanged;
 
-        public BossStateEnum State { get; private set; } = BossStateEnum.Appear;
+        public BossStateEnum State =>
+            BTAgent.GetVariable("State", out BlackboardVariable<BossStateEnum> state)
+                ? state.Value : BossStateEnum.Appear;
         public BehaviorGraphAgent BTAgent { get; private set; }
 
         public override float MaxHealth => Data.Health;
@@ -22,6 +24,7 @@ namespace CHG._02.Script.BossSystem
 
         protected override void InitializeModules()
         {
+            
             BTAgent = GetComponent<BehaviorGraphAgent>();
             base.InitializeModules();
         }
@@ -31,30 +34,9 @@ namespace CHG._02.Script.BossSystem
             CurrentHealth = MaxHealth;
             BTAgent.SetVariableValue("Self", this);
             BTAgent.SetVariableValue("Target", target);
-            BTAgent.SetVariableValue("State", State);
-            StartCoroutine(AppearRoutine());
-        }
-
-        private IEnumerator AppearRoutine()
-        {
-            yield return new WaitForSeconds(Data.AppearDuration);
-            if (State == BossStateEnum.Appear)
-                ChangeState(BossStateEnum.Combat);
-        }
-
-        public override void Dead()
-        {
-            base.Dead();
-            ChangeState(BossStateEnum.Dead);
-        }
-
-        private void ChangeState(BossStateEnum newState)
-        {
-            if (State == BossStateEnum.Dead || State == newState) return;
-
-            State = newState;
-            BTAgent.SetVariableValue("State", State);
-            OnStateChanged?.Invoke(State);
+            BTAgent.SetVariableValue("State", BossStateEnum.Appear);
+            BTAgent.SetVariableValue("AppearDuration", Data.AppearDuration);
+            BTAgent.SetVariableValue("GroggyDuration", Data.GroggyDuration);
         }
     }
 }

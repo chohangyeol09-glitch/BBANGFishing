@@ -4,6 +4,7 @@ using CHG._02.Script.CombatSystem;
 using CHG._02.Script.CombatSystem.BT.Channel;
 using CHG._02.Script.CombatSystem.EnemySkillSystem;
 using CHG._02.Script.CoreSystem;
+using DevLib.ObjectPool.Runtime;
 using Unity.Behavior;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -11,11 +12,14 @@ using UnityEngine.InputSystem;
 namespace CHG._02.Script.FishSystem
 {
     [RequireComponent(typeof(BehaviorGraphAgent))]
-    public class Fish : Agent, IParryable, ISkillEntrySource
+    public class Fish : Agent, IParryable, ISkillEntrySource, IPoolable
     {
         public FishStateEnum State { get; private set; } = FishStateEnum.Jump;
         public BehaviorGraphAgent BTAgent { get; private set; }
         public bool IsInSea { get; private set; } = false;
+        [field:SerializeField] public PoolItemSO PoolItem { get; set; }
+        public GameObject GameObject => this != null ? this.gameObject : null;
+        
         public override float MaxHealth => Data.Health;
         public SkillEntry[] SkillEntries => Data.Skills;
         
@@ -33,7 +37,8 @@ namespace CHG._02.Script.FishSystem
         private FishFacingModule _facingModule;
         private Rigidbody _rb;
         private bool _hasRisen; //처음에 올라갔는가
-
+        private PoolManagerSO _poolManager;
+        private bool _released;
 
         protected override void InitializeModules()
         {
@@ -48,14 +53,18 @@ namespace CHG._02.Script.FishSystem
 
         }
         
-        public void OnSpawn(Vector3 pullForce, GameObject target)
+        public void OnSpawn(Vector3 pullForce, GameObject target, PoolManagerSO poolManager)
         {
+            _poolManager = poolManager;
             _rb.mass = Data.Weight;
             _rb.linearVelocity = Vector3.zero;
             _rb.angularVelocity = Vector3.zero;
             CurrentHealth = MaxHealth;
+            
             BTAgent.SetVariableValue("Fish", this);
             BTAgent.SetVariableValue("Target", target);
+            BTAgent.SetVariableValue("State", State);
+            BTAgent.Restart();
             
             _lunge.Target = target;
 
@@ -129,6 +138,37 @@ namespace CHG._02.Script.FishSystem
             else
                 Debug.LogWarning("State Channel not found");
         }
+        
+        public void ResetItem()
+        {
+            State = FishStateEnum.Jump;
+            IsInSea = false;
+            _hasRisen = false;
+            _released = false;
+
+            _rb.isKinematic = false;
+            _rb.linearVelocity = Vector3.zero;
+            _rb.angularVelocity = Vector3.zero;
+            _lunge.ResetLunge();
+        }
+
+        public void ReleaseToPool()
+        {
+            if (_released) return;
+            _released = true;
+
+            EnemySkillModule skillModule = GetModule<EnemySkillModule>();
+            if (skillModule != null && skillModule.CurrentSkill != null)
+                skillModule.CurrentSkill.StopSkill();
+
+            if (_poolManager == null)
+            {
+                Destroy(gameObject);
+                return;
+            }
+            
+            _poolManager.Push(this);
+        }
 
         public void ConsumeSeaTouch() => IsInSea = false;
 #if UNITY_EDITOR
@@ -150,6 +190,5 @@ namespace CHG._02.Script.FishSystem
                 TakeDamage(new DamageData(this, transform.position, Vector3.up, Vector3.up, 4f, 0f));
         }
 #endif
-
     }
 }
