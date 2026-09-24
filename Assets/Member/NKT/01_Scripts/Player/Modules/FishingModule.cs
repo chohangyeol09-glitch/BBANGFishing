@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using CHG._02.Script.CoreSystem;
 using CHG._02.Script.FishSystem;
 using DevLib.ModuleSystem;
 using NKT.Fishing;
@@ -31,22 +32,25 @@ namespace NKT.Player.Modules
         
         [SerializeField] private float waterTransformY;
 
-        [Header("입질")]
+        [Header("물고기 관련")]
+        [SerializeField] private FishSpawner fishSpawner;
+        [SerializeField] private float pullForce;
         [SerializeField] private float biteWindow = 1f;
 
         public event Action<FishingState> OnStateChanged;
         public event Action<CastAim> OnAimUpdated;   //차징 중 궤도 미리보기용
         public FishingState State => _state;
         public Bobber Bobber => bobberObject;
-        public FishDataSO CurrentFish => _currentFish;
+        public FishDataSO CurrentFishSO => _currentFishSO;
 
         private FishingState _state = FishingState.Idle;
         private RobEquipModule _robEquip;
         private LookModule _lookModule;
         private BaitModule _bait;
 
-        private FishDataSO _currentFish;
+        private FishDataSO _currentFishSO;
         private Coroutine _stateRoutine;
+        private Fish _currentFish;
 
         public void Initialize(ModuleOwner owner)
         {
@@ -99,7 +103,7 @@ namespace NKT.Player.Modules
         {
             if (_state != FishingState.Charging) return;
 
-            charger.ProgressEnd();  //동기적으로 OnCharged 가 불리고 거기서 상태가 바뀐다
+            charger.ProgressEnd();
         }
 
         //찌가 물에 닿았을때
@@ -123,7 +127,7 @@ namespace NKT.Player.Modules
         {
             if (_state != FishingState.Waiting) return;
 
-            _currentFish = fish;
+            _currentFishSO = fish;
             ChangeState(FishingState.Biting);
         }
 
@@ -207,6 +211,9 @@ namespace NKT.Player.Modules
                 case FishingState.Biting:
                     _stateRoutine = StartCoroutine(BiteWindowRoutine());
                     break;
+                case FishingState.Reeling:
+                    SpawnFish();
+                    break;
             }
         }
 
@@ -220,6 +227,11 @@ namespace NKT.Player.Modules
 
             if (state == FishingState.Charging)
                 charger.ProgressCancel();
+        }
+
+        private void SpawnFish()
+        {
+           // Grade grade = _bait.CurrentBait.Pi
         }
 
         private void ReturnBobber()
