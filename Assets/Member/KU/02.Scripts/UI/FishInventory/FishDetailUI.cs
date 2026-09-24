@@ -22,15 +22,15 @@ public class FishDetailUI : MonoBehaviour
     private TMP_Text weightText;
 
     [SerializeField]
-    private TMP_Text historyText;
+    private TMP_Text gradeText;
+
+    [SerializeField]
+    private TMP_Text priceText;
 
 
     private void Awake()
     {
-        if (detailRoot != null)
-        {
-            detailRoot.SetActive(false);
-        }
+        Hide();
     }
 
 
@@ -38,11 +38,8 @@ public class FishDetailUI : MonoBehaviour
         FishInventoryItem item)
     {
         if (item == null ||
-            item.Fish == null)
+            item.FishData == null)
             return;
-
-
-        FishSO fish = item.Fish;
 
 
         if (detailRoot != null)
@@ -54,14 +51,14 @@ public class FishDetailUI : MonoBehaviour
         if (fishImage != null)
         {
             fishImage.sprite =
-                fish.FishSprite;
+                item.FishSprite;
         }
 
 
         if (fishNameText != null)
         {
             fishNameText.text =
-                fish.FishName;
+                item.FishName;
         }
 
 
@@ -72,10 +69,17 @@ public class FishDetailUI : MonoBehaviour
         }
 
 
-        if (historyText != null)
+        if (gradeText != null)
         {
-            historyText.text =
-                fish.History;
+            gradeText.text =
+                item.FishData.Grade.ToString();
+        }
+
+
+        if (priceText != null)
+        {
+            priceText.text =
+                $"{item.Price}원";
         }
     }
 

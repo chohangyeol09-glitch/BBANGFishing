@@ -4,9 +4,6 @@ using UnityEngine.InputSystem;
 public class FisihInventoryAction : InteractionAction
 {
     private CameraLook cameraLook;
-
-    [Header("Fish Inventory UI")]
-    [SerializeField]
     private GameObject fishInventoryUI;
 
 
@@ -20,6 +17,10 @@ public class FisihInventoryAction : InteractionAction
     {
         Camera mainCamera = Camera.main;
 
+        if (fishInventoryManager != null)
+        {
+            fishInventoryUI = fishInventoryManager.gameObject;
+        }
 
         if (mainCamera != null)
         {
