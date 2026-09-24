@@ -282,11 +282,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!4 &140065539 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7519352088945885897, guid: 8844c0cb96a52594fad3577265c17b5f, type: 3}
-  m_PrefabInstance: {fileID: 1833709905282583058}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &253495935 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6210770396069389634, guid: 6e5526194db95bd449b6b34bd7f3ee36, type: 3}
@@ -309,6 +304,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7b6df33b9634e3bbb41f16b16a9600d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NKT.Player.Modules.FishingModule
+--- !u!4 &369363831 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1167040902296982973, guid: 8844c0cb96a52594fad3577265c17b5f, type: 3}
+  m_PrefabInstance: {fileID: 1833709905282583058}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &471227446 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2055032968432052983, guid: 8844c0cb96a52594fad3577265c17b5f, type: 3}
+  m_PrefabInstance: {fileID: 1833709905282583058}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &690163143
 GameObject:
   m_ObjectHideFlags: 0
@@ -388,6 +393,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &711602347 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2166753863898610082, guid: 8844c0cb96a52594fad3577265c17b5f, type: 3}
+  m_PrefabInstance: {fileID: 1833709905282583058}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1079706896
 GameObject:
   m_ObjectHideFlags: 0
@@ -515,7 +525,7 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
---- !u!1 &1836660363
+--- !u!1 &1310701769
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -523,29 +533,75 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1836660364}
+  - component: {fileID: 1310701770}
   m_Layer: 0
-  m_Name: L-arm
+  m_Name: Edge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1836660364
+--- !u!4 &1310701770
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1836660363}
+  m_GameObject: {fileID: 1310701769}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.374, y: 0, z: 1.364}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 471227446}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1930140019
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1930140020}
+  - component: {fileID: 1930140021}
+  m_Layer: 0
+  m_Name: BaitModule
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1930140020
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1930140019}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 140065539}
+  m_Father: {fileID: 711602347}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1930140021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1930140019}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd4c3f840ffc4d249024e228729f4dcc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NKT.Player.Modules.BaitModule
+  defaultBait: {fileID: 11400000, guid: 1476d4b627ec59d4b81c1b18fc8be75c, type: 2}
+  currentBait: {fileID: 11400000, guid: 1476d4b627ec59d4b81c1b18fc8be75c, type: 2}
 --- !u!1 &1938879908
 GameObject:
   m_ObjectHideFlags: 0
@@ -886,6 +942,54 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 511280176639664346, guid: 8844c0cb96a52594fad3577265c17b5f, type: 3}
+      propertyPath: robEdgeTransform
+      value: 
+      objectReference: {fileID: 1310701770}
+    - target: {fileID: 816758606299138097, guid: 8844c0cb96a52594fad3577265c17b5f, type: 3}
+      propertyPath: restPoint
+      value: 
+      objectReference: {fileID: 369363831}
+    - target: {fileID: 1167040902296982973, guid: 8844c0cb96a52594fad3577265c17b5f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.428
+      objectReference: {fileID: 0}
+    - target: {fileID: 1167040902296982973, guid: 8844c0cb96a52594fad3577265c17b5f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.026
+      objectReference: {fileID: 0}
+    - target: {fileID: 1167040902296982973, guid: 8844c0cb96a52594fad3577265c17b5f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.296
+      objectReference: {fileID: 0}
+    - target: {fileID: 1167040902296982973, guid: 8844c0cb96a52594fad3577265c17b5f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.21605021
+      objectReference: {fileID: 0}
+    - target: {fileID: 1167040902296982973, guid: 8844c0cb96a52594fad3577265c17b5f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.626579
+      objectReference: {fileID: 0}
+    - target: {fileID: 1167040902296982973, guid: 8844c0cb96a52594fad3577265c17b5f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.5775181
+      objectReference: {fileID: 0}
+    - target: {fileID: 1167040902296982973, guid: 8844c0cb96a52594fad3577265c17b5f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.47664875
+      objectReference: {fileID: 0}
+    - target: {fileID: 1167040902296982973, guid: 8844c0cb96a52594fad3577265c17b5f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 16.248
+      objectReference: {fileID: 0}
+    - target: {fileID: 1167040902296982973, guid: 8844c0cb96a52594fad3577265c17b5f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -118.104
+      objectReference: {fileID: 0}
+    - target: {fileID: 1167040902296982973, guid: 8844c0cb96a52594fad3577265c17b5f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -255.54901
+      objectReference: {fileID: 0}
     - target: {fileID: 2166753863898610082, guid: 8844c0cb96a52594fad3577265c17b5f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -934,6 +1038,10 @@ PrefabInstance:
       propertyPath: charger
       value: 
       objectReference: {fileID: 2049575399}
+    - target: {fileID: 4359041362080162686, guid: 8844c0cb96a52594fad3577265c17b5f, type: 3}
+      propertyPath: m_Name
+      value: BobberContainer
+      objectReference: {fileID: 0}
     - target: {fileID: 8343973566861758610, guid: 8844c0cb96a52594fad3577265c17b5f, type: 3}
       propertyPath: volume
       value: 
@@ -941,9 +1049,12 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 7519352088945885897, guid: 8844c0cb96a52594fad3577265c17b5f, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 2166753863898610082, guid: 8844c0cb96a52594fad3577265c17b5f, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1836660364}
+      addedObject: {fileID: 1930140020}
+    - targetCorrespondingSourceObject: {fileID: 2055032968432052983, guid: 8844c0cb96a52594fad3577265c17b5f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1310701770}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8844c0cb96a52594fad3577265c17b5f, type: 3}
 --- !u!224 &4788418071336822796 stripped
