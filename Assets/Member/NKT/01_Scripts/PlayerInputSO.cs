@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace NKT.Player.Modules
+namespace NKT
 {
     [CreateAssetMenu(fileName = "PlayerInput", menuName = "SO/Player", order = 0)]
     public class PlayerInputSO : ScriptableObject, Controls.IPlayerActions
