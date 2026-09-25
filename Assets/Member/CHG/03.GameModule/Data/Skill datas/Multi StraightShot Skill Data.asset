@@ -18,5 +18,5 @@ MonoBehaviour:
   Damage: 1
   WarningTime: 3
   skillCoolTime: 1
-  moduleCoolTimeOffset: 0
+  moduleCoolTimeOffset: 2
   ignoreModuleCoolTime: 0

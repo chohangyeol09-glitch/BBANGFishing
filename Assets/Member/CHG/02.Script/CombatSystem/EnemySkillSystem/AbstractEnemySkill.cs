@@ -13,6 +13,9 @@ namespace CHG._02.Script.CombatSystem.EnemySkillSystem
         public bool IsUsing { get; private set; }
         
         [field: SerializeField] public EnemySkillDataSO Data { get; private set; }
+
+        private EnemyRenderer _renderer;
+        
         public float NormalizedCooldown
         {
             get
@@ -32,6 +35,7 @@ namespace CHG._02.Script.CombatSystem.EnemySkillSystem
         {
             Owner = owner;
             _damageMultiplier = owner as IDamageMultiplier;
+            _renderer = owner.GetModule<EnemyRenderer>();
         }
         
         public virtual bool CanUseSkill(GameObject target = null)
@@ -49,6 +53,7 @@ namespace CHG._02.Script.CombatSystem.EnemySkillSystem
         private IEnumerator SkillRoutine(GameObject target)
         {
             yield return new WaitForSeconds(Data.WarningTime); 
+            if (_renderer != null) _renderer.SendAnim(Data.SkillAnimHash);
             yield return ExecuteSkill(target);                              
             CleanUpSkillData();
         }

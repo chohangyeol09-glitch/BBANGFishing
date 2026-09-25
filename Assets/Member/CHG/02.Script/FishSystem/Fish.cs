@@ -70,6 +70,8 @@ namespace CHG._02.Script.FishSystem
             BTAgent.SetVariableValue("Fish", this);
             BTAgent.SetVariableValue("Target", target);
             BindStateChannel();
+            EnemyRenderer enemyRenderer = GetModule<EnemyRenderer>();
+            if (enemyRenderer != null) enemyRenderer.BindChannel(BTAgent);
             BTAgent.Restart();
             
             _lunge.Target = target;

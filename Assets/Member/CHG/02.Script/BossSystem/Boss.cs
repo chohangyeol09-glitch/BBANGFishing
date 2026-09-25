@@ -38,11 +38,12 @@ namespace CHG._02.Script.BossSystem
             
             BTAgent.SetVariableValue("Boss", this);
             BTAgent.SetVariableValue("Target", target);
-            BTAgent.SetVariableValue("State", BossStateEnum.Appear);
             BTAgent.SetVariableValue("AppearDuration", Data.AppearDuration);
             BTAgent.SetVariableValue("GroggyDuration", Data.GroggyDuration);
 
             BindStateChannel();
+            EnemyRenderer enemyRenderer = GetModule<EnemyRenderer>();
+            if (enemyRenderer != null) enemyRenderer.BindChannel(BTAgent);
             BTAgent.Restart();
         }
 
