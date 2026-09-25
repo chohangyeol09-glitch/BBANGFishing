@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using CHG._02.Script.Agents;
+using DevLib.AnimatorSystem;
 using UnityEngine;
 
 namespace CHG._02.Script.CombatSystem.EnemySkillSystem
@@ -52,10 +53,20 @@ namespace CHG._02.Script.CombatSystem.EnemySkillSystem
 
         private IEnumerator SkillRoutine(GameObject target)
         {
-            yield return new WaitForSeconds(Data.WarningTime); 
-            if (_renderer != null) _renderer.SendAnim(Data.SkillAnimHash);
+            if (Data.WarningTime > 0f)
+            {
+                PlayAnim(Data.WarningAnimHash);
+                yield return new WaitForSeconds(Data.WarningTime); 
+            }
+
+            PlayAnim(Data.SkillAnimHash);
             yield return ExecuteSkill(target);                              
             CleanUpSkillData();
+        }
+
+        private void PlayAnim(HashDataSO anim)
+        {
+            if (_renderer != null) _renderer.SendAnim(anim);
         }
 
 
@@ -73,9 +84,10 @@ namespace CHG._02.Script.CombatSystem.EnemySkillSystem
         {
             _lastUsedTime = Time.time;
             IsUsing = false;
+            if (_renderer != null) _renderer.PlayIdle();
             OnSkillEnd?.Invoke(this);
         }
-        
+
         protected abstract IEnumerator ExecuteSkill(GameObject target);
     }
 }

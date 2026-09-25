@@ -3,6 +3,7 @@ using CHG._02.Script.Agents;
 using CHG._02.Script.CombatSystem;
 using CHG._02.Script.CombatSystem.BT.Channel;
 using CHG._02.Script.CombatSystem.EnemySkillSystem;
+using CHG._02.Script.CombatSystem.HitFeedback;
 using CHG._02.Script.CoreSystem;
 using DevLib.ObjectPool.Runtime;
 using Unity.Behavior;
@@ -14,30 +15,30 @@ using IPoolable = DevLib.ObjectPool.Runtime.IPoolable;
 namespace CHG._02.Script.FishSystem
 {
     [RequireComponent(typeof(BehaviorGraphAgent))]
-    public class Fish : Agent, IParryable, ISkillEntrySource, IPoolable, IDamageMultiplier
+    public class Fish : Agent, IParryable, ISkillEntrySource, IPoolable, IDamageMultiplier, IKnockbackGate
     {
         public FishStateEnum State { get; private set; } = FishStateEnum.Jump;
         public BehaviorGraphAgent BTAgent { get; private set; }
         public bool IsInSea { get; private set; } = false;
         [field:SerializeField] public PoolItemSO PoolItem { get; set; }
         public GameObject GameObject => this != null ? this.gameObject : null;
+        public bool CanBeKnockedBack => State == FishStateEnum.Combat;
         public float DamageMultiplier => Data.DamageMultiplier;
         
         public bool HasStartedFalling { get; private set; }
         
         public override float MaxHealth => Data.Health;
         public SkillEntry[] SkillEntries => Data.Skills;
+        public bool IsParryable => _lunge != null && _lunge.IsParryable;
         
         [field:SerializeField] public FishDataSO Data { get; private set; }
 
-        [SerializeField] private bool isKnockBack = true;
+        [SerializeField, Min(1f)] private float airTimeScale = 1.5f;
         
         [Header("Catch")]
         [SerializeField, Range(0f,1f)] private float weightInfluence = 0.5f; //무게 반영 비율
         [SerializeField] private float minJumpHeight = 0.8f;
         
-        public bool IsParryable => _lunge != null && _lunge.IsParryable;
-
         private LungeModule _lunge;
         private FishFacingModule _facingModule;
         private Rigidbody _rb;
@@ -45,6 +46,9 @@ namespace CHG._02.Script.FishSystem
         private PoolManagerSO _poolManager;
         private bool _released;
         private StateChannel _stateChannel;
+        private HitFeedbackModule _hitFeedback;
+
+        private float GravityScale => 1f / (airTimeScale * airTimeScale); 
 
         protected override void InitializeModules()
         {
@@ -53,10 +57,8 @@ namespace CHG._02.Script.FishSystem
             BTAgent = GetComponent<BehaviorGraphAgent>();
             _lunge = GetModule<LungeModule>();
             _facingModule = GetModule<FishFacingModule>();
-
-            if (isKnockBack)
-                OnDamaged += OnKnockBack;
-
+            _hitFeedback = GetModule<HitFeedbackModule>();
+            _rb.useGravity = false;
         }
         
         public void OnSpawn(Vector3 pullForce, GameObject target, PoolManagerSO poolManager)
@@ -83,13 +85,17 @@ namespace CHG._02.Script.FishSystem
 
             if (dir.y > 0.1f)
                 deltaV = Mathf.Max(deltaV, minSpeed / dir.y);
-            
+
+            deltaV /= airTimeScale;
             _rb.AddForce(dir * deltaV, ForceMode.VelocityChange);
             if (_facingModule != null) _facingModule.SnapTo(pullForce);
         }
 
         private void FixedUpdate()
         {
+            if (!_rb.isKinematic)
+                _rb.AddForce(Physics.gravity * GravityScale, ForceMode.Acceleration);
+         
             if (State != FishStateEnum.Jump) return;
 
             if (_rb.linearVelocity.y > 0.01f)
@@ -111,34 +117,22 @@ namespace CHG._02.Script.FishSystem
 
         private void OnDestroy()
         {
-            if (isKnockBack)
-                OnDamaged -= OnKnockBack;
             if (_stateChannel != null)
                 _stateChannel.Event -= HandleStateChanged;
         }
-
-        private void OnKnockBack(DamageData data)
-        {
-            if (_rb == null || State != FishStateEnum.Combat) return;
-
-            float impulse = PhysicsUtil.ResolveImpulse(data.KnockbackPower, _rb.mass, weightInfluence);
-
-            _rb.AddForceAtPosition(data.HitDirection.normalized * impulse,
-                data.HitPoint, ForceMode.Impulse);
-        }
-
         
         private void OnTriggerEnter(Collider collision)
         {
-                Debug.Log("Collision");
-            if (collision.CompareTag("Sea"))
-            {
-                IsInSea = true;
-            }
+            if (!collision.CompareTag("Sea")) return;
+
+            if (!HasStartedFalling) return;
+
+            IsInSea = true;
         }
         
         public void ResetItem()
         {
+            _hitFeedback?.ResetFeedback();
             State = FishStateEnum.Jump;
             IsInSea = false;
             _hasRisen = false;
@@ -191,7 +185,7 @@ namespace CHG._02.Script.FishSystem
 
         private void HandleStateChanged(FishStateEnum newState) => State = newState;
 
-        public void SendState(FishStateEnum newState)
+        private void SendState(FishStateEnum newState)
         {
             if (_stateChannel != null) _stateChannel.SendEventMessage(newState);
         }
@@ -202,19 +196,27 @@ namespace CHG._02.Script.FishSystem
         [Header("Test")]
         [SerializeField] private float testUpSpeed = 8f;
         [SerializeField] private float testParryDamage = 10f; 
+        [SerializeField] private float testKnockbackPower = 10f;
+        [SerializeField, Range(0f, 89f)] private float testKnockbackUpAngle = 50f; 
 
         private void Update()
         {
             if (Keyboard.current.spaceKey.wasPressedThisFrame)
             {
+                
                 DamageData data = new DamageData(this, transform.position, -transform.forward, 
                     transform.forward, testParryDamage, 0f);
                 bool parried = TryParry(data);
                 Debug.Log($"parry success? : {parried}");
             }
-            
+
             if (Keyboard.current.hKey.wasPressedThisFrame)
-                TakeDamage(new DamageData(this, transform.position, Vector3.up, Vector3.up, 4f, 0f));
+            {
+                float side = UnityEngine.Random.value < 0.5f ? -1f : 1f;
+                float rad = testKnockbackUpAngle * Mathf.Deg2Rad;
+                Vector3 hitDir = new Vector3(side * Mathf.Cos(rad), Mathf.Sin(rad), 0f);
+                TakeDamage(new DamageData(this, transform.position, -hitDir, hitDir, 0.5f, testKnockbackPower));
+            }
         }
 #endif
     }

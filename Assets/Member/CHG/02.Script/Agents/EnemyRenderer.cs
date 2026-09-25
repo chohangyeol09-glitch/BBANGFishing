@@ -9,6 +9,7 @@ namespace CHG._02.Script.Agents
     [RequireComponent(typeof(Animator))]
     public class EnemyRenderer : MonoBehaviour, IModule
     {
+        [SerializeField] private HashDataSO idleHash;
         [SerializeField] private float crossFadeDuration = 0.1f;
         
         public Animator Animator { get; private set; }
@@ -46,6 +47,8 @@ namespace CHG._02.Script.Agents
             if (anim == null) return;
             Animator.CrossFadeInFixedTime(anim.HashValue, crossFadeDuration);
         }
+        
+        public void PlayIdle() => SendAnim(idleHash);
 
         private void OnDestroy()
         {

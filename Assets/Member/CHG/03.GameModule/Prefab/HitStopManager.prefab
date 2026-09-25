@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &696287177302011469
+--- !u!1 &7731428441404020247
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1899250124447326433}
-  - component: {fileID: 3690514984543504595}
+  - component: {fileID: 23791332161233699}
+  - component: {fileID: 1810774689923205473}
   m_Layer: 0
-  m_Name: CurveProjectile Skill
+  m_Name: HitStopManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1899250124447326433
+--- !u!4 &23791332161233699
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 696287177302011469}
+  m_GameObject: {fileID: 7731428441404020247}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -32,25 +32,16 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3690514984543504595
+--- !u!114 &1810774689923205473
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 696287177302011469}
+  m_GameObject: {fileID: 7731428441404020247}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62c61da0af264ecfbd21520c6501ad70, type: 3}
+  m_Script: {fileID: 11500000, guid: 49c30eb7376246228c36c4b0a0c32d2b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CHG._02.Script.CombatSystem.EnemySkillSystem.Skills.CurvedProjectileSkill
-  <Data>k__BackingField: {fileID: 11400000, guid: bfcccd2dc1ce8c84a8d9de2210f2a7b0, type: 2}
-  poolManager: {fileID: 11400000, guid: baebfac5b535afc4b9f1753c62a2bd78, type: 2}
-  poolItem: {fileID: 11400000, guid: ca979f3db450fcb43a6fe68358af316d, type: 2}
-  travelDuration: 1.32
-  curveOffset: 0.52
-  shots:
-  - CurveAngle: 0
-    AimAngle: 0
-    Delay: 0
-  health: 2
+  m_EditorClassIdentifier: Assembly-CSharp::CHG._02.Script.CombatSystem.HitFeedback.HitStopManager
+  feedbackChannel: {fileID: 11400000, guid: f655ca2e4a0efb44284ea0fa4bb81f21, type: 2}

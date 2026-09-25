@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Grade: 0
   Health: 10
-  Weight: 3
-  JumpPower: 100
+  Weight: 3.52
+  JumpPower: 25.6
   Skills:
   - Skill: {fileID: 11400000, guid: ab5b95f8cea53ad4d96580edd99c8c7e, type: 2}
     Priority: 0
@@ -24,6 +24,7 @@ MonoBehaviour:
     Priority: 6
     Conditions:
     - {fileID: 11400000, guid: 1d30d13e316fbf64ea8a7f8d4b7e8259, type: 2}
+  DamageMultiplier: 1
   Sprite: {fileID: 0}
   Price: 5
   CanLunge: 1

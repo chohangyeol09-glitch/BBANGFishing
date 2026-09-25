@@ -251,6 +251,7 @@ public override void Dead()
 | `Target` | `GameObject` | `Boss.OnSpawn` |
 | `State` | `BossStateEnum` (`Appear, Combat, Groggy, Dead`) | 루트 노드가 메시지로 대입 |
 | `StateChannel` | `BossStateChannel : EventChannel<BossStateEnum>` | **에셋 할당하지 않음** (§3-5) |
+| `AnimationChannel` | `AnimationChannel : EventChannel<HashDataSO>` | **에셋 할당하지 않음** (§3-5). `EnemyRenderer.BindChannel`이 `Boss.OnSpawn`에서 구독하고, 그래프 노드와 `AbstractEnemySkill`(경고 → 실행 애니메이션, 스킬이 끝나거나 끊기면 `PlayIdle()`로 `IDLE`)이 보낸다. 스킬 종료 시 보낸 idle은 다음 상태 가지의 `Send`(예: 그로기 애니메이션)가 한 업데이트 뒤에 덮어쓴다. 물고기 그래프도 같은 이름·타입으로 가지고 있다 |
 | `AppearDuration`, `GroggyDuration` | `float` | `Boss.OnSpawn`이 `BossDataSO` 값을 복사 (`Wait` 노드가 링크해서 씀) |
 
 `Self`는 에디터 기본 변수(`GameObject`)다. **`SetVariableValue("Self", boss)`는 타입이 달라 조용히 무시되니 `"Boss"`를 쓴다** (실제로 이 실수로 `UseSkillAction`이 계속 `Failure`였다).
