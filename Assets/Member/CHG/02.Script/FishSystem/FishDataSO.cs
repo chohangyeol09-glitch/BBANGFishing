@@ -1,8 +1,13 @@
-﻿using CHG._02.Script.CoreSystem;
+﻿using System;
+using CHG._02.Script.CombatSystem.EnemySkillSystem;
+using CHG._02.Script.CoreSystem;
+using DevLib.AnimatorSystem;
 using UnityEngine;
 
 namespace CHG._02.Script.FishSystem
 {
+    
+    
     [CreateAssetMenu(fileName = "Fish data", menuName = "CHG/Fish/Fish data", order = 0)]
     public class FishDataSO : ScriptableObject
     {
@@ -11,8 +16,9 @@ namespace CHG._02.Script.FishSystem
         public float Weight;
         public float JumpPower;
 
-        public Sprite Sprite;
+        public SkillEntry[] Skills;
         
+        public Sprite Sprite;
         public int Price;
 
         [Header("Lunge")]

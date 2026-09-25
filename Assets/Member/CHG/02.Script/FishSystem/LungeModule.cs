@@ -16,22 +16,33 @@ namespace CHG._02.Script.FishSystem
         public GameObject Target { get; set; }
 
         public bool HasLunged => _used;
+        public bool IsFlying => _phase != Phase.Idle;
+        public bool IsApproaching => _phase == Phase.Approach;
+        public bool IsReturning => _phase == Phase.Return;
 
-        public bool IsParryable => _fish.State == FishStateEnum.Lunge && Target != null &&
-            Vector3.Distance(_body.position, Target.transform.position) <= _fish.Data.ParryRange; //일정 거리 안 일때 패링 가능
-        
+        public bool IsParryable => _phase == Phase.Approach && Target != null &&
+                                   Vector3.Distance(_body.position, Target.transform.position) <=
+                                   _fish.Data.ParryRange; //일정 거리 안 일때 패링 가능
+
         public Vector3 FlightVelocity => _flightVelocity + Physics.gravity * Mathf.Min(_elapsed, _flightDuration);
 
+        private enum Phase
+        {
+            Idle,
+            Approach,
+            Return
+        }
 
-         private Fish _fish;
-         private Transform _body; 
-         private Rigidbody _rb;
-         private bool _used;
-         private Vector3 _seaPoint; //Sea에 닿은 지점. 되돌아갈 곳
-         private Vector3 _flightStart;
-         private Vector3 _flightVelocity;
-         private float _flightDuration;
-         private float _elapsed;
+        private Fish _fish;
+        private Transform _body;
+        private Rigidbody _rb;
+        private bool _used;
+        private Vector3 _seaPoint; //Sea에 닿은 지점. 되돌아갈 곳
+        private Vector3 _flightStart;
+        private Vector3 _flightVelocity;
+        private float _flightDuration;
+        private float _elapsed;
+        private Phase _phase;
 
         public void Initialize(ModuleOwner owner)
         {
@@ -50,11 +61,11 @@ namespace CHG._02.Script.FishSystem
             if (_fish != null) _fish.OnDeath -= HandleDeath;
         }
 
-        public void StartLunge() 
+        public void StartLunge()
         {
             Debug.Log("Lunge");
             if (_used || Target == null || _fish.IsDead) return;
-            
+
             Debug.Log("Lunge Success");
             _used = true;
 
@@ -63,7 +74,7 @@ namespace CHG._02.Script.FishSystem
             Vector3 arrival = target.position + target.forward * _fish.Data.LungeFrontDistance
                                               + Vector3.up * _fish.Data.LungeHeightOffset;
 
-            BeginFlight(FishStateEnum.Lunge, arrival, _fish.Data.LungeFlightTime);
+            BeginFlight(Phase.Approach, arrival, _fish.Data.LungeFlightTime);
             OnLungeStart?.Invoke();
         }
 
@@ -74,13 +85,13 @@ namespace CHG._02.Script.FishSystem
             _fish.TakeDamage(data);
             OnParried?.Invoke();
             Debug.Log("Parry Success");
-            if (!_fish.IsDead) BeginFlight(FishStateEnum.Return, _seaPoint, _fish.Data.ReturnFlightTime);
+            if (!_fish.IsDead) BeginFlight(Phase.Return, _seaPoint, _fish.Data.ReturnFlightTime);
             return true;
         }
 
-        private void BeginFlight(FishStateEnum state, Vector3 destination, float duration)
+        private void BeginFlight(Phase phase, Vector3 destination, float duration)
         {
-            _fish.ChangeState(state);
+            _phase = phase;
             _flightDuration = Mathf.Max(duration, 0.01f);
             _elapsed = 0f;
             _flightStart = _body.position;
@@ -93,7 +104,7 @@ namespace CHG._02.Script.FishSystem
 
         private void Update()
         {
-            if (_fish.State != FishStateEnum.Lunge && _fish.State != FishStateEnum.Return) return;
+            if (_phase == Phase.Idle) return;
 
             _elapsed += Time.deltaTime;
             _body.position = PhysicsUtil.BallisticPosition(_flightStart, _flightVelocity,
@@ -101,10 +112,10 @@ namespace CHG._02.Script.FishSystem
 
             if (_elapsed < _flightDuration) return;
 
-            if (_fish.State == FishStateEnum.Lunge)
+            if (_phase == Phase.Approach)
             {
                 // 도착까지 패링이 없다면 되돌아간다
-                BeginFlight(FishStateEnum.Return, _seaPoint, _fish.Data.ReturnFlightTime);
+                BeginFlight(Phase.Return, _seaPoint, _fish.Data.ReturnFlightTime);
                 return;
             }
 
@@ -114,16 +125,22 @@ namespace CHG._02.Script.FishSystem
 
         private void HandleDeath()
         {
-            if (_fish.State == FishStateEnum.Lunge || _fish.State == FishStateEnum.Return) EndFlight(true);
-        }
+            if (_phase != Phase.Idle) EndFlight(true);
+        }   
 
-        
+
         private void EndFlight(bool keepVelocity)
         {
             Vector3 velocity = keepVelocity ? _flightVelocity + Physics.gravity * _elapsed : Vector3.zero;
-            _fish.ChangeState(FishStateEnum.Combat);
+            _phase = Phase.Idle;
             _rb.isKinematic = false;
             _rb.linearVelocity = velocity;
+        }
+
+        public void ResetLunge()
+        {
+            _phase = Phase.Idle;
+            _used = false;
         }
     }
 }

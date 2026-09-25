@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using CHG._02.Script.FishSystem;
 using UnityEngine;
 
 public class FishInventoryManager : MonoBehaviour
@@ -45,7 +46,7 @@ public class FishInventoryManager : MonoBehaviour
     {
         FindSlots();
 
-        ResetUIState();
+        //ResetUIState();
     }
 
 
@@ -109,7 +110,7 @@ public class FishInventoryManager : MonoBehaviour
                 Debug.LogWarning(
                     $"{row.name}에 FishInventorySlot이 " +
                     $"{foundSlotCount}개 있습니다. " +
-                    $"현재 설정은 한 줄당 {slotsPerRow}칸입니다."
+                    $"현재 한 줄당 설정은 {slotsPerRow}칸입니다."
                 );
             }
         }
@@ -121,28 +122,26 @@ public class FishInventoryManager : MonoBehaviour
     }
 
 
-    public bool AddFish(FishSO fish)
+    // FishDataSO의 기본 무게 그대로 넣기
+    public bool AddFish(FishDataSO fishData)
     {
-        if (fish == null)
+        if (fishData == null)
             return false;
 
 
-        float randomWeight =
-            fish.GetRandomWeight();
-
-
         return AddFish(
-            fish,
-            randomWeight
+            fishData,
+            fishData.Weight
         );
     }
 
 
+    // 실제 잡힌 무게를 지정해서 넣기
     public bool AddFish(
-        FishSO fish,
+        FishDataSO fishData,
         float weight)
     {
-        if (fish == null)
+        if (fishData == null)
             return false;
 
 
@@ -172,12 +171,14 @@ public class FishInventoryManager : MonoBehaviour
 
         FishInventoryItem newItem =
             new FishInventoryItem(
-                fish,
+                fishData,
                 weight
             );
 
 
-        inventory.Add(newItem);
+        inventory.Add(
+            newItem
+        );
 
 
         emptySlot.SetItem(
@@ -186,8 +187,8 @@ public class FishInventoryManager : MonoBehaviour
 
 
         Debug.Log(
-            $"{fish.FishName} 추가 / " +
-            $"{weight:0.0}kg / " +
+            $"{newItem.FishName} 추가 / " +
+            $"{newItem.Weight:0.0}kg / " +
             $"{newItem.Price}원"
         );
 
@@ -219,8 +220,6 @@ public class FishInventoryManager : MonoBehaviour
     }
 
 
-    // 인벤토리를 열거나 닫을 때
-    // 부가 UI들을 처음 상태로 초기화
     public void ResetUIState()
     {
         if (tooltipUI != null)

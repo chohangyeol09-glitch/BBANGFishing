@@ -2,7 +2,9 @@ using System;
 using CHG._02.Script.Agents;
 using CHG._02.Script.CombatSystem;
 using CHG._02.Script.CombatSystem.BT.Channel;
+using CHG._02.Script.CombatSystem.EnemySkillSystem;
 using CHG._02.Script.CoreSystem;
+using DevLib.ObjectPool.Runtime;
 using Unity.Behavior;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -10,12 +12,18 @@ using UnityEngine.InputSystem;
 namespace CHG._02.Script.FishSystem
 {
     [RequireComponent(typeof(BehaviorGraphAgent))]
-    public class Fish : Agent, IParryable
+    public class Fish : Agent, IParryable, ISkillEntrySource, IPoolable
     {
         public FishStateEnum State { get; private set; } = FishStateEnum.Jump;
         public BehaviorGraphAgent BTAgent { get; private set; }
         public bool IsInSea { get; private set; } = false;
+        [field:SerializeField] public PoolItemSO PoolItem { get; set; }
+        public GameObject GameObject => this != null ? this.gameObject : null;
+        public bool HasStartedFalling { get; private set; }
+        
         public override float MaxHealth => Data.Health;
+        public SkillEntry[] SkillEntries => Data.Skills;
+        
         [field:SerializeField] public FishDataSO Data { get; private set; }
 
         [SerializeField] private bool isKnockBack = true;
@@ -30,7 +38,9 @@ namespace CHG._02.Script.FishSystem
         private FishFacingModule _facingModule;
         private Rigidbody _rb;
         private bool _hasRisen; //처음에 올라갔는가
-
+        private PoolManagerSO _poolManager;
+        private bool _released;
+        private StateChannel _stateChannel;
 
         protected override void InitializeModules()
         {
@@ -45,14 +55,18 @@ namespace CHG._02.Script.FishSystem
 
         }
         
-        public void OnSpawn(Vector3 pullForce, GameObject target)
+        public void OnSpawn(Vector3 pullForce, GameObject target, PoolManagerSO poolManager)
         {
+            _poolManager = poolManager;
             _rb.mass = Data.Weight;
             _rb.linearVelocity = Vector3.zero;
             _rb.angularVelocity = Vector3.zero;
             CurrentHealth = MaxHealth;
+            
             BTAgent.SetVariableValue("Fish", this);
             BTAgent.SetVariableValue("Target", target);
+            BindStateChannel();
+            BTAgent.Restart();
             
             _lunge.Target = target;
 
@@ -77,8 +91,8 @@ namespace CHG._02.Script.FishSystem
                 _hasRisen = true;
                 return;
             }
-            
-            if (_hasRisen) ChangeState(FishStateEnum.Combat);
+
+            if (_hasRisen) HasStartedFalling = true;
         }
 
         public bool TryParry(DamageData data) => _lunge != null && _lunge.TryParry(data);
@@ -86,13 +100,15 @@ namespace CHG._02.Script.FishSystem
         public override void Dead()
         {
             base.Dead();   
-            ChangeState(FishStateEnum.Dead);
+            SendState(FishStateEnum.Dead);
         }
 
         private void OnDestroy()
         {
             if (isKnockBack)
                 OnDamaged -= OnKnockBack;
+            if (_stateChannel != null)
+                _stateChannel.Event -= HandleStateChanged;
         }
 
         private void OnKnockBack(DamageData data)
@@ -114,20 +130,68 @@ namespace CHG._02.Script.FishSystem
                 IsInSea = true;
             }
         }
-
-        public void ChangeState(FishStateEnum newState)
+        
+        public void ResetItem()
         {
-            if (State == FishStateEnum.Dead || State == newState) return;
+            State = FishStateEnum.Jump;
+            IsInSea = false;
+            _hasRisen = false;
+            _released = false;
+            HasStartedFalling = false;
+
+            _rb.isKinematic = false;
+            _rb.linearVelocity = Vector3.zero;
+            _rb.angularVelocity = Vector3.zero;
+            _lunge.ResetLunge();
+        }
+
+        public void ReleaseToPool()
+        {
+            if (_released) return;
+            _released = true;
+
+            EnemySkillModule skillModule = GetModule<EnemySkillModule>();
+            if (skillModule != null && skillModule.CurrentSkill != null)
+                skillModule.CurrentSkill.StopSkill();
+
+            if (_poolManager == null)
+            {
+                Destroy(gameObject);
+                return;
+            }
             
-            State = newState;
-            BTAgent.SetVariableValue("State", State);
-            if (BTAgent.GetVariable("StateChannel", out BlackboardVariable<StateChannel> channel))
-                channel.Value.SendEventMessage(newState);
-            else
-                Debug.LogWarning("State Channel not found");
+            _poolManager.Push(this);
         }
 
         public void ConsumeSeaTouch() => IsInSea = false;
+
+        private void BindStateChannel()
+        {
+            if (_stateChannel == null)
+            {
+                if (!BTAgent.GetVariable("StateChannel", out BlackboardVariable<StateChannel> channel) ||
+                    channel.Value == null)
+                {
+                    Debug.LogWarning("Channel not found");
+                    return;
+                }
+
+                _stateChannel = channel.Value;
+            }
+
+            _stateChannel.Event -= HandleStateChanged;
+            _stateChannel.Event += HandleStateChanged;
+        }
+
+        private void HandleStateChanged(FishStateEnum newState) => State = newState;
+
+        public void SendState(FishStateEnum newState)
+        {
+            if (_stateChannel != null) _stateChannel.SendEventMessage(newState);
+        }
+        
+        
+        
 #if UNITY_EDITOR
         [Header("Test")]
         [SerializeField] private float testUpSpeed = 8f;
@@ -142,8 +206,10 @@ namespace CHG._02.Script.FishSystem
                 bool parried = TryParry(data);
                 Debug.Log($"parry success? : {parried}");
             }
+            
+            if (Keyboard.current.hKey.wasPressedThisFrame)
+                TakeDamage(new DamageData(this, transform.position, Vector3.up, Vector3.up, 4f, 0f));
         }
 #endif
-
     }
 }

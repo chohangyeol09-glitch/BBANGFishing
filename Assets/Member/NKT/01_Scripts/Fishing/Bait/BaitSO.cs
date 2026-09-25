@@ -26,6 +26,7 @@ namespace NKT.Fishing.Bait
 
         public BaitGrade grade;
         public ShopItemRarity rarity;
+        public int price;
 
         public int maxUses = 1;
         public bool isInfinite => maxUses <= 0;
@@ -36,6 +37,27 @@ namespace NKT.Fishing.Bait
         public FishDataSO bossFishData;
 
         [Header("필요한물고기")]
-        public FishDataSO[] fishesToBuy;
+        public FishDataSO fishesToBuy;
+        
+        public Grade PickGrade()
+        {
+            float total = 0f;
+            foreach (GradeWeight w in weights)
+                total += w.weight;
+
+            if (total <= 0f) return Grade.Common;
+
+            float roll = UnityEngine.Random.Range(0f, total);
+
+            foreach (GradeWeight w in weights)
+            {
+                if (w.weight <= 0f) continue;
+
+                roll -= w.weight;
+                if (roll <= 0f) return w.grade;
+            }
+
+            return Grade.Common;
+        }
     }
 }

@@ -12,24 +12,20 @@ namespace CHG._02.Script.CombatSystem.BT.Action
     {
         [SerializeReference] public BlackboardVariable<Fish> Fish;
 
+        private LungeModule _lunge;
         protected override Status OnStart()
         {
             if (Fish.Value == null) return Status.Failure;
+            _lunge = Fish.Value.GetModule<LungeModule>();
         
-            LungeModule lunge = Fish.Value.GetModule<LungeModule>();
-            if (lunge == null) return Status.Failure;
+            if (_lunge == null) return Status.Failure;
         
             Fish.Value.ConsumeSeaTouch();
-            lunge.StartLunge();
-            return Status.Running;
+            _lunge.StartLunge();
+            return _lunge.IsApproaching ? Status.Running : Status.Failure;
         }
 
-        protected override Status OnUpdate()
-        {
-            return Fish.Value.State == FishStateEnum.Lunge || Fish.Value.State == FishStateEnum.Return
-                ? Status.Running
-                : Status.Success;
-        }
+        protected override Status OnUpdate() => _lunge.IsApproaching ? Status.Running : Status.Success;
     }
 }
 
