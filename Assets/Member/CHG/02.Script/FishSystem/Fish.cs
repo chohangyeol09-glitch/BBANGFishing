@@ -6,19 +6,23 @@ using CHG._02.Script.CombatSystem.EnemySkillSystem;
 using CHG._02.Script.CoreSystem;
 using DevLib.ObjectPool.Runtime;
 using Unity.Behavior;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using IPoolable = DevLib.ObjectPool.Runtime.IPoolable;
 
 namespace CHG._02.Script.FishSystem
 {
     [RequireComponent(typeof(BehaviorGraphAgent))]
-    public class Fish : Agent, IParryable, ISkillEntrySource, IPoolable
+    public class Fish : Agent, IParryable, ISkillEntrySource, IPoolable, IDamageMultiplier
     {
         public FishStateEnum State { get; private set; } = FishStateEnum.Jump;
         public BehaviorGraphAgent BTAgent { get; private set; }
         public bool IsInSea { get; private set; } = false;
         [field:SerializeField] public PoolItemSO PoolItem { get; set; }
         public GameObject GameObject => this != null ? this.gameObject : null;
+        public float DamageMultiplier => Data.DamageMultiplier;
+        
         public bool HasStartedFalling { get; private set; }
         
         public override float MaxHealth => Data.Health;

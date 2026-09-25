@@ -11,6 +11,7 @@ namespace CHG._02.Script.CombatSystem.EnemySkillSystem
         
         public Agent Owner { get; private set; }
         public bool IsUsing { get; private set; }
+        
         [field: SerializeField] public EnemySkillDataSO Data { get; private set; }
         public float NormalizedCooldown
         {
@@ -20,13 +21,17 @@ namespace CHG._02.Script.CombatSystem.EnemySkillSystem
                 return Mathf.Clamp01(1f - (Time.time - _lastUsedTime) / Data.skillCoolTime);
             }
         }
-            
+        
+        protected float SkillDamage => Data.Damage * (_damageMultiplier != null ? _damageMultiplier.DamageMultiplier : 1f);
+
+        private IDamageMultiplier _damageMultiplier; 
         private float _lastUsedTime = float.NegativeInfinity;
         private Coroutine _routine;
 
         public virtual void InitSkill(Agent owner)
         {
             Owner = owner;
+            _damageMultiplier = owner as IDamageMultiplier;
         }
         
         public virtual bool CanUseSkill(GameObject target = null)
@@ -56,7 +61,7 @@ namespace CHG._02.Script.CombatSystem.EnemySkillSystem
             CleanUpSkillData();
         }
 
-        //강제 종료(StopSkill)로 끊겼을 때 하위 스킬이 정리할 게 있으면 override (정상 종료에서는 호출되지 않음)
+        //StopSkill로 끊겼을 때 하위 스킬이 정리할 게 있으면 override
         protected virtual void OnStopped() { }
         
         private void CleanUpSkillData()

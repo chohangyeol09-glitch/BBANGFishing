@@ -20,6 +20,9 @@ namespace CHG._02.Script.Test
             _groggy = boss.GetModule<GroggyModule>();
             boss.OnStateChanged += state => Debug.Log($"보스 상태: {state}");
             _groggy.OnGaugeChanged += value => Debug.Log($"Gauge: {value}");
+            PatternBreakModule breakModule = boss.GetModule<PatternBreakModule>();
+            breakModule.OnBreakProgress += value => Debug.Log($"파훼 진행: {value:P0}");
+            breakModule.OnPatternBroken += () => Debug.Log("패턴 파훼!");
             boss.OnSpawn(target);
         }
 

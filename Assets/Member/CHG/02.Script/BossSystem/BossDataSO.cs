@@ -8,6 +8,7 @@ namespace CHG._02.Script.BossSystem
     {
         public float Health;
         public SkillEntry[] Skills;
+        public float DamageMultiplier = 1f;
 
         public float AppearDuration = 1f; //등장 연출 시간
 

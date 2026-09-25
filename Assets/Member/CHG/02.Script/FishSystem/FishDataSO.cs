@@ -17,6 +17,7 @@ namespace CHG._02.Script.FishSystem
         public float JumpPower;
 
         public SkillEntry[] Skills;
+        public float DamageMultiplier = 1f;
         
         public Sprite Sprite;
         public int Price;

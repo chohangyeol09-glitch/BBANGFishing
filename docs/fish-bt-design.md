@@ -211,7 +211,7 @@ public override void Dead()
 - [x] **검증** (사용자가 실행해서 확인): 스폰 → Jump → 낙하 시 Combat → 스킬 발사, 패링 성공 시 정상 복귀, 런지 도중 사망 처리, 풀에서 재사용해도 Jump부터 정상 동작
 - [x] `CLAUDE.md`의 "Behavior graph" / "Object pooling" / "Fish" 항목을 새 구조로 갱신
 
-**물고기 그래프 마이그레이션 완료.** 남은 후속 작업: 실제 죽음 연출을 `Dead` 카드에 추가, 재사용 시 스킬 쿨타임 초기화(필요할 때), 보스(`BossSystem`)를 같은 패턴으로 옮기기.
+**물고기 그래프 마이그레이션 완료.** 남은 후속 작업: 실제 죽음 연출을 `Dead` 카드에 추가, 재사용 시 스킬 쿨타임 초기화(필요할 때). 보스는 같은 패턴으로 옮겨졌다(§11).
 
 ---
 
@@ -227,7 +227,7 @@ public override void Dead()
 2. 노드는 `Fish`(또는 `Boss`)를 받아 **모듈을 호출만** 한다. 지속되는 행동은 `Running`, 끝나면 `Success`, 시작 못 하면 `Failure`.
 3. `OnEnd`에서 진행 중인 것을 정리한다.
 
-**보스**: 같은 패턴을 쓴다. `BossStateEnum`(`Appear/Combat/Groggy/Dead` …)을 `[BlackboardEnum]`으로 두고 `BossStateChannel`을 만든다. 현재 `Boss.cs`/`GroggyModule.cs`의 C# `ChangeState`는 이 문서의 원칙(내부 흐름 전이는 BT, 외부 사건만 C#)에 맞게 옮겨야 한다. 단, 그로기 진입 같은 **외부 사건(게이지 누적)** 은 C#이 채널로 보내도 된다.
+**보스**: 같은 패턴으로 만들어져 있다. 구조와 규칙은 §11을 볼 것.
 
 ---
 
@@ -236,3 +236,76 @@ public override void Dead()
 - PDF 06·07에는 **피격/사망 상태를 채널로 보내는 방법**과 **애니메이션 채널 서브그래프의 상세**가 나오지 않는다(`Agent.OnHit/OnDeath`만 선언). 이 문서의 "외부 사건은 C#이 채널로 보낸다"는 부분은 PDF가 아니라 이 프로젝트에서의 설계 판단이다.
 - (확인됨) 한 그래프에 시작점이 두 개(`On Start`, `On StateChannel`) 있는 구성은 저장된 `Fish BT.asset`에서 두 시작점이 **최상위 `ParallelAll` 아래로 묶여** 저장되는 것으로 확인했다. 즉 에디터가 자동으로 병렬 실행하도록 컴파일한다. 다만 `On Start`가 보낸 첫 `Jump` 메시지를 `On StateChannel`이 받는 것은 실행해서 확인해야 한다.
 - 에디터의 노드/옵션 표기(`Pass If`, `Fail If`, Abort 옵션 이름 등)는 소스와 스크린샷 기준이라 실제 화면과 조금 다를 수 있다.
+
+---
+
+## 11. 보스 그래프 (`BossSystem`, `CHG/03.GameModule/Boss BT.asset`)
+
+물고기와 같은 패턴이다. 보스는 런지/점프/바다가 없고, 등장 → 일정 간격 패턴 공격 → (그로기) → 사망 흐름만 있다. 사용자가 플레이 모드에서 등장, 스킬 사용, 그로기(스킬 중단 포함), 패턴 파훼, 사망까지 동작을 확인했다(2026-09-25).
+
+### 11.1 블랙보드
+
+| 변수 | 타입 | 누가 채우나 |
+|---|---|---|
+| `Boss` | `Boss` | `Boss.OnSpawn` |
+| `Target` | `GameObject` | `Boss.OnSpawn` |
+| `State` | `BossStateEnum` (`Appear, Combat, Groggy, Dead`) | 루트 노드가 메시지로 대입 |
+| `StateChannel` | `BossStateChannel : EventChannel<BossStateEnum>` | **에셋 할당하지 않음** (§3-5) |
+| `AppearDuration`, `GroggyDuration` | `float` | `Boss.OnSpawn`이 `BossDataSO` 값을 복사 (`Wait` 노드가 링크해서 씀) |
+
+`Self`는 에디터 기본 변수(`GameObject`)다. **`SetVariableValue("Self", boss)`는 타입이 달라 조용히 무시되니 `"Boss"`를 쓴다** (실제로 이 실수로 `UseSkillAction`이 계속 `Failure`였다).
+
+### 11.2 그래프
+
+```
+[On Start]
+ └ Send "Appear" change on StateChannel
+
+[On StateChannel (Restart)]   Assign State to → 블랙보드 State (링크)
+ └ Switch [State]
+     ├ Appear → ( Wait [AppearDuration] → Log → Send "Combat" )
+     ├ Combat → Repeat → UseSkillAction ([Agent] = Boss, [Target] = Target)
+     ├ Groggy → ( Wait [GroggyDuration] → [Boss] reset groggy → Log → Send "Combat" )
+     └ Dead   → ( Log "보스 사망" )          ← 죽음 연출은 여기에 추가
+```
+
+- **`On StateChannel`의 Mode는 반드시 `Restart`.** `Default`면 자식이 실행 중일 때 온 메시지를 버린다. `Appear` 카드 안의 `Send "Combat"`이 무시되고 `Switch`가 끝난 뒤 영원히 대기하는 증상이 실제로 났다.
+- `Repeat`는 `Combat` 가지에만 있다. 나머지는 한 번 실행 후 `Send`하거나(`Appear`, `Groggy`) 그대로 머문다(`Dead`).
+- `UseSkillAction`의 빨간 X는 쿨타임 중이면 정상이다(`Repeat`가 매 프레임 재시도).
+
+### 11.3 C#과 BT의 책임 분담
+
+| 전이 | 누가 보내나 | 이유 |
+|---|---|---|
+| (시작) → `Appear` | 그래프 `On Start` | 초기 상태 |
+| `Appear` → `Combat`, `Groggy` → `Combat` | 그래프 (`Wait` 뒤 `Send`) | 그래프 안의 흐름 |
+| `Combat` → `Groggy` | **C#** `GroggyModule.AddGroggy` (게이지가 찼을 때 `Boss.SendState`) | 데미지/파훼라는 **외부 사건**. 그래프에서 `Pass If`로 검사하면 `UseSkillAction`이 `Running`인 동안 검사되지 않아 스킬 도중에 그로기가 걸리지 않는다 |
+| → `Dead` | **C#** `Boss.Dead()` → `SendState(Dead)` | 외부 사건 |
+
+- `Boss.State`는 `Fish.State`처럼 채널을 구독해서 따라가는 읽기용 복사본이다(`BindStateChannel`/`HandleStateChanged`, `OnStateChanged` 이벤트도 여기서 발생). C#은 블랙보드 `State`를 직접 쓰지 않는다.
+- `Boss.OnSpawn`: `Boss`/`Target`/두 대기 시간 설정 → `BindStateChannel()` → `BTAgent.Restart()`. 스폰 전에 그래프가 한 번 돌며(`AppearDuration` 기본값 0) `Appear`를 즉시 통과하는 가짜 실행이 있지만, `Restart()`가 처음부터 다시 시작하므로 실제 등장 대기는 정상이다.
+- 메시지가 오면 루트가 실행 중인 가지를 끝내므로, `Groggy`/`Dead` 진입 시 `UseSkillAction.OnEnd`가 `StopSkill()`을 부른다. 이미 발사된 투사체는 회수하지 않는다.
+
+### 11.4 그로기 (`GroggyModule`)
+
+- 게이지는 `OnDamaged`에서 `Damage × damageToGroggy`만큼, 그리고 외부에서 `AddGroggy(amount)`로 쌓인다.
+- `State == Combat`이고 아직 차지 않았을 때만 쌓인다(등장/그로기/사망 중 무시). 보스를 죽인 공격은 `Dead()`가 먼저 실행되어 쌓이지 않는다.
+- 가득 차면 `SendState(Groggy)`. 게이지는 그래프의 `ResetGroggyAction`(`[Boss] reset groggy`)이 그로기 끝에 비운다. **`Send "Combat"`은 카드의 마지막 줄**에 둔다.
+- `BossDataSO`: `GroggyMaxGauge`, `GroggyDuration`.
+
+### 11.5 패턴 파훼 (`PatternBreakModule`)
+
+- 파훼 가능한 스킬은 `BossDataSO.BreakableSkills` (`BreakableSkillEntry { Skill(HashDataSO), BreakDamage, GroggyAmount }`)에 둔다. Fish와 공유하는 `EnemySkillDataSO`에는 넣지 않는다.
+- 보스가 목록의 스킬을 쓰는 동안(`EnemySkillModule.CurrentSkill`, **경고 시간 포함**) 받은 데미지를 누적한다. 기준 이상이면 `CurrentSkill.StopSkill()` → `OnPatternBroken` → `GroggyModule.AddGroggy(GroggyAmount)` 순서로 처리한다(`StopSkill`을 먼저 해야 그로기 전이와 섞이지 않는다).
+- 파훼는 상태 전이가 아니다. `Combat`에 머물고, `UseSkillAction`은 `CurrentSkill == null`을 보고 `Success`로 끝나 다음 스킬로 넘어간다. 파훼된 스킬도 쿨타임은 정상적으로 돈다.
+- 누적은 `EnemySkillModule.OnSkillEnd`(정상/강제 종료 모두)에서 초기화된다. UI용으로 `OnBreakProgress`(0~1)를 낸다.
+- 데미지 종류는 구분하지 않는다. "파훼 스킬로 준 데미지만 인정"이 필요해지면 공용 `DamageData`를 건드리지 않는 방식으로 따로 설계한다.
+
+### 11.6 남은 작업
+
+- [ ] `Boss.OnSpawn`의 `BTAgent.SetVariableValue("State", BossStateEnum.Appear)` 줄 삭제 (§11.3: C#은 `State`를 쓰지 않는다)
+- [ ] `UseSkillAction.OnStart`의 디버그 로그(`UseSkill 실패: …`) 삭제
+- [ ] 테스트용으로 바꾼 값(`GroggyDuration`, 스킬 `WarningTime`, `BreakDamage`) 정리
+- [ ] (선택) 스폰 전 가짜 실행 제거: `BehaviorGraphAgent`를 꺼 두고 `OnSpawn`에서 `enabled = true` 후 `Restart()` — 실행 검증 필요
+- [ ] `Dead` 가지의 실제 죽음 연출, 그로기 연출/애니메이션
+- [ ] 이후 기능: 페이즈(우선 `HPBelowCondition` + `Priority`로), 오라 트랙, 약점 타격 인터럽트

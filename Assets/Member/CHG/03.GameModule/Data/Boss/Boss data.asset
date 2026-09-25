@@ -14,13 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CHG._02.Script.BossSystem.BossDataSO
   Health: 100
   Skills:
-  - Skill: {fileID: 11400000, guid: ab5b95f8cea53ad4d96580edd99c8c7e, type: 2}
-    Priority: 0
-    Conditions: []
   - Skill: {fileID: 11400000, guid: 26579476780121b428f0be819d2da418, type: 2}
     Priority: 0
     Conditions: []
   AppearDuration: 1
   GroggyMaxGauge: 100
   GroggyDuration: 5.36
-  BreakableSkills: []
+  BreakableSkills:
+  - Skill: {fileID: 11400000, guid: 26579476780121b428f0be819d2da418, type: 2}
+    BreakDamage: 30
+    GroggyAmount: 40
