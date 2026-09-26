@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72b3615496b4496b8e367a37dbff523b, type: 3}
+  m_Name: Boss data
+  m_EditorClassIdentifier: Assembly-CSharp::CHG._02.Script.BossSystem.BossDataSO
+  Health: 100
+  Skills:
+  - Skill: {fileID: 11400000, guid: 09e15d0e00b73cc49a72fea677d2208d, type: 2}
+    Priority: 0
+    Conditions: []
+  DamageMultiplier: 1
+  AppearDuration: 1
+  GroggyMaxGauge: 100
+  GroggyDuration: 5.36
+  BreakableSkills:
+  - Skill: {fileID: 11400000, guid: 09e15d0e00b73cc49a72fea677d2208d, type: 2}
+    BreakDamage: 30
+    GroggyAmount: 40

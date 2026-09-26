@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 414ab46cf2744bd0966e1e95ac0aaf9f, type: 3}
+  m_Name: MultiCurveShot Skill Data
+  m_EditorClassIdentifier: Assembly-CSharp::CHG._02.Script.CombatSystem.EnemySkillSystem.EnemySkillDataSO
+  SkillIdHash: {fileID: 11400000, guid: 95c4ad4eb49474d41a1c21b6d6b474a8, type: 2}
+  SkillAnimHash: {fileID: 11400000, guid: c4424e535cc23ea4ab8a2a357239ed78, type: 2}
+  WarningAnimHash: {fileID: 0}
+  SkillType: 0
+  Damage: 2
+  WarningTime: 0
+  skillCoolTime: 6
+  moduleCoolTimeOffset: 2
+  ignoreModuleCoolTime: 0

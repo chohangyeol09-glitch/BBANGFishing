@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using CHG._02.Script.CombatSystem.EnemySkillSystem;
 using CHG._02.Script.CoreSystem;
+using DevLib.ObjectPool.Runtime;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -12,6 +13,8 @@ namespace CHG._02.Script.FishSystem
         [SerializeField] private Transform spawnPoint;
         [SerializeField] private bool allowDowngrade;
         [SerializeField] private GameObject attackTarget;
+        [SerializeField] private PoolManagerSO poolManager;
+        
         
         public Fish TrySpawnFish(Grade grade, Vector3 pullForce)
         {
@@ -63,9 +66,21 @@ namespace CHG._02.Script.FishSystem
 
         private Fish SpawnFish(Fish prefab, Vector3 pullForce)
         {
-            Fish fish = Instantiate(prefab, spawnPoint.position, Quaternion.identity);
-
-            fish.OnSpawn(pullForce, attackTarget);
+            if (prefab.PoolItem == null)
+            {
+                Debug.LogError($"pool Item is null : {prefab.name}");
+                return null;
+            }
+            
+            Fish fish = poolManager.Pop<Fish>(prefab.PoolItem);
+            if (fish == null)
+            {
+                Debug.LogError($"this fish is not pool manager registration : {prefab.name}");
+                return null;
+            }
+            
+            fish.transform.SetPositionAndRotation(spawnPoint.position, Quaternion.identity);
+            fish.OnSpawn(pullForce, attackTarget, poolManager);
             return fish;
         }
         
