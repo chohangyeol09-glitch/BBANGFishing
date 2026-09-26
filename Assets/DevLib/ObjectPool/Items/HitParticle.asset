@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: HitParticle
   m_EditorClassIdentifier: PoolRuntime::DevLib.ObjectPool.Runtime.PoolItemSO
   poolingName: HitParticle
-  prefab: {fileID: 733796508447000643, guid: 6969c88584af38e4f94867d8a70ef5e9, type: 3}
+  prefab: {fileID: 5217556604530811527, guid: 761e8f0965a557243a8f461c58799255, type: 3}
   initCount: 5

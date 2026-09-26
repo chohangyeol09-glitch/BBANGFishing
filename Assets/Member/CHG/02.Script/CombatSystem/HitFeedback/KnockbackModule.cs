@@ -43,7 +43,7 @@ namespace CHG._02.Script.CombatSystem.HitFeedback
             Vector3 dir = data.HitDirection.normalized;
             if (dir.y > 0f) dir.y *= upMultiplier;
 
-            _rb.AddForceAtPosition(dir * impulse, data.HitPoint, ForceMode.Impulse);
+            _rb.AddForce(dir * impulse, ForceMode.Impulse);
         }
     }
 }

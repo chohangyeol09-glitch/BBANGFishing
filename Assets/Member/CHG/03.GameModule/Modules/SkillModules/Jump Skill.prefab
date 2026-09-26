@@ -44,5 +44,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bf930b08e119244881008045f5d16ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CHG._02.Script.CombatSystem.EnemySkillSystem.Skills.JumpSkill
-  <Data>k__BackingField: {fileID: 11400000, guid: ee39ac5dc073c55478a3170b867de154, type: 2}
+  <Data>k__BackingField: {fileID: 11400000, guid: 95e5dec18d8811f4e844f15715fcfef9, type: 2}
   jumpHeight: 2

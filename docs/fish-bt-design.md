@@ -193,6 +193,7 @@ public override void Dead()
 8. **`On StateChannel (Restart)` 노드의 `Assign State to …`는 반드시 블랙보드 `State` 변수에 링크한다** (링크 아이콘을 눌러 `State` 선택). 드롭다운에 `Jump` 같은 값이 보이면 링크가 안 된 상수라서 메시지의 값이 블랙보드에 들어가지 않고, `Switch`가 항상 처음 값의 가지만 실행한다. 저장된 에셋에서는 `LinkedVariable: rid: -2`(링크 없음)로 보인다. PDF 스크린샷에서는 이 칸에 `State`라는 변수 이름이 표시된다.
 9. C#이 `_phase`처럼 자기 상태를 갖는 모듈(`LungeModule`)은 **그 값을 실제로 세팅하는지**를 확인한다. 값을 읽는 프로퍼티(`IsFlying` 등)만 만들고 세팅을 빠뜨리면 항상 `Idle`로 보여서 모듈이 아무것도 하지 않는다.
 10. 노드 story의 단어가 블랙보드 변수 이름과 같으면 그 변수가 자동 연결된다. 새 변수를 원하면 다른 이름을 쓴다 (예: 블랙보드에 `State`가 있으니 노드 필드는 `NewState`).
+11. `AnimationChannel`로 보내는 애니메이션 `Send`는 **`Repeat` 안에 두지 않는다.** `Repeat` 안의 노드는 매 프레임(또는 스킬이 끝날 때마다) 다시 실행되므로, `Combat` 카드에 `Send "Play Idle"`을 넣었을 때 스킬이 보낸 `SPIN`이 같은 순간 덮여서 보이지 않았다. 상태에 들어갈 때 한 번 재생할 애니메이션은 `Sequence [Send 애니메이션, Repeat …]`처럼 `Repeat` 위에 둔다. 보내는 해시마다 그 오너의 Animator에 같은 이름의 상태가 있어야 한다 (없으면 "Animator.GotoState: State could not be found"만 찍히고 재생되지 않는다).
 
 ---
 
@@ -239,7 +240,7 @@ public override void Dead()
 
 ---
 
-## 11. 보스 그래프 (`BossSystem`, `CHG/03.GameModule/Boss BT.asset`)
+## 11. 보스 그래프 (`BossSystem`, `CHG/03.GameModule/Data/Boss/Boss BT.asset`)
 
 물고기와 같은 패턴이다. 보스는 런지/점프/바다가 없고, 등장 → 일정 간격 패턴 공격 → (그로기) → 사망 흐름만 있다. 사용자가 플레이 모드에서 등장, 스킬 사용, 그로기(스킬 중단 포함), 패턴 파훼, 사망까지 동작을 확인했다(2026-09-25).
 
@@ -251,7 +252,7 @@ public override void Dead()
 | `Target` | `GameObject` | `Boss.OnSpawn` |
 | `State` | `BossStateEnum` (`Appear, Combat, Groggy, Dead`) | 루트 노드가 메시지로 대입 |
 | `StateChannel` | `BossStateChannel : EventChannel<BossStateEnum>` | **에셋 할당하지 않음** (§3-5) |
-| `AnimationChannel` | `AnimationChannel : EventChannel<HashDataSO>` | **에셋 할당하지 않음** (§3-5). `EnemyRenderer.BindChannel`이 `Boss.OnSpawn`에서 구독하고, 그래프 노드와 `AbstractEnemySkill`(경고 → 실행 애니메이션, 스킬이 끝나거나 끊기면 `PlayIdle()`로 `IDLE`)이 보낸다. 스킬 종료 시 보낸 idle은 다음 상태 가지의 `Send`(예: 그로기 애니메이션)가 한 업데이트 뒤에 덮어쓴다. 물고기 그래프도 같은 이름·타입으로 가지고 있다 |
+| `AnimationChannel` | `AnimationChannel : EventChannel<HashDataSO>` | **에셋 할당하지 않음** (§3-5). `EnemyRenderer.BindChannel`이 `Boss.OnSpawn`에서 구독하고, 그래프 노드와 `AbstractEnemySkill`(경고 → 실행 애니메이션)이 보낸다. 정상 종료 후 `IDLE` 복귀는 Animator의 Exit Time 전환이 맡고, `StopSkill()`로 끊겼을 때만 코드가 `PlayIdle()`을 보낸다. 이 idle은 다음 상태 가지의 `Send`(예: 그로기 애니메이션)가 한 업데이트 뒤에 덮어쓴다. 물고기 그래프도 같은 이름·타입으로 가지고 있다 |
 | `AppearDuration`, `GroggyDuration` | `float` | `Boss.OnSpawn`이 `BossDataSO` 값을 복사 (`Wait` 노드가 링크해서 씀) |
 
 `Self`는 에디터 기본 변수(`GameObject`)다. **`SetVariableValue("Self", boss)`는 타입이 달라 조용히 무시되니 `"Boss"`를 쓴다** (실제로 이 실수로 `UseSkillAction`이 계속 `Failure`였다).

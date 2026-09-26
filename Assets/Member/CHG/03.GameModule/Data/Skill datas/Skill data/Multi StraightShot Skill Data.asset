@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 414ab46cf2744bd0966e1e95ac0aaf9f, type: 3}
   m_Name: Multi StraightShot Skill Data
   m_EditorClassIdentifier: Assembly-CSharp::CHG._02.Script.CombatSystem.EnemySkillSystem.EnemySkillDataSO
-  SkillIdHash: {fileID: 11400000, guid: 26579476780121b428f0be819d2da418, type: 2}
+  SkillIdHash: {fileID: 11400000, guid: 09e15d0e00b73cc49a72fea677d2208d, type: 2}
   SkillAnimHash: {fileID: 11400000, guid: 26579476780121b428f0be819d2da418, type: 2}
   WarningAnimHash: {fileID: 0}
   SkillType: 0

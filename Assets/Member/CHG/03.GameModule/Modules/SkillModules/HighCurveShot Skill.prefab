@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4125037696645921423
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3084362650916664355}
+  - component: {fileID: 261755523075595281}
+  m_Layer: 0
+  m_Name: HighCurveShot Skill
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3084362650916664355
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4125037696645921423}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &261755523075595281
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4125037696645921423}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62c61da0af264ecfbd21520c6501ad70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CHG._02.Script.CombatSystem.EnemySkillSystem.Skills.CurvedProjectileSkill
+  <Data>k__BackingField: {fileID: 11400000, guid: 0506d907383bbe2479be3a115e6b81f6, type: 2}
+  poolManager: {fileID: 11400000, guid: baebfac5b535afc4b9f1753c62a2bd78, type: 2}
+  poolItem: {fileID: 11400000, guid: ca979f3db450fcb43a6fe68358af316d, type: 2}
+  travelDuration: 1.32
+  curveOffset: 1.63
+  shots:
+  - CurveAngle: -30
+    AimAngle: 0
+    Delay: 0
+  - CurveAngle: 0
+    AimAngle: 0
+    Delay: 0
+  - CurveAngle: 30
+    AimAngle: 0
+    Delay: 0
+  health: 2

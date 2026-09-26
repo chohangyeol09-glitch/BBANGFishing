@@ -74,17 +74,16 @@ namespace CHG._02.Script.CombatSystem.EnemySkillSystem
         {
             if (_routine != null) StopCoroutine(_routine);
             OnStopped();
+            if (_renderer != null) _renderer.PlayIdle();
             CleanUpSkillData();
         }
 
-        //StopSkill로 끊겼을 때 하위 스킬이 정리할 게 있으면 override
         protected virtual void OnStopped() { }
         
         private void CleanUpSkillData()
         {
             _lastUsedTime = Time.time;
             IsUsing = false;
-            if (_renderer != null) _renderer.PlayIdle();
             OnSkillEnd?.Invoke(this);
         }
 

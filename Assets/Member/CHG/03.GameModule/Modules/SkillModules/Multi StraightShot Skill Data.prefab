@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2406e836d73e40428fdb17abfc8b0f10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CHG._02.Script.CombatSystem.EnemySkillSystem.Skills.StraightProjectileSkill
-  <Data>k__BackingField: {fileID: 11400000, guid: 2084110c06f28174bbf282529f6d7363, type: 2}
+  <Data>k__BackingField: {fileID: 11400000, guid: 2e25b2601404fdc48b725f629e2008eb, type: 2}
   poolManager: {fileID: 11400000, guid: baebfac5b535afc4b9f1753c62a2bd78, type: 2}
   poolItem: {fileID: 11400000, guid: aaab9069c946481439209b897ca5d8a8, type: 2}
   speed: 2
