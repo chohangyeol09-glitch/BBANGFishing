@@ -94,6 +94,7 @@ namespace NKT.Fishing.Rob
 
             transform.rotation = Quaternion.identity;
             OnLanded?.Invoke();
+            bobberParticle.Stop();
         }
     }
 }

@@ -14,8 +14,6 @@ namespace NKT.Fishing.MiniGame
         private void Awake()
         {
             fishingModule.OnStateChanged += OnStateChanged;
-            fishingModule.OnReelPressed += OnPressed;
-            fishingModule.OnReelReleased += OnReleased;
     
             foreach (ReelMiniGameBase game in miniGames)
             {
@@ -29,8 +27,6 @@ namespace NKT.Fishing.MiniGame
             if (fishingModule != null)
             {
                 fishingModule.OnStateChanged -= OnStateChanged;
-                fishingModule.OnReelPressed -= OnPressed;
-                fishingModule.OnReelReleased -= OnReleased;
             }
     
             foreach (ReelMiniGameBase game in miniGames)
@@ -69,9 +65,6 @@ namespace NKT.Fishing.MiniGame
             End();
             fishingModule.ReportReelFinished(success);
         }
-    
-        private void OnPressed() => _current?.OnPressed();
-        private void OnReleased() => _current?.OnReleased();
     
         private ReelMiniGameBase PickGame()
         {
