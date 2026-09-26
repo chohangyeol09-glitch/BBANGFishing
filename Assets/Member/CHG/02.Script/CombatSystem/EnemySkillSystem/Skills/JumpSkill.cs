@@ -21,8 +21,13 @@ namespace CHG._02.Script.CombatSystem.EnemySkillSystem.Skills
         {
             if (_rb == null || _rb.isKinematic) yield break;
 
-            float upSpeed = PhysicsUtil.SpeedForHeight(jumpHeight);
+            float gravityScale = Owner is IGravityScaled scaled ? scaled.GravityScale : 1f;
+            float upSpeed = PhysicsUtil.SpeedForHeight(jumpHeight) * Mathf.Sqrt(gravityScale); 
             _rb.AddForce(Vector3.up * (upSpeed - _rb.linearVelocity.y), ForceMode.VelocityChange);
+
+            WaitForFixedUpdate wait = new WaitForFixedUpdate();
+            while (!_rb.isKinematic && _rb.linearVelocity.y > 0f)
+                yield return wait;
         }
     }
 }

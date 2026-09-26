@@ -15,7 +15,7 @@ using IPoolable = DevLib.ObjectPool.Runtime.IPoolable;
 namespace CHG._02.Script.FishSystem
 {
     [RequireComponent(typeof(BehaviorGraphAgent))]
-    public class Fish : Agent, IParryable, ISkillEntrySource, IPoolable, IDamageMultiplier, IKnockbackGate
+    public class Fish : Agent, IParryable, ISkillEntrySource, IPoolable, IDamageMultiplier, IKnockbackGate, IGravityScaled
     {
         public FishStateEnum State { get; private set; } = FishStateEnum.Jump;
         public BehaviorGraphAgent BTAgent { get; private set; }
@@ -48,7 +48,7 @@ namespace CHG._02.Script.FishSystem
         private StateChannel _stateChannel;
         private HitFeedbackModule _hitFeedback;
 
-        private float GravityScale => 1f / (airTimeScale * airTimeScale); 
+        public float GravityScale => 1f / (airTimeScale * airTimeScale); 
 
         protected override void InitializeModules()
         {
