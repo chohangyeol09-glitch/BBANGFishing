@@ -11,6 +11,8 @@ namespace Member.JJK._02._Scripts.Weapon
         [SerializeField] private Transform muzzleTrm;
         [SerializeField] private CinemachineImpulseSource impulseSource;
         [SerializeField] private float shakeForce = 1f;
+        
+        private DurabilityRuntimeState Durability => _weaponController.DurabilityState;
 
         private WeaponController _weaponController;
         private WeaponSO _weaponData;
@@ -23,7 +25,6 @@ namespace Member.JJK._02._Scripts.Weapon
         {
             _weaponController = owner.GetComponent<WeaponController>();
             _weaponData = _weaponController.WeaponData;
-            _durabilityState = _weaponController.DurabilityState;
             _aimModule = owner.GetModule<AimModule>();
             _tracerModule = owner.GetModule<BulletTracerModule>();
         }
@@ -39,8 +40,8 @@ namespace Member.JJK._02._Scripts.Weapon
 
             if (_weaponData.IsUnbreakable) return;
 
-            _durabilityState.Consume(1);
-            if (_durabilityState.IsBroken)
+            Durability.Consume(1);
+            if (Durability.IsBroken)
                 _weaponController.Break();
         }
 
