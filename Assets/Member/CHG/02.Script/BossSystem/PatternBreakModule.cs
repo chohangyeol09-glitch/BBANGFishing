@@ -36,16 +36,16 @@ namespace CHG._02.Script.BossSystem
 
         private void OnDestroy()
         {
-            if (_boss == null)
-                _boss.OnDamaged += HandleDamaged;
+            if (_boss != null)
+                _boss.OnDamaged -= HandleDamaged;
             if (_skillModule != null)
-                _skillModule.OnSkillEnd += HandleSkillEnd;
+                _skillModule.OnSkillEnd -= HandleSkillEnd;
         }
 
         private void HandleDamaged(DamageData data)
         {
             AbstractEnemySkill skill = _skillModule.CurrentSkill;
-            if (skill == null || _boss.IsDead || _boss.State != BossStateEnum.Combat) return;
+            if (skill == null || !skill.IsWarning || _boss.IsDead || _boss.State != BossStateEnum.Combat) return;
 
             if (_current == null)
             {

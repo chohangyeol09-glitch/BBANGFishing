@@ -25,55 +25,113 @@ public class FishingRodShopCard : MonoBehaviour
     [SerializeField]
     private Button buyButton;
 
+    [SerializeField]
+    private TMP_Text buyButtonText;
+
+
+    [Header("잠금 오버레이")]
+    [SerializeField]
+    private GameObject lockOverlay;
+
 
     private FishingRobSO rodData;
+    private BuyPageManager buyPageManager;
+    private int rodIndex;
+
+    private bool isUnlocked;
+    private bool isPurchased;
 
 
-    public void Setup(FishingRobSO rod)
+    public int RodIndex => rodIndex;
+
+
+    public void Setup(
+        FishingRobSO rod,
+        int index,
+        BuyPageManager manager)
     {
         if (rod == null)
             return;
 
-
         rodData = rod;
-
+        rodIndex = index;
+        buyPageManager = manager;
 
         if (rodImage != null)
         {
-            rodImage.sprite =
-                rod.rodSprite;
+            rodImage.sprite = rod.rodSprite;
         }
-
 
         if (rodNameText != null)
         {
-            rodNameText.text =
-                rod.rodName;
+            rodNameText.text = rod.rodName;
         }
-
 
         if (rarityText != null)
         {
-            rarityText.text =
-                GetRarityText(rod.rarity);
+            rarityText.text = GetRarityText(rod.rarity);
         }
-
 
         if (priceText != null)
         {
-            priceText.text =
-                rod.price.ToString() + "$ 구매";
+            int price = Mathf.RoundToInt(rod.price);
+            priceText.text = $"{price:N0}원";
         }
-
 
         if (buyButton != null)
         {
             buyButton.onClick.RemoveAllListeners();
-
-            buyButton.onClick.AddListener(
-                Buy
-            );
+            buyButton.onClick.AddListener(OnClickBuy);
         }
+    }
+
+
+    public void RefreshState(bool unlocked, bool purchased)
+    {
+        isUnlocked = unlocked;
+        isPurchased = purchased;
+
+        if (lockOverlay != null)
+        {
+            lockOverlay.SetActive(!isUnlocked);
+        }
+
+        if (buyButton != null)
+        {
+            buyButton.interactable =
+                isUnlocked && !isPurchased;
+        }
+
+        if (buyButtonText != null)
+        {
+            if (!isUnlocked)
+            {
+                buyButtonText.text = "잠금";
+            }
+            else if (isPurchased)
+            {
+                buyButtonText.text = "구매 완료";
+            }
+            else
+            {
+                buyButtonText.text = "구매";
+            }
+        }
+    }
+
+
+    private void OnClickBuy()
+    {
+        if (buyPageManager == null)
+            return;
+
+        buyPageManager.TryBuyRod(rodIndex);
+    }
+
+
+    public FishingRobSO GetRodData()
+    {
+        return rodData;
     }
 
 
@@ -83,31 +141,18 @@ public class FishingRodShopCard : MonoBehaviour
         switch (rarity)
         {
             case ShopItemRarity.Common:
-                return "Common 낚싯대";
+                return "Common";
 
             case ShopItemRarity.Rare:
-                return "Rare 낚싯대";
+                return "Rare";
 
             case ShopItemRarity.Epic:
-                return "Epic 낚싯대";
+                return "Epic";
 
             case ShopItemRarity.Legendary:
-                return "Legendary 낚싯대";
+                return "Legendary";
         }
 
-
         return "";
-    }
-
-
-    private void Buy()
-    {
-        if (rodData == null)
-            return;
-
-
-        Debug.Log(
-            $"{rodData.rodName} 구매 버튼 클릭"
-        );
     }
 }

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9c7ea7f77fcf4d2e952d07abf37167f0, type: 3}
-  m_Name: Test Fish data
+  m_Name: Fish 5
   m_EditorClassIdentifier: 
   Grade: 0
   Health: 10

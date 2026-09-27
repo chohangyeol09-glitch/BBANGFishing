@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70d3910e65194f2f9ff5545954952db1, type: 3}
   m_Name: HP below
   m_EditorClassIdentifier: Assembly-CSharp::CHG._02.Script.CombatSystem.EnemySkillSystem.SkillConditions.HPBelowCondition
-  percent: 0.3
+  percent: 0.5

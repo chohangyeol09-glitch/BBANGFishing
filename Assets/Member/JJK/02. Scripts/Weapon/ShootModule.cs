@@ -52,7 +52,7 @@ namespace Member.JJK._02._Scripts.Weapon
             if (Physics.Raycast(ray, out RaycastHit hit, 100f))
             {
                 tracerEndPoint = hit.point;
-                ApplyDamage(hit.collider);
+                ApplyDamage(hit, ray.direction);
                 SpawnImpactVfx(hit.point, hit.normal);
             }
             else
@@ -65,10 +65,13 @@ namespace Member.JJK._02._Scripts.Weapon
             SpawnMuzzleFlash();
         }
 
-        private void ApplyDamage(Collider hitCollider)
+        private void ApplyDamage(RaycastHit hit, Vector3 shotDirection)
         {
-            IDamageable damageable = hitCollider.GetComponentInParent<IDamageable>();
-            //damageable?.TakeDamage(_weaponController.CurrentDamage); //DamageData
+            IDamageable damageable = hit.collider.GetComponentInParent<IDamageable>();
+            if (damageable == null || damageable.IsDead) return;
+
+            damageable.TakeDamage(new DamageData(_weaponController, hit.point, hit.normal, shotDirection,
+                _weaponController.CurrentDamage, _weaponController.WeaponData.KnockbackPower));
         }
 
         private void SpawnMuzzleFlash()

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CHG._02.Script.BossSystem.BossDataSO
   Health: 100
   Skills:
-  - Skill: {fileID: 11400000, guid: 09e15d0e00b73cc49a72fea677d2208d, type: 2}
+  - Skill: {fileID: 11400000, guid: 1627242ce8813214db4fab2626f9c194, type: 2}
     Priority: 0
     Conditions: []
   DamageMultiplier: 1

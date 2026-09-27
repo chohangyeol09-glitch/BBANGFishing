@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using CHG._02.Script.FishSystem;
 using UnityEngine;
@@ -42,11 +43,12 @@ public class FishInventoryManager : MonoBehaviour
         slots.Count;
 
 
+    public event Action OnInventoryChanged;
+
+
     private void Awake()
     {
         FindSlots();
-
-        //ResetUIState();
     }
 
 
@@ -109,21 +111,15 @@ public class FishInventoryManager : MonoBehaviour
             {
                 Debug.LogWarning(
                     $"{row.name}에 FishInventorySlot이 " +
-                    $"{foundSlotCount}개 있습니다. " +
-                    $"현재 한 줄당 설정은 {slotsPerRow}칸입니다."
+                    $"{foundSlotCount}개 있습니다."
                 );
             }
         }
-
-
-        Debug.Log(
-            $"물고기 인벤토리 슬롯 발견 : {slots.Count}개"
-        );
     }
 
 
-    // FishDataSO의 기본 무게 그대로 넣기
-    public bool AddFish(FishDataSO fishData)
+    public bool AddFish(
+        FishDataSO fishData)
     {
         if (fishData == null)
             return false;
@@ -136,7 +132,6 @@ public class FishInventoryManager : MonoBehaviour
     }
 
 
-    // 실제 잡힌 무게를 지정해서 넣기
     public bool AddFish(
         FishDataSO fishData,
         float weight)
@@ -145,21 +140,7 @@ public class FishInventoryManager : MonoBehaviour
             return false;
 
 
-        if (slots.Count == 0)
-        {
-            Debug.LogWarning(
-                "물고기 인벤토리 슬롯이 없습니다."
-            );
-
-            return false;
-        }
-
-
-        FishInventorySlot emptySlot =
-            FindEmptySlot();
-
-
-        if (emptySlot == null)
+        if (inventory.Count >= slots.Count)
         {
             Debug.Log(
                 "물고기 인벤토리가 가득 찼습니다."
@@ -181,9 +162,10 @@ public class FishInventoryManager : MonoBehaviour
         );
 
 
-        emptySlot.SetItem(
-            newItem
-        );
+        RefreshSlots();
+
+
+        OnInventoryChanged?.Invoke();
 
 
         Debug.Log(
@@ -197,26 +179,97 @@ public class FishInventoryManager : MonoBehaviour
     }
 
 
-    private FishInventorySlot FindEmptySlot()
+    public bool RemoveFish(
+        FishInventoryItem fish)
+    {
+        if (fish == null)
+            return false;
+
+
+        bool removed =
+            inventory.Remove(
+                fish
+            );
+
+
+        if (!removed)
+            return false;
+
+
+        RefreshSlots();
+
+
+        ResetUIState();
+
+
+        OnInventoryChanged?.Invoke();
+
+
+        return true;
+    }
+
+
+    public void RemoveFishes(
+        IReadOnlyList<FishInventoryItem> fishes)
+    {
+        if (fishes == null)
+            return;
+
+
+        bool removedAny = false;
+
+
+        for (int i = 0;
+             i < fishes.Count;
+             i++)
+        {
+            if (inventory.Remove(fishes[i]))
+            {
+                removedAny = true;
+            }
+        }
+
+
+        if (!removedAny)
+            return;
+
+
+        RefreshSlots();
+
+
+        ResetUIState();
+
+
+        OnInventoryChanged?.Invoke();
+    }
+
+
+    private void RefreshSlots()
     {
         for (int i = 0;
              i < slots.Count;
              i++)
         {
-            if (!slots[i].HasItem)
-            {
-                return slots[i];
-            }
+            slots[i].Clear();
         }
 
 
-        return null;
+        for (int i = 0;
+             i < inventory.Count &&
+             i < slots.Count;
+             i++)
+        {
+            slots[i].SetItem(
+                inventory[i]
+            );
+        }
     }
 
 
     public bool IsFull()
     {
-        return FindEmptySlot() == null;
+        return inventory.Count >=
+               slots.Count;
     }
 
 
