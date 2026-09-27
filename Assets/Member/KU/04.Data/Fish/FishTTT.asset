@@ -14,8 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CHG._02.Script.FishSystem.FishDataSO
   Grade: 0
   Health: 0
-  Weight: 0
+  Weight: 10
   JumpPower: 0
+  Skills: []
+  DamageMultiplier: 1
   Sprite: {fileID: 21300000, guid: 1b389153fafdd5547aa14802375741ce, type: 3}
   Price: 30
   CanLunge: 0
