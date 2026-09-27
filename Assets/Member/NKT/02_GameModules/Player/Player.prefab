@@ -850,6 +850,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FishingRenderer
       objectReference: {fileID: 0}
+    - target: {fileID: 5296341701353160907, guid: 43fc56ffbc2a3424886f8ee05be43920, type: 3}
+      propertyPath: reelAnim
+      value: 
+      objectReference: {fileID: 11400000, guid: 6bd533b43d0778240b9eb28b40aae66b, type: 2}
     - target: {fileID: 7666316025300093058, guid: 43fc56ffbc2a3424886f8ee05be43920, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1281,19 +1285,45 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3506138368610051022, guid: 5a4fa9d409cbf9d48a6b97e282240e0e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3627864517041417932}
   m_SourcePrefab: {fileID: 100100000, guid: 5a4fa9d409cbf9d48a6b97e282240e0e, type: 3}
 --- !u!114 &816758606299138097 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8420674851210240687, guid: 5a4fa9d409cbf9d48a6b97e282240e0e, type: 3}
   m_PrefabInstance: {fileID: 9190028838204582558}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 5702054985871198544}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f77dc3019a704974a1796902aa0ef7f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NKT.Fishing.Rob.Bobber
+--- !u!1 &5702054985871198544 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3506138368610051022, guid: 5a4fa9d409cbf9d48a6b97e282240e0e, type: 3}
+  m_PrefabInstance: {fileID: 9190028838204582558}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3627864517041417932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5702054985871198544}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 938128e80ac64324b7275b0173ec19a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NKT.Fishing.Rob.BobberProduct
+  bobber: {fileID: 816758606299138097}
+  biteParticle: {fileID: 0}
+  bobCount: 2
+  bobDepth: 0.25
+  bobDuration: 0.3
+  bobIntervalRange: {x: 0.15, y: 0.3}
 --- !u!4 &8527537159462398298 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 711128197847352260, guid: 5a4fa9d409cbf9d48a6b97e282240e0e, type: 3}
