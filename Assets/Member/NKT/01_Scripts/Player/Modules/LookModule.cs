@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace NKT.Player.Modules
 {
-    public class LookModule : MonoBehaviour, IModule
+    public class LookModule : MonoBehaviour, IModule, IRecoilReceiver
     {
         [SerializeField] private Transform lookTarget;
         [SerializeField] private GameObject playerBody;
@@ -50,6 +50,12 @@ namespace NKT.Player.Modules
             _cameraTransform.localRotation = Quaternion.Euler(_pitch, _yaw, 0f);
 
             _lookDelta = Vector2.zero;
+        }
+
+        public void AddRecoil(Vector2 recoil)
+        {
+            _yaw = Mathf.Clamp(_yaw + recoil.x, -pitchXLimit, pitchXLimit);
+            _pitch = Mathf.Clamp(_pitch - recoil.y, -pitchUpLimit, pitchDownLimit);
         }
     }
 }

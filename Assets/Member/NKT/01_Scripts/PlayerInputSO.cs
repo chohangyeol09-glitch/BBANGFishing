@@ -13,6 +13,8 @@ namespace NKT
         public Action OnAttackReleased;
         public Action OnInteractChange;
         public Action OnInputLocked;
+        public Action<bool> OnAimChanged;
+        public Action OnInputUnlocked;
       
         private Controls _control;
         private Camera _mainCam;
@@ -72,6 +74,12 @@ namespace NKT
                 OnInteractChange?.Invoke();
         }
 
+        public void OnAim(InputAction.CallbackContext context)
+        {
+            if (context.performed) OnAimChanged?.Invoke(true);
+            else if (context.canceled) OnAimChanged?.Invoke(false);
+        }
+
         public void PushLock()
         {
             _lockCount++;
@@ -90,6 +98,7 @@ namespace NKT
             _lockCount = Mathf.Max(0, _lockCount - 1);
             if (_lockCount > 0) return;
             
+            OnInputUnlocked?.Invoke();
             _control.UI.Disable();
             _control.Player.Enable();
             

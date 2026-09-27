@@ -63,8 +63,9 @@ namespace NKT.Player.Modules
             charger.OnCharged += OnCharged;
             charger.OnValueChanged += OnChargeValueChanged;
             charger.OnChargeCanceled += OnChargeCanceled;
-            
-            _bobberObject.OnLanded += ReportCastLanded;
+
+            _robEquip.OnRobChanged += BindBobber;
+            BindBobber();
         }
 
         private void OnDestroy()
@@ -75,7 +76,19 @@ namespace NKT.Player.Modules
             charger.OnValueChanged -= OnChargeValueChanged;
             charger.OnChargeCanceled -= OnChargeCanceled;
             
+            _robEquip.OnRobChanged -= BindBobber;
             _bobberObject.OnLanded -= ReportCastLanded;
+        }
+        
+        private void BindBobber()
+        {
+            if (_bobberObject != null)
+                _bobberObject.OnLanded -= ReportCastLanded;
+
+            _bobberObject = _robEquip.CurrentBobber;
+
+            if (_bobberObject != null)
+                _bobberObject.OnLanded += ReportCastLanded;
         }
 
         public void OnAttackPressed()
