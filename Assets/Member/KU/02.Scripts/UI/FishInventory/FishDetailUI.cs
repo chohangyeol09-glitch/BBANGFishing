@@ -22,6 +22,9 @@ public class FishDetailUI : MonoBehaviour
     private TMP_Text weightText;
 
     [SerializeField]
+    private TMP_Text fishContentText;
+
+    [SerializeField]
     private TMP_Text gradeText;
 
     [SerializeField]
@@ -66,6 +69,12 @@ public class FishDetailUI : MonoBehaviour
         {
             weightText.text =
                 $"{item.Weight:0.0}kg";
+        }
+
+        if (fishContentText != null)
+        {
+            fishContentText.text =
+                item.FishContent;
         }
 
 
