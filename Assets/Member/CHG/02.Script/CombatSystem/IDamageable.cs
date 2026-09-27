@@ -4,7 +4,7 @@ namespace CHG._02.Script.CombatSystem
 {
     public interface IDamageable
     {
-        public event Action OnDeaded;
+        public event Action OnDeath;
         public event Action<DamageData> OnDamaged;
         
         public float CurrentHealth { get; }

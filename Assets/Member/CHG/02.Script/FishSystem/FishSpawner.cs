@@ -1,4 +1,7 @@
 ﻿using System.Collections.Generic;
+using CHG._02.Script.CombatSystem.EnemySkillSystem;
+using CHG._02.Script.CoreSystem;
+using DevLib.ObjectPool.Runtime;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -9,16 +12,19 @@ namespace CHG._02.Script.FishSystem
         [SerializeField] private FishSpawnListSO fishSpawnList;
         [SerializeField] private Transform spawnPoint;
         [SerializeField] private bool allowDowngrade;
+        [SerializeField] private GameObject attackTarget;
+        [SerializeField] private PoolManagerSO poolManager;
         
-        public Fish TrySpawnFish(Grade grade)
+        
+        public Fish TrySpawnFish(Grade grade, Vector3 pullForce)
         {
             if (!TryPickFish(grade, out Fish prefab))
             {
-                Debug.LogError($"Failed to pick Fish : {gameObject.name}");
+                Debug.LogError($"Failed to pick Fish : {fishSpawnList.name}");
                 return null;
             }
 
-            return SpawnFish(prefab);
+            return SpawnFish(prefab, pullForce);
         }
 
         private bool TryPickFish(Grade grade, out Fish prefab)
@@ -28,7 +34,7 @@ namespace CHG._02.Script.FishSystem
             List<FishSpawnListSO.Entry> fishs;
             while (!fishSpawnList.TryGetFish(grade, out fishs))
             {
-                if (allowDowngrade || grade == Grade.Common) return false;
+                if (!allowDowngrade || grade == Grade.Common) return false;
                 grade--;
             }
 
@@ -58,11 +64,25 @@ namespace CHG._02.Script.FishSystem
             return true;
         }
 
-        private Fish SpawnFish(Fish prefab)
+        private Fish SpawnFish(Fish prefab, Vector3 pullForce)
         {
-            Fish fish = Instantiate(prefab, spawnPoint.position, Quaternion.identity);
-            fish.OnSpawn();
+            if (prefab.PoolItem == null)
+            {
+                Debug.LogError($"pool Item is null : {prefab.name}");
+                return null;
+            }
+            
+            Fish fish = poolManager.Pop<Fish>(prefab.PoolItem);
+            if (fish == null)
+            {
+                Debug.LogError($"this fish is not pool manager registration : {prefab.name}");
+                return null;
+            }
+            
+            fish.transform.SetPositionAndRotation(spawnPoint.position, Quaternion.identity);
+            fish.OnSpawn(pullForce, attackTarget, poolManager);
             return fish;
         }
+        
     }
 }

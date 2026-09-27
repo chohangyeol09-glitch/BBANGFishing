@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94a2ddd8ba28464dbff889cf8506b8e1, type: 3}
+  m_Name: _Fish PoolManager
+  m_EditorClassIdentifier: PoolRuntime::DevLib.ObjectPool.Runtime.PoolManagerSO
+  itemList:
+  - {fileID: 11400000, guid: aaab9069c946481439209b897ca5d8a8, type: 2}
+  - {fileID: 11400000, guid: ca979f3db450fcb43a6fe68358af316d, type: 2}
+  - {fileID: 11400000, guid: ad200067cc1ea54499d176d4cabbdf95, type: 2}
+  - {fileID: 11400000, guid: aa7e7aac4aad53d458fdab84ea1dd1f0, type: 2}
+  - {fileID: 11400000, guid: 9971554f1e67a5148be353a9bcc2d512, type: 2}
+  - {fileID: 11400000, guid: fbfa25f5f92d3f049bdf83e051de92d7, type: 2}

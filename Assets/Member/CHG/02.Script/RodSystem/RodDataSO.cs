@@ -1,4 +1,5 @@
 ﻿using System;
+using CHG._02.Script.CoreSystem;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -7,7 +8,8 @@ namespace CHG._02.Script.RodSystem
     [CreateAssetMenu(fileName = "rod data", menuName = "CHG/Rod/Rod data", order = 0)]
     public class RodDataSO : ScriptableObject
     {
-        [SerializeField] private float[] gradeWeight = new float[Enum.GetValues(typeof(Grade)).Length];
+        [SerializeField, Min(0f)] private float[] gradeWeight = new float[Enum.GetValues(typeof(Grade)).Length];
+        [field: SerializeField] public float PullPower { get; private set; } = 10;
 
         private void OnValidate()
         {

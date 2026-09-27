@@ -7,7 +7,7 @@ namespace CHG._02.Script.Agents
 {
     public abstract class Agent : ModuleOwner, IDamageable
     {
-        public event Action OnDeaded;
+        public event Action OnDeath;
         public event Action<DamageData> OnDamaged;
         
         public float CurrentHealth
@@ -43,12 +43,14 @@ namespace CHG._02.Script.Agents
         
         public void Heal(float heal)
         {
+            if (IsDead) return;
+            
             CurrentHealth += heal;
         }
 
         public virtual void Dead()
         {
-            OnDeaded?.Invoke();
+            OnDeath?.Invoke();
         }
     }
 }

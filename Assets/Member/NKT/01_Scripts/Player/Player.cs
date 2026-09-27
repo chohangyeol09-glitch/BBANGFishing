@@ -1,14 +1,11 @@
-using System;
-using DevLib.AnimatorSystem;
-using DevLib.ModuleSystem;
+using CHG._02.Script.CombatSystem;
 using NKT.Agent;
 using NKT.Player.Modules;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace NKT.Player
 {
-    public class Player : ModuleOwner
+    public class Player : CHG._02.Script.Agents.Agent
     {
         public LookModule Look { get; private set; }
         public IRenderer Renderer { get; private set; }
