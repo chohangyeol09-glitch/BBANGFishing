@@ -38,8 +38,6 @@ namespace NKT.Player.Modules
 
         public event Action<FishingState> OnStateChanged;
         public event Action<CastAim> OnAimUpdated;   //차징 중 궤도 미리보기용
-        public event Action OnReelPressed;
-        public event Action OnReelReleased;
         
         public FishingState State => _state;
         public Bobber Bobber => bobberObject;
@@ -92,9 +90,6 @@ namespace NKT.Player.Modules
                 case FishingState.Waiting:
                     ChangeState(FishingState.Retrieving);     //회수
                     break;
-                case FishingState.Reeling:
-                    OnReelPressed?.Invoke();
-                    break;
                 case FishingState.Biting:
                     ChangeState(FishingState.Reeling);  //후킹
                     break;
@@ -103,12 +98,6 @@ namespace NKT.Player.Modules
 
         public void OnAttackReleased()
         {
-            if (_state == FishingState.Reeling)
-            {
-                OnReelReleased?.Invoke();
-                return;
-            }
-            
             if (_state != FishingState.Charging) return;
 
             charger.ProgressEnd();
@@ -147,7 +136,7 @@ namespace NKT.Player.Modules
             if(success)
                 SpawnFish();
             
-            ChangeState(FishingState.Idle);
+            ChangeState(FishingState.Retrieving);
         }
 
         //낚시대를 집어넣는 등 중간에 끊을때
