@@ -282,6 +282,17 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &177204295 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6325901303399714952, guid: 23a999d7e1a850e46b298800a7978f41, type: 3}
+  m_PrefabInstance: {fileID: 3624709133590287084}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d67c633e4bdd4cceb440449c3fa34388, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NKT.Fishing.MiniGame.CircleRhythmMiniGame
 --- !u!114 &253495935 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6210770396069389634, guid: 6e5526194db95bd449b6b34bd7f3ee36, type: 3}
@@ -329,7 +340,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5968734593309141945, guid: 0b912e9003fba894faa88cf964a6fb8a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.273
       objectReference: {fileID: 0}
     - target: {fileID: 5968734593309141945, guid: 0b912e9003fba894faa88cf964a6fb8a, type: 3}
       propertyPath: m_LocalPosition.y
@@ -337,7 +348,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5968734593309141945, guid: 0b912e9003fba894faa88cf964a6fb8a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 2.23
       objectReference: {fileID: 0}
     - target: {fileID: 5968734593309141945, guid: 0b912e9003fba894faa88cf964a6fb8a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -481,9 +492,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::NKT.Fishing.Rob.BobberProduct
   bobber: {fileID: 810365560}
   biteParticle: {fileID: 2049642818}
-  bobCount: 6
+  bobCount: 2
   bobDepth: 0.25
   bobDuration: 0.3
+  bobIntervalRange: {x: 0.15, y: 0.3}
 --- !u!1 &1079706896
 GameObject:
   m_ObjectHideFlags: 0
@@ -611,6 +623,17 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
+--- !u!114 &1104820037 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4171293784427530518, guid: a6524fa1907e8da49822b73937e98a6a, type: 3}
+  m_PrefabInstance: {fileID: 4398636210288073655}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e704c20d09d4c8690d83086cb74e482, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NKT.Fishing.MiniGame.SkillCheckMiniGame
 --- !u!1 &1328064542
 GameObject:
   m_ObjectHideFlags: 0
@@ -642,6 +665,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::NKT.Fishing.MiniGame.ReelMiniGameManager
   fishingModule: {fileID: 279734982}
   miniGames:
+  - {fileID: 1993913581}
+  - {fileID: 177204295}
+  - {fileID: 1104820037}
   - {fileID: 365072928}
 --- !u!4 &1328064544
 Transform:
@@ -817,6 +843,17 @@ MonoBehaviour:
   line: {fileID: 1938879909}
   pointCount: 24
   isDebug: 0
+--- !u!114 &1993913581 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8012552281427607621, guid: aaeeb7dd0b702934bbafa338835cb526, type: 3}
+  m_PrefabInstance: {fileID: 5562471918990713801}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5f40c623a554b4da2fada502e3a5d4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NKT.Fishing.MiniGame.TrackingMiniGame
 --- !u!114 &2049575399 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2023191537503031967, guid: ed3e19323a19e044a9e3b04f3169004a, type: 3}
@@ -832,11 +869,6 @@ MonoBehaviour:
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 9102416919201996325, guid: 0b912e9003fba894faa88cf964a6fb8a, type: 3}
   m_PrefabInstance: {fileID: 668815778}
-  m_PrefabAsset: {fileID: 0}
---- !u!224 &2104606402 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 5829595788591520905, guid: a6524fa1907e8da49822b73937e98a6a, type: 3}
-  m_PrefabInstance: {fileID: 4398636210288073655}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1042971888570385938
 PrefabInstance:
@@ -1204,22 +1236,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 168979977586912286, guid: 23a999d7e1a850e46b298800a7978f41, type: 3}
-      propertyPath: m_Color.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 168979977586912286, guid: 23a999d7e1a850e46b298800a7978f41, type: 3}
-      propertyPath: m_Color.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 168979977586912286, guid: 23a999d7e1a850e46b298800a7978f41, type: 3}
-      propertyPath: m_Color.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 722448712343945478, guid: 23a999d7e1a850e46b298800a7978f41, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 43b5a7b71ecd2ee488b056076bf995db, type: 3}
     - target: {fileID: 1122691403944292046, guid: 23a999d7e1a850e46b298800a7978f41, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -1300,17 +1316,33 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1949190152690000619, guid: 23a999d7e1a850e46b298800a7978f41, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1949190152690000619, guid: 23a999d7e1a850e46b298800a7978f41, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1949190152690000619, guid: 23a999d7e1a850e46b298800a7978f41, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1949190152690000619, guid: 23a999d7e1a850e46b298800a7978f41, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6325901303399714952, guid: 23a999d7e1a850e46b298800a7978f41, type: 3}
-      propertyPath: rotationSpeed
-      value: 100
+      propertyPath: startScale
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6325901303399714952, guid: 23a999d7e1a850e46b298800a7978f41, type: 3}
+      propertyPath: targetSize
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 7008100341567274370, guid: 23a999d7e1a850e46b298800a7978f41, type: 3}
       propertyPath: m_Name
       value: CircleRhythmMiniGame Canvas
-      objectReference: {fileID: 0}
-    - target: {fileID: 7008100341567274370, guid: 23a999d7e1a850e46b298800a7978f41, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1329,10 +1361,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SkillCheckMiniGame Canvas
       objectReference: {fileID: 0}
-    - target: {fileID: 356830304578394675, guid: a6524fa1907e8da49822b73937e98a6a, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
+    - target: {fileID: 1004160879818349681, guid: a6524fa1907e8da49822b73937e98a6a, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: e181793cf61ab3c4b85d6a28ed8094e1, type: 3}
     - target: {fileID: 1788250591340936574, guid: a6524fa1907e8da49822b73937e98a6a, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -1413,37 +1445,41 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4171293784427530518, guid: a6524fa1907e8da49822b73937e98a6a, type: 3}
-      propertyPath: needle
+    - target: {fileID: 6415333852547772359, guid: a6524fa1907e8da49822b73937e98a6a, type: 3}
+      propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 2104606402}
-    - target: {fileID: 4188044453974877651, guid: a6524fa1907e8da49822b73937e98a6a, type: 3}
-      propertyPath: m_Color.r
-      value: 0.97211814
+      objectReference: {fileID: 21300000, guid: 46f2c9a60e1eb3242b6211c1e9046fa0, type: 3}
+    - target: {fileID: 6415333852547772359, guid: a6524fa1907e8da49822b73937e98a6a, type: 3}
+      propertyPath: m_PixelsPerUnitMultiplier
+      value: 6.71
       objectReference: {fileID: 0}
-    - target: {fileID: 5604507178898044275, guid: a6524fa1907e8da49822b73937e98a6a, type: 3}
-      propertyPath: m_Color.b
-      value: 0.46296152
+    - target: {fileID: 6797874561200099762, guid: a6524fa1907e8da49822b73937e98a6a, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 200
       objectReference: {fileID: 0}
-    - target: {fileID: 5604507178898044275, guid: a6524fa1907e8da49822b73937e98a6a, type: 3}
-      propertyPath: m_Color.g
-      value: 0.96765494
-      objectReference: {fileID: 0}
-    - target: {fileID: 5604507178898044275, guid: a6524fa1907e8da49822b73937e98a6a, type: 3}
-      propertyPath: m_Color.r
-      value: 0.46296152
+    - target: {fileID: 6797874561200099762, guid: a6524fa1907e8da49822b73937e98a6a, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 6797874561200099762, guid: a6524fa1907e8da49822b73937e98a6a, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.38268343
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 6797874561200099762, guid: a6524fa1907e8da49822b73937e98a6a, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6797874561200099762, guid: a6524fa1907e8da49822b73937e98a6a, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.92387956
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 6797874561200099762, guid: a6524fa1907e8da49822b73937e98a6a, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 122.8
       objectReference: {fileID: 0}
     - target: {fileID: 6797874561200099762, guid: a6524fa1907e8da49822b73937e98a6a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 135
+      value: -90
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1466,10 +1502,6 @@ PrefabInstance:
     - target: {fileID: 1905627213093363917, guid: aaeeb7dd0b702934bbafa338835cb526, type: 3}
       propertyPath: m_Name
       value: TrackMiniGame Canvas
-      objectReference: {fileID: 0}
-    - target: {fileID: 1905627213093363917, guid: aaeeb7dd0b702934bbafa338835cb526, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6140799455779334484, guid: aaeeb7dd0b702934bbafa338835cb526, type: 3}
       propertyPath: m_Pivot.x
