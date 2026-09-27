@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using CHG._02.Script.Agents;
-using CHG._02.Script.FishSystem;
 using DevLib.ModuleSystem;
 using UnityEngine;
 
@@ -30,10 +28,8 @@ namespace CHG._02.Script.CombatSystem.EnemySkillSystem
             foreach (var skill in GetComponentsInChildren<AbstractEnemySkill>())
             {
                 int id = skill.Data.SkillIdHash.HashValue;
-                string fishName = GetComponentInParent<Fish>()?.name ?? "?";
-                Debug.Log($"[{fishName}/{name}] skill={skill.name} data={skill.Data.name} id={id}", skill);
                 if (!_skillDict.TryAdd(id, skill))
-                    Debug.LogError($"[{name}] 중복! '{skill.name}'({skill.Data.name})과 '{_skillDict[id].name}'({_skillDict[id].Data.name})이 같은 id({id})", skill);
+                    Debug.LogError($"스킬 ID 중복: {skill.name}와 {_skillDict[id].name}가 같은 SkillIdHash({skill.Data.SkillIdHash.name})를 사용합니다. 뒤의 스킬은 무시됩니다.", skill);
             }
 
             foreach (var skill in _skillDict.Values) skill.InitSkill(_owner);

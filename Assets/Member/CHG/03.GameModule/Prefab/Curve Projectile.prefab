@@ -31,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 4937012070613996201}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0, z: 0}
+  m_LocalPosition: {x: 0.63930565, y: 0.6364154, z: 0}
   m_LocalScale: {x: 0.18041468, y: 0.18041468, z: 0.18041468}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -155,6 +155,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CHG._02.Script.CombatSystem.Projectile.CurvedProjectile
   <PoolItem>k__BackingField: {fileID: 11400000, guid: ca979f3db450fcb43a6fe68358af316d, type: 2}
+  hitEffectItem: {fileID: 11400000, guid: bc43e4dd7753e134dbc134a212062811, type: 2}
+  breakEffectItem: {fileID: 11400000, guid: fbfa25f5f92d3f049bdf83e051de92d7, type: 2}
 --- !u!96 &-5681203517850529833
 TrailRenderer:
   serializedVersion: 4

@@ -14,15 +14,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: "\uD751\uAC11\uBA54\uAE30"
   Grade: 0
-  Health: 10
+  Health: 3
   Weight: 3.52
   JumpPower: 25.6
   Skills:
-  - Skill: {fileID: 11400000, guid: 06476c5f60916ad4ea2667a41ccc9964, type: 2}
-    Priority: 6
-    Conditions:
-    - {fileID: 11400000, guid: 1d30d13e316fbf64ea8a7f8d4b7e8259, type: 2}
+  - Skill: {fileID: 11400000, guid: ab5b95f8cea53ad4d96580edd99c8c7e, type: 2}
+    Priority: 0
+    Conditions: []
   - Skill: {fileID: 11400000, guid: 26579476780121b428f0be819d2da418, type: 2}
+    Priority: 0
+    Conditions: []
+  - Skill: {fileID: 11400000, guid: fcad13ad45826464ab724311d8fad1da, type: 2}
+    Priority: 0
+    Conditions: []
+  - Skill: {fileID: 11400000, guid: 6f73269344575804e80f0936dd8b9726, type: 2}
+    Priority: 0
+    Conditions: []
+  - Skill: {fileID: 11400000, guid: 06476c5f60916ad4ea2667a41ccc9964, type: 2}
     Priority: 0
     Conditions: []
   DamageMultiplier: 1

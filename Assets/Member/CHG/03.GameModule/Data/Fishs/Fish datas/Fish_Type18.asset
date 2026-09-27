@@ -13,19 +13,30 @@ MonoBehaviour:
   m_Name: Fish_Type18
   m_EditorClassIdentifier: 
   Name: "\uBCFC\uD2B8\uD53C\uC2DC"
-  Grade: 0
-  Health: 10
+  Grade: 2
+  Health: 12
   Weight: 3.52
   JumpPower: 25.6
   Skills:
-  - Skill: {fileID: 11400000, guid: 06476c5f60916ad4ea2667a41ccc9964, type: 2}
-    Priority: 6
-    Conditions:
-    - {fileID: 11400000, guid: 1d30d13e316fbf64ea8a7f8d4b7e8259, type: 2}
+  - Skill: {fileID: 11400000, guid: fcad13ad45826464ab724311d8fad1da, type: 2}
+    Priority: 0
+    Conditions: []
+  - Skill: {fileID: 11400000, guid: ab5b95f8cea53ad4d96580edd99c8c7e, type: 2}
+    Priority: 0
+    Conditions: []
+  - Skill: {fileID: 11400000, guid: a68848dd858854f4081799da8776d5e0, type: 2}
+    Priority: 0
+    Conditions: []
+  - Skill: {fileID: 11400000, guid: b0751b0e62cfb5043a6cb3e0591c68ea, type: 2}
+    Priority: 0
+    Conditions: []
+  - Skill: {fileID: 11400000, guid: 09e15d0e00b73cc49a72fea677d2208d, type: 2}
+    Priority: 0
+    Conditions: []
   - Skill: {fileID: 11400000, guid: 26579476780121b428f0be819d2da418, type: 2}
     Priority: 0
     Conditions: []
-  DamageMultiplier: 1
+  DamageMultiplier: 2
   Sprite: {fileID: 21300000, guid: 00f84035d70a40e4cb5495121d69e5ab, type: 3}
   Price: 5
   CanLunge: 1

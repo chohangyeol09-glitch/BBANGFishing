@@ -155,6 +155,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CHG._02.Script.CombatSystem.Projectile.StraightProjectile
   <PoolItem>k__BackingField: {fileID: 11400000, guid: aaab9069c946481439209b897ca5d8a8, type: 2}
+  hitEffectItem: {fileID: 11400000, guid: bc43e4dd7753e134dbc134a212062811, type: 2}
+  breakEffectItem: {fileID: 11400000, guid: fbfa25f5f92d3f049bdf83e051de92d7, type: 2}
 --- !u!96 &2272893124864959040
 TrailRenderer:
   serializedVersion: 4
