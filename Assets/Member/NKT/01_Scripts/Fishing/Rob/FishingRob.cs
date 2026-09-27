@@ -8,6 +8,7 @@ namespace NKT.Fishing.Rob
         [SerializeField] private FishingRobSO data;
         [SerializeField] private Transform bobberTransform;
         [SerializeField] private Transform robEdgeTransform;
+        [SerializeField] private Transform gripPoint;
 
         public FishingRobSO Data => data;
         public Transform BobberTransform => bobberTransform;

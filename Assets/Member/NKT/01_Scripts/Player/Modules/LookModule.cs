@@ -6,6 +6,7 @@ namespace NKT.Player.Modules
 {
     public class LookModule : MonoBehaviour, IModule
     {
+        [SerializeField] private Transform lookTarget;
         [SerializeField] private GameObject playerBody;
         [SerializeField] private float sensitivity = 0.1f;
         [SerializeField] private float pitchXLimit = 90f;
@@ -22,14 +23,13 @@ namespace NKT.Player.Modules
 
         public void Initialize(ModuleOwner owner)
         {
-            Camera mainCamera = Camera.main;
-            if (mainCamera == null)
+            if (lookTarget == null)
             {
                 Debug.LogError("카메라 어디갔어");
                 return;
             }
 
-            _cameraTransform = mainCamera.transform;
+            _cameraTransform = lookTarget;
         }
         
         public void OnLookChange(Vector2 obj)
