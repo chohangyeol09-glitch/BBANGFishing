@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using CHG._02.Script.CombatSystem;
 using DevLib.ModuleSystem;
 using UnityEngine;
