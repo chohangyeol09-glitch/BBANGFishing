@@ -6,29 +6,148 @@ using UnityEngine;
 
 namespace CHG._02.Script.FishSystem
 {
-    
-    
-    [CreateAssetMenu(fileName = "Fish data", menuName = "CHG/Fish/Fish data", order = 0)]
+    [CreateAssetMenu(
+        fileName = "Fish data",
+        menuName = "CHG/Fish/Fish data",
+        order = 0
+    )]
     public class FishDataSO : ScriptableObject
     {
+        // =========================================
+        // 기존 FishDataSO 내용
+        // =========================================
+
+        public string Name;
+
         public Grade Grade;
+
         public float Health;
+
         public float Weight;
+
         public float JumpPower;
 
+
         public SkillEntry[] Skills;
+
         public float DamageMultiplier = 1f;
-        
+
+
         public Sprite Sprite;
+
         public int Price;
 
-        [Header("Lunge")]
-        public bool CanLunge; //Sea에 닿으면 플레이어에게 돌진하는가
-        public float LungeFlightTime = 1f; //돌진 비행 시간
-        public float LungeFrontDistance = 1.5f; //도착 지점: 플레이어 앞쪽 거리
-        public float LungeHeightOffset; //도착 지점: 플레이어 위치 기준 높이 보정
-        public float ParryRange = 3f; //플레이어와 이 거리 안이면 패링 가능
-        public float ReturnFlightTime = 1f; //되돌아가는 비행 시간
 
+        [Header("Lunge")]
+        public bool CanLunge;
+
+        public float LungeFlightTime = 1f;
+
+        public float LungeFrontDistance = 1.5f;
+
+        public float LungeHeightOffset;
+
+        public float ParryRange = 3f;
+
+        public float ReturnFlightTime = 1f;
+
+
+
+        // =========================================
+        // 인벤토리 / 판매용 추가 정보
+        // =========================================
+
+        [Header("물고기 설명")]
+
+        [TextArea(3, 6)]
+        public string History;
+
+
+        [Header("랜덤 무게")]
+
+        public float MinWeight = 1f;
+
+        public float MaxWeight = 5f;
+
+
+
+        // =========================================
+        // 기존 FishSO 호환용
+        // =========================================
+
+        public string FishName =>
+            Name;
+
+
+        public Sprite FishSprite =>
+            Sprite;
+
+
+        public Grade Rarity =>
+            Grade;
+
+
+        public int BasePrice =>
+            Price;
+
+
+
+        // =========================================
+        // 실제 잡힌 물고기 무게 생성
+        // =========================================
+
+        public float GetRandomWeight()
+        {
+            return UnityEngine.Random.Range(
+                MinWeight,
+                MaxWeight
+            );
+        }
+
+
+
+        // =========================================
+        // 실제 무게에 따른 판매 가격
+        // =========================================
+
+        public int GetPrice(float actualWeight)
+        {
+            // 기준 무게가 잘못 설정된 경우
+            if (Weight <= 0f)
+            {
+                return Price;
+            }
+
+
+            float weightRatio =
+                actualWeight / Weight;
+
+
+            return Mathf.RoundToInt(
+                Price * weightRatio
+            );
+        }
+
+
+
+        private void OnValidate()
+        {
+            if (MinWeight < 0f)
+            {
+                MinWeight = 0f;
+            }
+
+
+            if (MaxWeight < MinWeight)
+            {
+                MaxWeight = MinWeight;
+            }
+
+
+            if (Price < 0)
+            {
+                Price = 0;
+            }
+        }
     }
 }
