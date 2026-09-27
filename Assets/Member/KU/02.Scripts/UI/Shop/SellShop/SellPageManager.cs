@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -31,6 +32,22 @@ public class SellPageManager : MonoBehaviour
     private ScrollRect selectedFishScrollRect;
 
 
+    [Header("판매 정보")]
+    [SerializeField]
+    private TMP_Text totalPriceText;
+
+    [SerializeField]
+    private TMP_Text selectedCountText;
+
+
+    [Header("버튼")]
+    [SerializeField]
+    private Button resetButton;
+
+    [SerializeField]
+    private Button sellButton;
+
+
     private readonly List<SellFishCard>
         createdCards =
         new List<SellFishCard>();
@@ -51,14 +68,54 @@ public class SellPageManager : MonoBehaviour
         selectedFishes;
 
 
+    private void Awake()
+    {
+        if (resetButton != null)
+        {
+            resetButton.onClick
+                .AddListener(
+                    ClearSelection
+                );
+        }
+
+
+        if (sellButton != null)
+        {
+            sellButton.onClick
+                .AddListener(
+                    SellSelectedFishes
+                );
+        }
+    }
+
+
     private void OnEnable()
     {
+        if (fishInventoryManager != null)
+        {
+            fishInventoryManager.OnInventoryChanged +=
+                RefreshFishList;
+        }
+
+
+        ClearSelection();
+
         RefreshFishList();
     }
 
 
+    private void OnDisable()
+    {
+        if (fishInventoryManager != null)
+        {
+            fishInventoryManager.OnInventoryChanged -=
+                RefreshFishList;
+        }
+    }
+
+
     // =========================
-    // 왼쪽 물고기 목록 생성
+    // 왼쪽 물고기 목록
     // =========================
 
     public void RefreshFishList()
@@ -67,33 +124,15 @@ public class SellPageManager : MonoBehaviour
 
 
         if (fishInventoryManager == null)
-        {
-            Debug.LogWarning(
-                "FishInventoryManager가 없습니다."
-            );
-
             return;
-        }
 
 
         if (fishCardPrefab == null)
-        {
-            Debug.LogWarning(
-                "SellFishCard Prefab이 없습니다."
-            );
-
             return;
-        }
 
 
         if (fishContent == null)
-        {
-            Debug.LogWarning(
-                "Fish Content가 없습니다."
-            );
-
             return;
-        }
 
 
         IReadOnlyList<FishInventoryItem> fishes =
@@ -121,8 +160,6 @@ public class SellPageManager : MonoBehaviour
             );
 
 
-            // 이미 판매 선택된 물고기라면
-            // 새로 생성된 카드도 선택 표시
             card.SetSelected(
                 selectedFishes.Contains(fish)
             );
@@ -158,7 +195,7 @@ public class SellPageManager : MonoBehaviour
 
 
     // =========================
-    // 물고기 선택 / 취소
+    // 선택
     // =========================
 
     public void ToggleFishSelection(
@@ -190,20 +227,23 @@ public class SellPageManager : MonoBehaviour
             return;
 
 
-        selectedFishes.Add(fish);
+        selectedFishes.Add(
+            fish
+        );
 
 
-        // 왼쪽 카드 선택 프레임 ON
         SetCardSelected(
             fish,
             true
         );
 
 
-        // 오른쪽 판매 물품 생성
         CreateSelectedFishUI(
             fish
         );
+
+
+        RefreshSellInfo();
     }
 
 
@@ -214,30 +254,24 @@ public class SellPageManager : MonoBehaviour
             return;
 
 
-        if (!selectedFishes.Contains(fish))
+        if (!selectedFishes.Remove(fish))
             return;
 
 
-        selectedFishes.Remove(fish);
-
-
-        // 왼쪽 카드 선택 프레임 OFF
         SetCardSelected(
             fish,
             false
         );
 
 
-        // 오른쪽 판매 물품 삭제
         RemoveSelectedFishUI(
             fish
         );
+
+
+        RefreshSellInfo();
     }
 
-
-    // =========================
-    // 왼쪽 선택 프레임
-    // =========================
 
     private void SetCardSelected(
         FishInventoryItem fish,
@@ -282,21 +316,21 @@ public class SellPageManager : MonoBehaviour
             return;
 
 
-        SellSelectedFishItem newItem =
+        SellSelectedFishItem item =
             Instantiate(
                 selectedFishPrefab,
                 selectedFishContent
             );
 
 
-        newItem.Setup(
+        item.Setup(
             fish,
             this
         );
 
 
         selectedFishUIs.Add(
-            newItem
+            item
         );
 
 
@@ -323,16 +357,19 @@ public class SellPageManager : MonoBehaviour
             }
 
 
-            if (ui.FishItem == fish)
-            {
-                selectedFishUIs.RemoveAt(i);
+            if (ui.FishItem != fish)
+                continue;
 
-                Destroy(
-                    ui.gameObject
-                );
 
-                break;
-            }
+            selectedFishUIs.RemoveAt(i);
+
+
+            Destroy(
+                ui.gameObject
+            );
+
+
+            break;
         }
 
 
@@ -346,7 +383,6 @@ public class SellPageManager : MonoBehaviour
 
     public void ClearSelection()
     {
-        // 왼쪽 선택 프레임 모두 OFF
         for (int i = 0;
              i < createdCards.Count;
              i++)
@@ -362,7 +398,6 @@ public class SellPageManager : MonoBehaviour
         selectedFishes.Clear();
 
 
-        // 오른쪽 판매 물품 모두 제거
         for (int i = 0;
              i < selectedFishUIs.Count;
              i++)
@@ -381,11 +416,124 @@ public class SellPageManager : MonoBehaviour
 
 
         RefreshRightScroll();
+
+        RefreshSellInfo();
     }
 
 
     // =========================
-    // Scroll / Layout 갱신
+    // 실제 판매
+    // =========================
+
+    public void SellSelectedFishes()
+    {
+        if (selectedFishes.Count == 0)
+        {
+            Debug.Log(
+                "판매할 물고기가 없습니다."
+            );
+
+            return;
+        }
+
+
+        if (fishInventoryManager == null)
+            return;
+
+
+        if (MoneyManager.Instance == null)
+        {
+            Debug.LogWarning(
+                "MoneyManager가 없습니다."
+            );
+
+            return;
+        }
+
+
+        List<FishInventoryItem> fishesToSell =
+            new List<FishInventoryItem>(
+                selectedFishes
+            );
+
+
+        int totalPrice = 0;
+
+
+        for (int i = 0;
+             i < fishesToSell.Count;
+             i++)
+        {
+            totalPrice +=
+                fishesToSell[i].Price;
+        }
+
+
+        // 선택 UI 먼저 정리
+        ClearSelection();
+
+
+        // 실제 물고기 삭제
+        fishInventoryManager.RemoveFishes(
+            fishesToSell
+        );
+
+
+        // 돈 지급
+        MoneyManager.Instance.AddMoney(
+            totalPrice
+        );
+
+
+        Debug.Log(
+            $"{fishesToSell.Count}마리 판매 완료 / " +
+            $"{totalPrice}원 획득"
+        );
+    }
+
+
+    // =========================
+    // 판매 정보
+    // =========================
+
+    private void RefreshSellInfo()
+    {
+        int totalPrice = 0;
+
+
+        for (int i = 0;
+             i < selectedFishes.Count;
+             i++)
+        {
+            totalPrice +=
+                selectedFishes[i].Price;
+        }
+
+
+        if (totalPriceText != null)
+        {
+            totalPriceText.text =
+                $"{totalPrice:N0}원";
+        }
+
+
+        if (selectedCountText != null)
+        {
+            selectedCountText.text =
+                $"{selectedFishes.Count}마리";
+        }
+
+
+        if (sellButton != null)
+        {
+            sellButton.interactable =
+                selectedFishes.Count > 0;
+        }
+    }
+
+
+    // =========================
+    // 스크롤
     // =========================
 
     private void RefreshLeftScroll()
@@ -393,7 +541,8 @@ public class SellPageManager : MonoBehaviour
         Canvas.ForceUpdateCanvases();
 
 
-        if (fishContent is RectTransform content)
+        if (fishContent
+            is RectTransform content)
         {
             LayoutRebuilder
                 .ForceRebuildLayoutImmediate(
@@ -403,13 +552,6 @@ public class SellPageManager : MonoBehaviour
 
 
         Canvas.ForceUpdateCanvases();
-
-
-        if (fishScrollRect != null)
-        {
-            fishScrollRect
-                .verticalNormalizedPosition = 1f;
-        }
     }
 
 

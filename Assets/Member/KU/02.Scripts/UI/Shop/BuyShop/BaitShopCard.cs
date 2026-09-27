@@ -58,14 +58,16 @@ public class BaitShopCard : MonoBehaviour
         if (rarityText != null)
         {
             rarityText.text =
-                GetRarityText(bait.rarity);
+                GetRarityText(
+                    bait.rarity
+                );
         }
 
 
         if (priceText != null)
         {
             priceText.text =
-                bait.price.ToString() + "$ 구매";
+                $"{bait.price:N0}원";
         }
 
 
@@ -76,22 +78,27 @@ public class BaitShopCard : MonoBehaviour
                 requiredFishImage.sprite =
                     bait.fishesToBuy.Sprite;
 
-                requiredFishImage.gameObject.SetActive(true);
+                requiredFishImage
+                    .gameObject
+                    .SetActive(true);
             }
             else
             {
-                requiredFishImage.gameObject.SetActive(false);
+                requiredFishImage
+                    .gameObject
+                    .SetActive(false);
             }
         }
 
 
         if (buyButton != null)
         {
-            buyButton.onClick.RemoveAllListeners();
+            buyButton.onClick
+                .RemoveAllListeners();
 
-            buyButton.onClick.AddListener(
-                Buy
-            );
+
+            buyButton.onClick
+                .AddListener(Buy);
         }
     }
 
@@ -125,8 +132,32 @@ public class BaitShopCard : MonoBehaviour
             return;
 
 
+        if (MoneyManager.Instance == null)
+        {
+            Debug.LogWarning(
+                "MoneyManager가 없습니다."
+            );
+
+            return;
+        }
+
+
+        bool success =
+            MoneyManager.Instance.TrySpendMoney(
+                baitData.price
+            );
+
+
+        if (!success)
+            return;
+
+
         Debug.Log(
-            $"{baitData.baitName} 구매 버튼 클릭"
+            $"{baitData.baitName} 구매 완료"
         );
+
+
+        // 나중에 여기에서
+        // 실제 미끼 인벤토리에 추가
     }
 }

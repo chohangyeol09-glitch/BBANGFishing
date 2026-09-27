@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f3b25329d4ca344d95a403ef64f187a, type: 3}
+  m_Name: SkillTTT
+  m_EditorClassIdentifier: Assembly-CSharp::KU_SkillSO
+  skillName: "\uCCB4\uB825\uC774 \uCD5C\uACE0!"
+  descriptionFormat: "\uBB3C\uACE0\uAE30\uB97C \uC7A1\uC73C\uBA74 \uCCB4\uB825\uC774
+    {value}\uB9CC\uD07C \uD68C\uBCF5 \uB429\uB2C8\uB2E4."
+  skillSprite: {fileID: 21300000, guid: 5111ef8b19a9964438b20f2b845f85e8, type: 3}
+  purchasePrice: 10000
+  baseValue: 20
+  valueIncreasePerLevel: 10
+  valueSuffix: 
+  maxLevel: 5
+  baseUpgradeCost: 5000
+  upgradeCostIncrease: 5000
