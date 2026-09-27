@@ -8,6 +8,7 @@ namespace Member.JJK._02._Scripts.Weapon
         [field: SerializeField] public float Damage { get; private set; } = 10;
 
         [field: SerializeField] public float FireRate { get; private set; } = 0.1f;
+        [field: SerializeField] public float KnockbackPower { get; private set; } = 0.1f;
         [field: SerializeField] public float Durability { get; private set; } = 100f;
         [field: SerializeField] public Vector2 Recoil { get; private set; } = new Vector2(1.5f, 0.5f);
         [field: SerializeField] public float RecoilRecovery { get; private set; } = 5f;

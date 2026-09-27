@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Fish 1
   m_EditorClassIdentifier: 
   Grade: 0
-  Health: 10
+  Health: 40.8
   Weight: 3.52
   JumpPower: 25.6
   Skills:
