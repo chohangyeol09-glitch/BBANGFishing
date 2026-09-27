@@ -995,6 +995,11 @@ MonoBehaviour:
   rodNameText: {fileID: 8675896653806976702}
   rarityText: {fileID: 3378823663540579399}
   priceText: {fileID: 6799430934218653358}
+  backgroundImage: {fileID: 4343548652662346282}
+  commonColor: {r: 0.8627451, g: 0.8627451, b: 0.8627451, a: 1}
+  rareColor: {r: 0.4392157, g: 0.7176471, b: 1, a: 1}
+  epicColor: {r: 0.7254902, g: 0.5137255, b: 1, a: 1}
+  legendaryColor: {r: 1, g: 0.8352941, b: 0.41568628, a: 1}
   buyButton: {fileID: 4128994611444932792}
   buyButtonText: {fileID: 3226106224194734714}
   lockOverlay: {fileID: 514811462077188074}
