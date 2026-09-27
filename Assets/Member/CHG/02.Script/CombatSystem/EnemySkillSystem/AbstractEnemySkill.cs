@@ -12,8 +12,12 @@ namespace CHG._02.Script.CombatSystem.EnemySkillSystem
         
         public Agent Owner { get; private set; }
         public bool IsUsing { get; private set; }
-        
+        public bool IsWarning { get; private set; } 
+
         [field: SerializeField] public EnemySkillDataSO Data { get; private set; }
+        
+        [SerializeField] private ParticleSystem warningEffect;
+        [SerializeField] private ParticleSystem executeEffect;
 
         private EnemyRenderer _renderer;
         
@@ -56,26 +60,37 @@ namespace CHG._02.Script.CombatSystem.EnemySkillSystem
             if (Data.WarningTime > 0f)
             {
                 PlayAnim(Data.WarningAnimHash);
-                yield return new WaitForSeconds(Data.WarningTime); 
+                if (warningEffect != null) warningEffect.Play(true);
+                IsWarning = true;
+                yield return new WaitForSeconds(Data.WarningTime);
+                IsWarning = false;
+                StopEffect(warningEffect);
             }
 
             PlayAnim(Data.SkillAnimHash);
-            yield return ExecuteSkill(target);                              
+            if (executeEffect != null) executeEffect.Play(true); 
+            yield return ExecuteSkill(target);
             CleanUpSkillData();
+        }
+
+        public void StopSkill()
+        {
+            if (_routine != null) StopCoroutine(_routine);
+            IsWarning = false;
+            OnStopped();
+            StopEffect(warningEffect); 
+            if (_renderer != null) _renderer.PlayIdle();
+            CleanUpSkillData();
+        }
+
+        private static void StopEffect(ParticleSystem effect)
+        {
+            if (effect != null) effect.Stop(true, ParticleSystemStopBehavior.StopEmitting);
         }
 
         private void PlayAnim(HashDataSO anim)
         {
             if (_renderer != null) _renderer.SendAnim(anim);
-        }
-
-
-        public void StopSkill()
-        {
-            if (_routine != null) StopCoroutine(_routine);
-            OnStopped();
-            if (_renderer != null) _renderer.PlayIdle();
-            CleanUpSkillData();
         }
 
         protected virtual void OnStopped() { }
