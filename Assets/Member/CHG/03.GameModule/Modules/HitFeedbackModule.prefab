@@ -55,4 +55,4 @@ MonoBehaviour:
   textOffset: {x: 0, y: 0.5, z: 0}
   feedbackChannel: {fileID: 11400000, guid: f655ca2e4a0efb44284ea0fa4bb81f21, type: 2}
   hitStopDuration: 0.08
-  killHitStopDuration: 0.5
+  killHitStopDuration: 0.2
