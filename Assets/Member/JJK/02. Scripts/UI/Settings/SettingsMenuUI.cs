@@ -67,8 +67,15 @@ namespace Member.JJK._02._Scripts.Settings
             IsOpen = isActive;
             ApplyCursorState(isActive);
             Time.timeScale = isActive ? 0f : 1f;
+
+            // PlayerPrefs.SetFloat/SetInt는 디스크에 바로 안 쓰이고 메모리에만 남는다.
+            // 에디터에서 Stop을 누르는 건 정상 종료가 아니라서 Save()를 명시적으로 안 부르면
+            // 슬라이더로 바꾼 값이 다음 실행 때 사라진 것처럼 보인다.
+            if (!isActive) PlayerPrefs.Save();
         }
-        
+
+        private void OnApplicationQuit() => PlayerPrefs.Save();
+
         private static void ApplyCursorState(bool menuOpen)
         {
             Cursor.lockState = menuOpen ? CursorLockMode.None : CursorLockMode.Locked;
