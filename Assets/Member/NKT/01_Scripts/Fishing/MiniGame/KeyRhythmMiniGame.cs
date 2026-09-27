@@ -11,9 +11,10 @@ namespace NKT.Fishing.MiniGame
 
         [Header("UI")]
         [SerializeField] private RectTransform note;
-        [SerializeField] private TextMeshProUGUI noteLabel;
+        [SerializeField] private TextMeshProUGUI noteText;
         [SerializeField] private RectTransform judgeLine;
-        [SerializeField] private float spawnX = 320f;
+        [SerializeField] private RectTransform[] laneAnchors;
+        [SerializeField] private float spawnY = 320f;
 
         [Header("난이도")]
         [SerializeField] private Vector2 travelTimeRange = new Vector2(1.3f, 0.6f);
@@ -22,7 +23,7 @@ namespace NKT.Fishing.MiniGame
         [SerializeField] private float noteInterval = 0.35f;
 
         private static readonly Key[] Keys = { Key.W, Key.A, Key.S, Key.D };
-        private static readonly string[] KeyNames = { "W", "A", "S", "D" };
+        private Vector2 JudgePos => new Vector2(laneAnchors[_keyIndex].anchoredPosition.x, judgeLine.anchoredPosition.y);
 
         private float _travelTime;
         private float _perfectWindow;
@@ -62,12 +63,11 @@ namespace NKT.Fishing.MiniGame
 
             _timer += Time.deltaTime;
 
-            float judgeX = judgeLine.anchoredPosition.x;
             float t = _timer / _travelTime;
             note.anchoredPosition = new Vector2(
-                Mathf.LerpUnclamped(spawnX, judgeX, t),
-                judgeLine.anchoredPosition.y);
-
+                JudgePos.x,
+                Mathf.LerpUnclamped(spawnY, judgeLine.anchoredPosition.y, t));
+                
             Keyboard kb = Keyboard.current;
             if (kb != null)
             {
@@ -91,10 +91,10 @@ namespace NKT.Fishing.MiniGame
         private void SpawnNote()
         {
             _keyIndex = Random.Range(0, Keys.Length);
-            noteLabel.text = KeyNames[_keyIndex];
+            noteText.text = Keys[_keyIndex].ToString();
 
             _timer = 0f;
-            note.anchoredPosition = new Vector2(spawnX, judgeLine.anchoredPosition.y);
+            note.anchoredPosition = new Vector2(JudgePos.x, spawnY);
             note.gameObject.SetActive(true);
             _noteActive = true;
         }
@@ -104,7 +104,7 @@ namespace NKT.Fishing.MiniGame
             _noteActive = false;
             note.gameObject.SetActive(false);
 
-            Vector2 pos = judgeLine.anchoredPosition;
+            Vector2 pos = JudgePos;
 
             if (pressed != _keyIndex)
             {

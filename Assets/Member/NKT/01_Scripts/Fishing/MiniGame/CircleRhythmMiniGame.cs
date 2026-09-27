@@ -18,6 +18,7 @@ namespace NKT.Fishing.MiniGame
         [Header("크기")] 
         [SerializeField] private float targetSize = 120f;
         [SerializeField] private float startScale = 3.2f;
+        [SerializeField] private float rotationSpeed = 20f;
         
         [Header("난이도")]
         [SerializeField] private Vector2 shrinkTimeRange = new Vector2(1.4f, 0.7f);
