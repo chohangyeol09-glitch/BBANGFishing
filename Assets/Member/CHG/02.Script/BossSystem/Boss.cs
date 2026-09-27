@@ -8,12 +8,14 @@ using UnityEngine;
 namespace CHG._02.Script.BossSystem
 {
     [RequireComponent(typeof(BehaviorGraphAgent))]
-    public class Boss : Agent, ISkillEntrySource
+    public class Boss : Agent, ISkillEntrySource, IDamageMultiplier
     {
         public event Action<BossStateEnum> OnStateChanged;
 
         public BossStateEnum State { get; private set; } = BossStateEnum.Appear;
         public BehaviorGraphAgent BTAgent { get; private set; }
+        public float DamageMultiplier => Data.DamageMultiplier;
+        
 
         public override float MaxHealth => Data.Health;
         public SkillEntry[] SkillEntries => Data.Skills;
@@ -36,11 +38,12 @@ namespace CHG._02.Script.BossSystem
             
             BTAgent.SetVariableValue("Boss", this);
             BTAgent.SetVariableValue("Target", target);
-            BTAgent.SetVariableValue("State", BossStateEnum.Appear);
             BTAgent.SetVariableValue("AppearDuration", Data.AppearDuration);
             BTAgent.SetVariableValue("GroggyDuration", Data.GroggyDuration);
 
             BindStateChannel();
+            EnemyRenderer enemyRenderer = GetModule<EnemyRenderer>();
+            if (enemyRenderer != null) enemyRenderer.BindChannel(BTAgent);
             BTAgent.Restart();
         }
 
@@ -84,5 +87,6 @@ namespace CHG._02.Script.BossSystem
             if (_stateChannel != null)
                 _stateChannel.Event -= HandleStateChanged;
         }
+
     }
 }

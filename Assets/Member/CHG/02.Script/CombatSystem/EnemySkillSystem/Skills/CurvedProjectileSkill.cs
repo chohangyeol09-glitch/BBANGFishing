@@ -48,8 +48,8 @@ namespace CHG._02.Script.CombatSystem.EnemySkillSystem.Skills
                 Vector3 controlPoint = mid + side * curveOffset;
                 
                 CurvedProjectile projectile = poolManager.Pop<CurvedProjectile>(poolItem);
-                DamageData template = new DamageData(Owner, Vector3.zero, Vector3.zero, lineDir, Data.Damage, 0f);
-                projectile.Launch(start, controlPoint, end, travelDuration, health, template, poolManager);
+                DamageData data = new DamageData(Owner, Vector3.zero, Vector3.zero, lineDir, SkillDamage, 0f);
+                projectile.Launch(start, controlPoint, end, travelDuration, health, data, poolManager);
             }
         }
 

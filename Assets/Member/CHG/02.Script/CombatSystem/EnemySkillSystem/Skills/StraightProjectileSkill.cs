@@ -39,8 +39,8 @@ namespace CHG._02.Script.CombatSystem.EnemySkillSystem.Skills
                 Vector3 dir = Quaternion.AngleAxis(shot.AimAngle, Vector3.up) * baseDir;
 
                 StraightProjectile projectile = poolManager.Pop<StraightProjectile>(PoolItem);
-                var template = new DamageData(Owner, Vector3.zero, Vector3.zero, dir, Data.Damage, 0f);
-                projectile.Launch(origin, dir, speed, lifeTime, health, template, poolManager);
+                DamageData data = new DamageData(Owner, Vector3.zero, Vector3.zero, dir, SkillDamage, 0f);
+                projectile.Launch(origin, dir, speed, lifeTime, health, data, poolManager);
             }
         }
     }

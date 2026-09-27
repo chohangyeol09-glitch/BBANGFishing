@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using CHG._02.Script.Agents;
+using DevLib.AnimatorSystem;
 using UnityEngine;
 
 namespace CHG._02.Script.CombatSystem.EnemySkillSystem
@@ -11,7 +12,11 @@ namespace CHG._02.Script.CombatSystem.EnemySkillSystem
         
         public Agent Owner { get; private set; }
         public bool IsUsing { get; private set; }
+        
         [field: SerializeField] public EnemySkillDataSO Data { get; private set; }
+
+        private EnemyRenderer _renderer;
+        
         public float NormalizedCooldown
         {
             get
@@ -20,13 +25,18 @@ namespace CHG._02.Script.CombatSystem.EnemySkillSystem
                 return Mathf.Clamp01(1f - (Time.time - _lastUsedTime) / Data.skillCoolTime);
             }
         }
-            
+        
+        protected float SkillDamage => Data.Damage * (_damageMultiplier != null ? _damageMultiplier.DamageMultiplier : 1f);
+
+        private IDamageMultiplier _damageMultiplier; 
         private float _lastUsedTime = float.NegativeInfinity;
         private Coroutine _routine;
 
         public virtual void InitSkill(Agent owner)
         {
             Owner = owner;
+            _damageMultiplier = owner as IDamageMultiplier;
+            _renderer = owner.GetModule<EnemyRenderer>();
         }
         
         public virtual bool CanUseSkill(GameObject target = null)
@@ -43,9 +53,20 @@ namespace CHG._02.Script.CombatSystem.EnemySkillSystem
 
         private IEnumerator SkillRoutine(GameObject target)
         {
-            yield return new WaitForSeconds(Data.WarningTime); 
+            if (Data.WarningTime > 0f)
+            {
+                PlayAnim(Data.WarningAnimHash);
+                yield return new WaitForSeconds(Data.WarningTime); 
+            }
+
+            PlayAnim(Data.SkillAnimHash);
             yield return ExecuteSkill(target);                              
             CleanUpSkillData();
+        }
+
+        private void PlayAnim(HashDataSO anim)
+        {
+            if (_renderer != null) _renderer.SendAnim(anim);
         }
 
 
@@ -53,10 +74,10 @@ namespace CHG._02.Script.CombatSystem.EnemySkillSystem
         {
             if (_routine != null) StopCoroutine(_routine);
             OnStopped();
+            if (_renderer != null) _renderer.PlayIdle();
             CleanUpSkillData();
         }
 
-        //강제 종료(StopSkill)로 끊겼을 때 하위 스킬이 정리할 게 있으면 override (정상 종료에서는 호출되지 않음)
         protected virtual void OnStopped() { }
         
         private void CleanUpSkillData()
@@ -65,7 +86,7 @@ namespace CHG._02.Script.CombatSystem.EnemySkillSystem
             IsUsing = false;
             OnSkillEnd?.Invoke(this);
         }
-        
+
         protected abstract IEnumerator ExecuteSkill(GameObject target);
     }
 }
