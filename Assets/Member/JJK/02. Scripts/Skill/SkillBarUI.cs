@@ -13,19 +13,39 @@ namespace Member.JJK._02._Scripts.Skill
 
         private void Start()
         {
+            skillController.SkillEquipped += OnSkillEquipped;
+
             for (int i = 0; i < slotUIs.Count; i++)
             {
                 SkillSO skill = i < skillController.SlotCount ? skillController.GetSkill(i) : null;
                 if (skill == null)
                 {
-                    slotUIs[i].gameObject.SetActive(false);
+                    slotUIs[i].SetEmpty(FormatKey(skillController.GetKey(i).ToString()));
                     continue;
                 }
 
-                slotUIs[i].Bind(skill, FormatKey(skillController.GetKey(i).ToString()));
-                _boundSlotIndices.Add(i);
-                _boundSlotUIs.Add(slotUIs[i]);
+                BindSlot(i, skill);
             }
+        }
+
+        private void OnDestroy()
+        {
+            if (skillController != null)
+                skillController.SkillEquipped -= OnSkillEquipped;
+        }
+
+        private void OnSkillEquipped(int slotIndex)
+        {
+            if (slotIndex < 0 || slotIndex >= slotUIs.Count) return;
+
+            BindSlot(slotIndex, skillController.GetSkill(slotIndex));
+        }
+
+        private void BindSlot(int slotIndex, SkillSO skill)
+        {
+            slotUIs[slotIndex].Bind(skill, FormatKey(skillController.GetKey(slotIndex).ToString()));
+            _boundSlotIndices.Add(slotIndex);
+            _boundSlotUIs.Add(slotUIs[slotIndex]);
         }
 
         private void Update()
