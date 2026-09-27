@@ -45,6 +45,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CHG._02.Script.CombatSystem.EnemySkillSystem.Skills.CurvedProjectileSkill
   <Data>k__BackingField: {fileID: 11400000, guid: 4bf47e1ec5b6a114eb6fcd7af92c193e, type: 2}
+  warningEffect: {fileID: 0}
+  executeEffect: {fileID: 0}
   poolManager: {fileID: 11400000, guid: baebfac5b535afc4b9f1753c62a2bd78, type: 2}
   poolItem: {fileID: 11400000, guid: ca979f3db450fcb43a6fe68358af316d, type: 2}
   travelDuration: 1.32
@@ -59,7 +61,4 @@ MonoBehaviour:
   - CurveAngle: 180
     AimAngle: 0
     Delay: 0.2
-  - CurveAngle: 270
-    AimAngle: 0
-    Delay: 0.2
-  health: 2
+  health: 1

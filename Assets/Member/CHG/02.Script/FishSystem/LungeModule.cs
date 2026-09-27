@@ -82,7 +82,7 @@ namespace CHG._02.Script.FishSystem
         {
             if (!IsParryable) return false;
 
-            _fish.TakeDamage(data);
+            _fish.TakeParryDamage(data); //돌진 중 무적을 무시하는 패링 전용 경로
             OnParried?.Invoke();
             Debug.Log("Parry Success");
             if (!_fish.IsDead) BeginFlight(Phase.Return, _seaPoint, _fish.Data.ReturnFlightTime);

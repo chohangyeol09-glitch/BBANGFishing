@@ -8,7 +8,11 @@ namespace CHG._02.Script.CombatSystem.HitFeedback
     public class KnockbackModule : MonoBehaviour, IModule, IAfterInitModule
     {
         [SerializeField, Range(0f, 1f)] private float weightInfluence = 0.5f;
-        [SerializeField, Min(0f)] private float upMultiplier = 1f;           
+        [SerializeField, Min(0f)] private float upMultiplier = 2f;
+        [Tooltip("켜면 공격자에게서 멀어지는(깊이) 방향으로는 밀리지 않는다")]
+        [SerializeField] private bool removeDepth = true;
+        [Tooltip("넉백 방향의 위쪽 성분 최솟값. -1이면 제한 없음(윗부분을 맞으면 아래로 밀림), 0이면 아래로는 밀리지 않음")]
+        [SerializeField, Range(-1f, 1f)] private float minUp = -1f;
 
         private Rigidbody _rb;
         private Agent _agent;
@@ -39,11 +43,39 @@ namespace CHG._02.Script.CombatSystem.HitFeedback
             if (_gate != null && !_gate.CanBeKnockedBack) return;
 
             float impulse = PhysicsUtil.ResolveImpulse(data.KnockbackPower, _rb.mass, weightInfluence);
-
-            Vector3 dir = data.HitDirection.normalized;
+            Vector3 dir = KnockbackDirection(data);
             if (dir.y > 0f) dir.y *= upMultiplier;
 
             _rb.AddForce(dir * impulse, ForceMode.Impulse);
+        }
+
+        //맞은 지점의 반대쪽으로 민다 (왼쪽 아래를 맞으면 오른쪽 위로)
+        private Vector3 KnockbackDirection(DamageData data)
+        {
+            bool fromOther = data.Attacker != null && data.Attacker != _agent; //자기 자신이 준 데미지(테스트)는 방향 그대로
+
+            //HitPoint가 없는 공격(투사체·폭탄은 Vector3.zero)은 공격 방향을 쓴다
+            Vector3 dir = fromOther && data.HitPoint != Vector3.zero
+                ? _rb.worldCenterOfMass - data.HitPoint
+                : data.HitDirection;
+
+            //공격자 → 대상의 수평 방향(깊이) 성분을 뺀다
+            if (removeDepth && fromOther)
+            {
+                Vector3 away = Vector3.ProjectOnPlane(_rb.position - data.Attacker.transform.position, Vector3.up);
+                if (away.sqrMagnitude > 0.0001f) dir -= Vector3.Project(dir, away.normalized);
+            }
+
+            if (dir.sqrMagnitude < 0.000001f) return Vector3.up; //정중앙을 맞으면 위로
+            dir.Normalize();
+
+            if (dir.y < minUp)
+            {
+                dir.y = minUp;
+                if (dir.sqrMagnitude < 0.000001f) return Vector3.up; //바로 위에서 맞고 minUp이 0인 경우
+                dir.Normalize();
+            }
+            return dir;
         }
     }
 }

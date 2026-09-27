@@ -109,6 +109,18 @@ namespace CHG._02.Script.FishSystem
 
         public bool TryParry(DamageData data) => _lunge != null && _lunge.TryParry(data);
 
+        //돌진·복귀 중에는 일반 공격을 받지 않는다 (데미지, 피격 연출, 넉백 모두 없음)
+        public bool IsInvincible => State is FishStateEnum.Lunge or FishStateEnum.Return;
+
+        public override void TakeDamage(DamageData data)
+        {
+            if (IsInvincible) return;
+            base.TakeDamage(data);
+        }
+
+        //패링 성공 데미지. 돌진 중이라도 들어간다 (LungeModule.TryParry만 부른다)
+        public void TakeParryDamage(DamageData data) => base.TakeDamage(data);
+
         public override void Dead()
         {
             base.Dead();   

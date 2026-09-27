@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3f61c1a0d4e44ac1be7cdd2389d5879d, type: 3}
-  m_Name: TestFish
+  m_Name: Projectile Hit Particle
   m_EditorClassIdentifier: PoolRuntime::DevLib.ObjectPool.Runtime.PoolItemSO
-  poolingName: TestFish
-  prefab: {fileID: 8206896408910450230, guid: 967577513da6c4e48854c9482da2c3cf, type: 3}
+  poolingName: Projectile Hit Particle
+  prefab: {fileID: 2580454552925288516, guid: 2e8679955c8cac7409209dbe03a62646, type: 3}
   initCount: 3
