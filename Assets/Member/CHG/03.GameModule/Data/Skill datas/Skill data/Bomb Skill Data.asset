@@ -14,9 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CHG._02.Script.CombatSystem.EnemySkillSystem.EnemySkillDataSO
   SkillIdHash: {fileID: 11400000, guid: 6f73269344575804e80f0936dd8b9726, type: 2}
   SkillAnimHash: {fileID: 11400000, guid: c4424e535cc23ea4ab8a2a357239ed78, type: 2}
+  WarningAnimHash: {fileID: 0}
   SkillType: 0
   Damage: 10
-  WarningTime: 3
+  WarningTime: 0
   skillCoolTime: 5
   moduleCoolTimeOffset: 2
   ignoreModuleCoolTime: 0

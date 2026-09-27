@@ -15,7 +15,7 @@ namespace CHG._02.Script.CombatSystem.EnemySkillSystem.Skills
         protected override IEnumerator ExecuteSkill(GameObject target)
         {
             Bomb bomb = poolManager.Pop<Bomb>(poolItem);
-            var template = new DamageData(Owner, Vector3.zero, Vector3.zero, Vector3.zero, Data.Damage, 0f);
+            var template = new DamageData(Owner, Vector3.zero, Vector3.zero, Vector3.zero, SkillDamage, 0f);
             bomb.Place(Owner.transform.position, fuseTime, health, target, template, poolManager);
             yield break;
         }

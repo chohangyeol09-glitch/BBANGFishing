@@ -2,35 +2,53 @@ using System;
 using CHG._02.Script.Agents;
 using CHG._02.Script.CombatSystem;
 using CHG._02.Script.CombatSystem.BT.Channel;
+using CHG._02.Script.CombatSystem.EnemySkillSystem;
+using CHG._02.Script.CombatSystem.HitFeedback;
 using CHG._02.Script.CoreSystem;
+using DevLib.ObjectPool.Runtime;
 using Unity.Behavior;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using IPoolable = DevLib.ObjectPool.Runtime.IPoolable;
 
 namespace CHG._02.Script.FishSystem
 {
     [RequireComponent(typeof(BehaviorGraphAgent))]
-    public class Fish : Agent, IParryable
+    public class Fish : Agent, IParryable, ISkillEntrySource, IPoolable, IDamageMultiplier, IKnockbackGate
     {
         public FishStateEnum State { get; private set; } = FishStateEnum.Jump;
         public BehaviorGraphAgent BTAgent { get; private set; }
         public bool IsInSea { get; private set; } = false;
+        [field:SerializeField] public PoolItemSO PoolItem { get; set; }
+        public GameObject GameObject => this != null ? this.gameObject : null;
+        public bool CanBeKnockedBack => State == FishStateEnum.Combat;
+        public float DamageMultiplier => Data.DamageMultiplier;
+        
+        public bool HasStartedFalling { get; private set; }
+        
         public override float MaxHealth => Data.Health;
+        public SkillEntry[] SkillEntries => Data.Skills;
+        public bool IsParryable => _lunge != null && _lunge.IsParryable;
+        
         [field:SerializeField] public FishDataSO Data { get; private set; }
 
-        [SerializeField] private bool isKnockBack = true;
+        [SerializeField, Min(1f)] private float airTimeScale = 1.5f;
         
         [Header("Catch")]
         [SerializeField, Range(0f,1f)] private float weightInfluence = 0.5f; //무게 반영 비율
         [SerializeField] private float minJumpHeight = 0.8f;
         
-        public bool IsParryable => _lunge != null && _lunge.IsParryable;
-
         private LungeModule _lunge;
         private FishFacingModule _facingModule;
         private Rigidbody _rb;
         private bool _hasRisen; //처음에 올라갔는가
+        private PoolManagerSO _poolManager;
+        private bool _released;
+        private StateChannel _stateChannel;
+        private HitFeedbackModule _hitFeedback;
 
+        private float GravityScale => 1f / (airTimeScale * airTimeScale); 
 
         protected override void InitializeModules()
         {
@@ -39,20 +57,24 @@ namespace CHG._02.Script.FishSystem
             BTAgent = GetComponent<BehaviorGraphAgent>();
             _lunge = GetModule<LungeModule>();
             _facingModule = GetModule<FishFacingModule>();
-
-            if (isKnockBack)
-                OnDamaged += OnKnockBack;
-
+            _hitFeedback = GetModule<HitFeedbackModule>();
+            _rb.useGravity = false;
         }
         
-        public void OnSpawn(Vector3 pullForce, GameObject target)
+        public void OnSpawn(Vector3 pullForce, GameObject target, PoolManagerSO poolManager)
         {
+            _poolManager = poolManager;
             _rb.mass = Data.Weight;
             _rb.linearVelocity = Vector3.zero;
             _rb.angularVelocity = Vector3.zero;
             CurrentHealth = MaxHealth;
+            
             BTAgent.SetVariableValue("Fish", this);
             BTAgent.SetVariableValue("Target", target);
+            BindStateChannel();
+            EnemyRenderer enemyRenderer = GetModule<EnemyRenderer>();
+            if (enemyRenderer != null) enemyRenderer.BindChannel(BTAgent);
+            BTAgent.Restart();
             
             _lunge.Target = target;
 
@@ -63,13 +85,17 @@ namespace CHG._02.Script.FishSystem
 
             if (dir.y > 0.1f)
                 deltaV = Mathf.Max(deltaV, minSpeed / dir.y);
-            
+
+            deltaV /= airTimeScale;
             _rb.AddForce(dir * deltaV, ForceMode.VelocityChange);
             if (_facingModule != null) _facingModule.SnapTo(pullForce);
         }
 
         private void FixedUpdate()
         {
+            if (!_rb.isKinematic)
+                _rb.AddForce(Physics.gravity * GravityScale, ForceMode.Acceleration);
+         
             if (State != FishStateEnum.Jump) return;
 
             if (_rb.linearVelocity.y > 0.01f)
@@ -77,8 +103,8 @@ namespace CHG._02.Script.FishSystem
                 _hasRisen = true;
                 return;
             }
-            
-            if (_hasRisen) ChangeState(FishStateEnum.Combat);
+
+            if (_hasRisen) HasStartedFalling = true;
         }
 
         public bool TryParry(DamageData data) => _lunge != null && _lunge.TryParry(data);
@@ -86,64 +112,112 @@ namespace CHG._02.Script.FishSystem
         public override void Dead()
         {
             base.Dead();   
-            ChangeState(FishStateEnum.Dead);
+            SendState(FishStateEnum.Dead);
         }
 
         private void OnDestroy()
         {
-            if (isKnockBack)
-                OnDamaged -= OnKnockBack;
+            if (_stateChannel != null)
+                _stateChannel.Event -= HandleStateChanged;
         }
-
-        private void OnKnockBack(DamageData data)
-        {
-            if (_rb == null || State != FishStateEnum.Combat) return;
-
-            float impulse = PhysicsUtil.ResolveImpulse(data.KnockbackPower, _rb.mass, weightInfluence);
-
-            _rb.AddForceAtPosition(data.HitDirection.normalized * impulse,
-                data.HitPoint, ForceMode.Impulse);
-        }
-
         
         private void OnTriggerEnter(Collider collision)
         {
-                Debug.Log("Collision");
-            if (collision.CompareTag("Sea"))
-            {
-                IsInSea = true;
-            }
+            if (!collision.CompareTag("Sea")) return;
+
+            if (!HasStartedFalling) return;
+
+            IsInSea = true;
+        }
+        
+        public void ResetItem()
+        {
+            _hitFeedback?.ResetFeedback();
+            State = FishStateEnum.Jump;
+            IsInSea = false;
+            _hasRisen = false;
+            _released = false;
+            HasStartedFalling = false;
+
+            _rb.isKinematic = false;
+            _rb.linearVelocity = Vector3.zero;
+            _rb.angularVelocity = Vector3.zero;
+            _lunge.ResetLunge();
         }
 
-        public void ChangeState(FishStateEnum newState)
+        public void ReleaseToPool()
         {
-            if (State == FishStateEnum.Dead || State == newState) return;
+            if (_released) return;
+            _released = true;
+
+            EnemySkillModule skillModule = GetModule<EnemySkillModule>();
+            if (skillModule != null && skillModule.CurrentSkill != null)
+                skillModule.CurrentSkill.StopSkill();
+
+            if (_poolManager == null)
+            {
+                Destroy(gameObject);
+                return;
+            }
             
-            State = newState;
-            BTAgent.SetVariableValue("State", State);
-            if (BTAgent.GetVariable("StateChannel", out BlackboardVariable<StateChannel> channel))
-                channel.Value.SendEventMessage(newState);
-            else
-                Debug.LogWarning("State Channel not found");
+            _poolManager.Push(this);
         }
 
         public void ConsumeSeaTouch() => IsInSea = false;
+
+        private void BindStateChannel()
+        {
+            if (_stateChannel == null)
+            {
+                if (!BTAgent.GetVariable("StateChannel", out BlackboardVariable<StateChannel> channel) ||
+                    channel.Value == null)
+                {
+                    Debug.LogWarning("Channel not found");
+                    return;
+                }
+
+                _stateChannel = channel.Value;
+            }
+
+            _stateChannel.Event -= HandleStateChanged;
+            _stateChannel.Event += HandleStateChanged;
+        }
+
+        private void HandleStateChanged(FishStateEnum newState) => State = newState;
+
+        private void SendState(FishStateEnum newState)
+        {
+            if (_stateChannel != null) _stateChannel.SendEventMessage(newState);
+        }
+        
+        
+        
 #if UNITY_EDITOR
         [Header("Test")]
         [SerializeField] private float testUpSpeed = 8f;
         [SerializeField] private float testParryDamage = 10f; 
+        [SerializeField] private float testKnockbackPower = 10f;
+        [SerializeField, Range(0f, 89f)] private float testKnockbackUpAngle = 50f; 
 
         private void Update()
         {
             if (Keyboard.current.spaceKey.wasPressedThisFrame)
             {
+                
                 DamageData data = new DamageData(this, transform.position, -transform.forward, 
                     transform.forward, testParryDamage, 0f);
                 bool parried = TryParry(data);
                 Debug.Log($"parry success? : {parried}");
             }
+
+            if (Keyboard.current.hKey.wasPressedThisFrame)
+            {
+                float side = UnityEngine.Random.value < 0.5f ? -1f : 1f;
+                float rad = testKnockbackUpAngle * Mathf.Deg2Rad;
+                Vector3 hitDir = new Vector3(side * Mathf.Cos(rad), Mathf.Sin(rad), 0f);
+                TakeDamage(new DamageData(this, transform.position, -hitDir, hitDir, 0.5f, testKnockbackPower));
+            }
         }
 #endif
-
     }
 }
