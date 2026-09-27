@@ -19,9 +19,6 @@ namespace NKT.Fishing.MiniGame
             StopGame();
             gameObject.SetActive(false);
         }
-
-        public virtual void OnPressed() { }
-        public virtual void OnReleased() { }
         
         protected abstract void StartGame(Grade grade);
         protected abstract void StopGame();
