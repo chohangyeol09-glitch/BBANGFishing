@@ -1,5 +1,6 @@
 ﻿using CHG._02.Script.CombatSystem;
 using DevLib.ModuleSystem;
+using Unity.Cinemachine;
 using UnityEngine;
 
 namespace Member.JJK._02._Scripts.Weapon
@@ -8,6 +9,8 @@ namespace Member.JJK._02._Scripts.Weapon
     {
         [SerializeField] private Camera playerCam;
         [SerializeField] private Transform muzzleTrm;
+        [SerializeField] private CinemachineImpulseSource impulseSource;
+        [SerializeField] private float shakeForce = 1f;
 
         private WeaponController _weaponController;
         private WeaponSO _weaponData;
@@ -31,6 +34,8 @@ namespace Member.JJK._02._Scripts.Weapon
 
             _lastFireTime = Time.time;
             FireRayCast();
+            if (impulseSource != null)
+                impulseSource.GenerateImpulse(shakeForce);
 
             if (_weaponData.IsUnbreakable) return;
 

@@ -1,10 +1,13 @@
 using Member.JJK._02._Scripts;
+using Member.JJK._02._Scripts.Settings;
+using Member.JJK._02._Scripts.Weapon;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class MouseLook : MonoBehaviour
 {
     [SerializeField] private MouseSensitivitySO sensitivity;
+    [SerializeField] private AimModule aimModule;
     [SerializeField] private float verticalClamp = 80f;
     [SerializeField] private Transform playerBody;
 
@@ -27,9 +30,13 @@ public class MouseLook : MonoBehaviour
 
     private void Update()
     {
+        if (SettingsMenuUI.IsOpen) return;
+
+        float currentSensitivity = aimModule != null && aimModule.IsAiming ? sensitivity.ZoomValue : sensitivity.Value;
+
         Vector2 mouseDelta = Mouse.current.delta.ReadValue();
-        float mouseX = mouseDelta.x * sensitivity.Value;
-        float mouseY = mouseDelta.y * sensitivity.Value;
+        float mouseX = mouseDelta.x * currentSensitivity;
+        float mouseY = mouseDelta.y * currentSensitivity;
 
         _xRotation -= mouseY;
         _xRotation = Mathf.Clamp(_xRotation, -verticalClamp, verticalClamp);

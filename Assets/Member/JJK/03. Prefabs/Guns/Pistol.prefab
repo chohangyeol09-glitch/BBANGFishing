@@ -64,7 +64,6 @@ Transform:
   - {fileID: 2644610663062177487}
   - {fileID: 6199696017540324643}
   - {fileID: 17386441762192265}
-  - {fileID: 2330878033892273737}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3949571574501670446
@@ -1266,56 +1265,6 @@ MonoBehaviour:
   weaponRotRecoil: 3
   weaponRecoilSnapSpeed: 15
   weaponRecoilRecovery: 8
---- !u!1 &4389715446239868633
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2330878033892273737}
-  - component: {fileID: 1104447619484531855}
-  m_Layer: 0
-  m_Name: CrossHairUI
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2330878033892273737
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4389715446239868633}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 4880378023097272166}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1104447619484531855
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4389715446239868633}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0f644a5a1ab4baea5a4d1b2ff9a9354, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Member.JJK._02._Scripts.Weapon.CrosshairUI
-  aimModule: {fileID: 8492694475815315116}
-  lineLength: 10
-  lineThickness: 2
-  lineGap: 6
-  color: {r: 1, g: 1, b: 1, a: 1}
-  fadeSpeed: 12
 --- !u!1 &4853494485567085984
 GameObject:
   m_ObjectHideFlags: 0
