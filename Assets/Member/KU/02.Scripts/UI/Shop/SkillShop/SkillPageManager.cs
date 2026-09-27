@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Member.JJK._02._Scripts.Skill;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,7 +8,12 @@ public class SkillPageManager : MonoBehaviour
 {
     [Header("판매할 스킬들")]
     [SerializeField]
-    private KU_SkillSO[] skillPool;
+    private SkillSO[] skillPool;
+
+
+    [Header("실제 장착 대상")]
+    [SerializeField]
+    private PlayerSkillController playerSkillController;
 
 
     [Header("왼쪽 - 현재 나온 스킬")]
@@ -53,7 +59,7 @@ public class SkillPageManager : MonoBehaviour
         new List<SkillRuntimeData>();
 
 
-    private KU_SkillSO currentSkill;
+    private SkillSO currentSkill;
 
     private int currentRerollPrice;
 
@@ -89,7 +95,7 @@ public class SkillPageManager : MonoBehaviour
 
             buyButton.onClick
                 .AddListener(
-                    BuyCurrentSkill
+                        BuyCurrentSkill
                 );
         }
 
@@ -137,15 +143,15 @@ public class SkillPageManager : MonoBehaviour
 
     private void RollRandomSkill()
     {
-        List<KU_SkillSO> availableSkills =
-            new List<KU_SkillSO>();
+        List<SkillSO> availableSkills =
+            new List<SkillSO>();
 
 
         for (int i = 0;
              i < skillPool.Length;
              i++)
         {
-            KU_SkillSO skill =
+            SkillSO skill =
                 skillPool[i];
 
 
@@ -189,7 +195,7 @@ public class SkillPageManager : MonoBehaviour
 
 
     private bool IsEquipped(
-        KU_SkillSO skill)
+        SkillSO skill)
     {
         for (int i = 0;
              i < equippedSkills.Count;
@@ -236,7 +242,7 @@ public class SkillPageManager : MonoBehaviour
             rerollPriceIncrease;
 
 
-        KU_SkillSO previousSkill =
+        SkillSO previousSkill =
             currentSkill;
 
 
@@ -307,7 +313,7 @@ public class SkillPageManager : MonoBehaviour
         bool success =
             MoneyManager.Instance
                 .TrySpendMoney(
-                    currentSkill.purchasePrice
+                    currentSkill.PurchasePrice
                 );
 
 
@@ -339,8 +345,13 @@ public class SkillPageManager : MonoBehaviour
         }
 
 
+        ApplySkillEffect(
+            newSkill
+        );
+
+
         Debug.Log(
-            $"{currentSkill.skillName} 구매 및 장착"
+            $"{currentSkill.SkillName} 구매 및 장착"
         );
 
 
@@ -385,69 +396,14 @@ public class SkillPageManager : MonoBehaviour
     // 업그레이드
     // =========================
 
+    // JJK SkillSO는 레벨/수치 개념이 없어서 업그레이드는 지원하지 않는다.
+    // (SkillSlotUI가 항상 MAX로 표시하고 업그레이드 버튼을 꺼두기 때문에 평소엔 호출될 일이 없다.)
     public void UpgradeSkill(
         SkillRuntimeData skillData,
         SkillSlotUI slotUI)
     {
-        if (skillData == null ||
-            skillData.Skill == null)
-            return;
-
-
-        if (skillData.IsMaxLevel)
-        {
-            Debug.Log(
-                "이미 최대 레벨입니다."
-            );
-
-            return;
-        }
-
-
-        if (MoneyManager.Instance == null)
-            return;
-
-
-        int cost =
-            skillData.Skill
-                .GetUpgradeCost(
-                    skillData.Level
-                );
-
-
-        bool paid =
-            MoneyManager.Instance
-                .TrySpendMoney(
-                    cost
-                );
-
-
-        if (!paid)
-            return;
-
-
-        bool upgraded =
-            skillData.Upgrade();
-
-
-        if (!upgraded)
-            return;
-
-
-        if (slotUI != null)
-        {
-            slotUI.Refresh();
-        }
-
-
-        ApplySkillEffect(
-            skillData
-        );
-
-
         Debug.Log(
-            $"{skillData.Skill.skillName} " +
-            $"Lv.{skillData.Level} 업그레이드"
+            "이 스킬은 업그레이드를 지원하지 않습니다."
         );
     }
 
@@ -460,13 +416,17 @@ public class SkillPageManager : MonoBehaviour
             return;
 
 
+        if (playerSkillController != null)
+        {
+            playerSkillController.EquipSkill(
+                skillData.Skill
+            );
+        }
+
+
         Debug.Log(
-            $"{skillData.Skill.skillName} 효과 : " +
-            $"{skillData.Skill.GetValue(skillData.Level)}"
+            $"{skillData.Skill.SkillName} 장착"
         );
-
-
-        // 나중에 실제 플레이어 스킬 시스템과 연결
     }
 
 
@@ -524,24 +484,21 @@ public class SkillPageManager : MonoBehaviour
 
 
             currentSkillImage.sprite =
-                currentSkill.skillSprite;
+                currentSkill.Icon;
         }
 
 
         if (currentSkillNameText != null)
         {
             currentSkillNameText.text =
-                currentSkill.skillName;
+                currentSkill.SkillName;
         }
 
 
         if (currentSkillDescriptionText != null)
         {
             currentSkillDescriptionText.text =
-                currentSkill.GetDescription(
-                    1,
-                    false
-                );
+                currentSkill.Description;
         }
 
 
@@ -549,7 +506,7 @@ public class SkillPageManager : MonoBehaviour
         {
             buyPriceText.text =
                 currentSkill
-                    .purchasePrice
+                    .PurchasePrice
                     .ToString("N0");
         }
 

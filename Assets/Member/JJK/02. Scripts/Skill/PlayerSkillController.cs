@@ -20,6 +20,9 @@ namespace Member.JJK._02._Scripts.Skill
 
         [SerializeField] private List<SkillSlot> skillSlots = new();
 
+        // 빈 슬롯에 스킬이 장착됐을 때 UI(SkillBarUI)가 그 슬롯만 다시 그리도록 알려준다.
+        public event Action<int> SkillEquipped;
+
         private PlayerSkillContext _context;
         private PlayerCombatState _combatState;
 
@@ -87,6 +90,21 @@ namespace Member.JJK._02._Scripts.Skill
                     slot.isActive = false;
                 }
             }
+        }
+
+        // 비어있는(skill == null) 슬롯 중 첫 번째에 스킬을 장착한다. 빈 슬롯이 없으면 false.
+        public bool EquipSkill(SkillSO skill)
+        {
+            for (int i = 0; i < skillSlots.Count; i++)
+            {
+                if (skillSlots[i].skill != null) continue;
+
+                skillSlots[i].skill = skill;
+                SkillEquipped?.Invoke(i);
+                return true;
+            }
+
+            return false;
         }
 
         public int SlotCount => skillSlots.Count;

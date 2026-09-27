@@ -1,3 +1,4 @@
+using Member.JJK._02._Scripts.Skill;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -103,21 +104,21 @@ public class SkillSlotUI : MonoBehaviour
             return;
 
 
-        KU_SkillSO skill =
+        SkillSO skill =
             skillData.Skill;
 
 
         if (skillIcon != null)
         {
             skillIcon.sprite =
-                skill.skillSprite;
+                skill.Icon;
         }
 
 
         if (skillNameText != null)
         {
             skillNameText.text =
-                skill.skillName;
+                skill.SkillName;
         }
 
 
@@ -134,48 +135,22 @@ public class SkillSlotUI : MonoBehaviour
 
 
             descriptionText.text =
-                skill.GetDescription(
-                    skillData.Level,
-                    true
-                );
+                skill.Description;
         }
 
 
-        if (skillData.IsMaxLevel)
+        // JJK SkillSO는 레벨 개념이 없어서 업그레이드는 지원하지 않는다.
+        if (upgradeCostText != null)
         {
-            if (upgradeCostText != null)
-            {
-                upgradeCostText.text =
-                    "MAX";
-            }
-
-
-            if (upgradeButton != null)
-            {
-                upgradeButton.interactable =
-                    false;
-            }
+            upgradeCostText.text =
+                "MAX";
         }
-        else
+
+
+        if (upgradeButton != null)
         {
-            int cost =
-                skill.GetUpgradeCost(
-                    skillData.Level
-                );
-
-
-            if (upgradeCostText != null)
-            {
-                upgradeCostText.text =
-                    cost.ToString("N0");
-            }
-
-
-            if (upgradeButton != null)
-            {
-                upgradeButton.interactable =
-                    true;
-            }
+            upgradeButton.interactable =
+                false;
         }
     }
 
