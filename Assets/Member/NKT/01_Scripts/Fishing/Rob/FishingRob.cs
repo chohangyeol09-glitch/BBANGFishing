@@ -14,5 +14,10 @@ namespace NKT.Fishing.Rob
         public Transform BobberTransform => bobberTransform;
         public Transform RobEdgeTransform => robEdgeTransform;
         public Transform GripPoint => gripPoint;
+
+        public void ApplyData(FishingRobSO rodData)
+        {
+            data = rodData;
+        }
     }
 }

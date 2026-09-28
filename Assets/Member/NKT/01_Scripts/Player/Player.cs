@@ -1,4 +1,4 @@
-using CHG._02.Script.CombatSystem;
+﻿using CHG._02.Script.CombatSystem;
 using NKT.Agent;
 using NKT.Player.Modules;
 using Unity.Cinemachine;
@@ -35,6 +35,18 @@ namespace NKT.Player
             canLook;
 
 
+
+        private bool _deathSoundPlayed;
+
+        public override void Dead()
+        {
+            if (!_deathSoundPlayed)
+            {
+                _deathSoundPlayed = true;
+                BBANGFishing.Audio.GameplayAudio.Play(BBANGFishing.Audio.GameplaySound.PlayerDeath, transform.position);
+            }
+            base.Dead();
+        }
 
         protected override void Awake()
         {

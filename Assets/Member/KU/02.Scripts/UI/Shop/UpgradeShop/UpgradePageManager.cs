@@ -1,4 +1,6 @@
+using Member.JJK._02._Scripts.Weapon;
 using UnityEngine;
+using NKT.Fishing;
 
 public class UpgradePageManager : MonoBehaviour
 {
@@ -42,6 +44,11 @@ public class UpgradePageManager : MonoBehaviour
     [Header("용량 업그레이드")]
     [SerializeField]
     private UpgradeStatData[] capacityUpgrades;
+
+
+    [Header("실제 적용 대상")]
+    [SerializeField]
+    private WeaponController weaponController;
 
 
     private bool isCreated = false;
@@ -89,10 +96,8 @@ public class UpgradePageManager : MonoBehaviour
         if (upgrades == null)
             return;
 
-
         if (parent == null)
             return;
-
 
         if (upgradeItemPrefab == null)
             return;
@@ -208,7 +213,6 @@ public class UpgradePageManager : MonoBehaviour
             stat.CurrentCost;
 
 
-        // 돈 확인
         if (!MoneyManager.Instance
             .CanAfford(cost))
         {
@@ -220,6 +224,15 @@ public class UpgradePageManager : MonoBehaviour
         }
 
 
+        // =============================
+        // 업그레이드 전 수치 저장
+        // =============================
+
+        float previousValue =
+            stat.CurrentValue;
+
+
+        // 실제 업그레이드
         bool success =
             stat.Upgrade();
 
@@ -228,16 +241,28 @@ public class UpgradePageManager : MonoBehaviour
             return;
 
 
-        // 업그레이드 성공 후 돈 차감
+        // =============================
+        // 실제로 증가한 수치 계산
+        // =============================
+
+        float upgradeAmount =
+            stat.CurrentValue -
+            previousValue;
+
+
+        // 돈 차감
         MoneyManager.Instance
             .TrySpendMoney(cost);
 
 
+        // 실제 게임 시스템에 적용
         ApplyUpgrade(
-            stat
+            stat,
+            upgradeAmount
         );
 
 
+        // UI 갱신
         if (itemUI != null)
         {
             itemUI.Refresh();
@@ -247,49 +272,95 @@ public class UpgradePageManager : MonoBehaviour
         Debug.Log(
             $"{stat.upgradeName} 업그레이드 완료 / " +
             $"Lv.{stat.currentLevel} / " +
+            $"증가량 {upgradeAmount} / " +
             $"비용 {cost}원"
         );
     }
 
 
     private void ApplyUpgrade(
-        UpgradeStatData stat)
+        UpgradeStatData stat,
+        float upgradeAmount)
     {
         switch (stat.statType)
         {
+            // =====================================
+            // 총기 공격력
+            // =====================================
+
             case UpgradeStatType.AttackDamage:
 
+                if (weaponController != null)
+                {
+                    weaponController.UpgradeDamage(
+                        upgradeAmount
+                    );
+                }
+
+
                 Debug.Log(
-                    $"공격력 = {stat.CurrentValue}"
+                    $"공격력 +{upgradeAmount}"
                 );
 
                 break;
 
+
+            // =====================================
+            // 총기 공격 속도
+            // =====================================
 
             case UpgradeStatType.AttackSpeed:
 
+                if (weaponController != null)
+                {
+                    weaponController.UpgradeFireRate(
+                        upgradeAmount
+                    );
+                }
+
+
                 Debug.Log(
-                    $"공격 속도 = {stat.CurrentValue}"
+                    $"공격 속도 +{upgradeAmount}"
                 );
 
                 break;
 
+
+            // =====================================
+            // 플레이어 체력
+            // =====================================
 
             case UpgradeStatType.Health:
 
                 Debug.Log(
-                    $"체력 = {stat.CurrentValue}"
+                    $"체력 +{upgradeAmount}"
                 );
+
+                // 나중에 실제 플레이어 체력 시스템 연결
+                //
+                // 예:
+                // health.UpgradeMaxHealth(upgradeAmount);
 
                 break;
 
 
+            // =====================================
+            // 물고기 인벤토리 용량
+            // =====================================
+
             case UpgradeStatType.FishCapacity:
 
                 Debug.Log(
-                    $"물고기 용량 = " +
-                    $"{stat.CurrentValue}"
+                    $"물고기 용량 +{upgradeAmount}"
                 );
+
+                // 나중에 실제 인벤토리 용량 시스템 연결
+                //
+                // 예:
+                // fishInventoryManager
+                //     .UpgradeCapacity(
+                //         Mathf.RoundToInt(upgradeAmount)
+                //     );
 
                 break;
         }

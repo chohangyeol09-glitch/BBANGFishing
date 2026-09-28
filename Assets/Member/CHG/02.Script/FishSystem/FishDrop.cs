@@ -1,4 +1,4 @@
-using DevLib.ObjectPool.Runtime;
+﻿using DevLib.ObjectPool.Runtime;
 using UnityEngine;
 
 namespace CHG._02.Script.FishSystem
@@ -64,8 +64,13 @@ namespace CHG._02.Script.FishSystem
         {
             if (_released) return;
 
-            if (_fishData != null && !FishInventoryManager.Instance.AddFish(_fishData))
-                Debug.LogWarning($"인벤토리에 {_fishData.FishName}을(를) 넣지 못했습니다 (가득 참).", this);
+            if (_fishData != null)
+            {
+                if (FishInventoryManager.Instance.AddFish(_fishData))
+                    BBANGFishing.Audio.GameplayAudio.Play(BBANGFishing.Audio.GameplaySound.DropCollected, transform.position);
+                else
+                    Debug.LogWarning($"인벤토리에 {_fishData.FishName}을(를) 넣지 못했습니다 (가득 참).", this);
+            }
 
             Release();
         }
