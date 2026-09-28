@@ -1,4 +1,4 @@
-﻿using DevLib.ModuleSystem;
+using DevLib.ModuleSystem;
 using Member.JJK._02._Scripts.Weapon;
 using NKT.Fishing.Rob;
 using UnityEngine;
@@ -9,18 +9,19 @@ namespace NKT.Player.Modules
     public class WeaponModeModule : MonoBehaviour,IModule, IAfterInitModule
     {
         [SerializeField] private PlayerInputSO input;
-        [SerializeField] private WeaponController weapon;
-        [SerializeField] private AimModule aimModule;
-        [SerializeField] private GameObject gunObject;
         [SerializeField] private Rig fishingRig;
         [SerializeField] private Rig gunRig;
 
         public bool IsGunMode => _gunMode;
 
         private FishingModule _fishing;
+        private WeaponEquipModule _equip;
         private RobEquipModule _robEquip;
         private FishingRob _storedRob;      //사격 중 낚시대를 잃어버리지 않게 들고 있는다
         private LookModule _look;
+
+        private WeaponController _weapon;   //교체되므로 직렬화하지 않는다
+        private AimModule _aim;
 
         private bool _gunMode;
         private bool _locked;
@@ -31,6 +32,7 @@ namespace NKT.Player.Modules
             _fishing = owner.GetModule<FishingModule>();
             _robEquip = owner.GetModule<RobEquipModule>();
             _look = owner.GetModule<LookModule>();
+            _equip = owner.GetModule<WeaponEquipModule>();
         }
 
         public void AfterInit()
@@ -41,16 +43,19 @@ namespace NKT.Player.Modules
             input.OnInputLocked += HandleLocked;
             input.OnInputUnlocked += HandleUnlocked;
 
-            gunObject.SetActive(false);
+            _equip.OnWeaponChanged += BindWeapon;
+
             fishingRig.weight = 1f;
             gunRig.weight = 0f;
-            ApplyWeaponEnabled();
-            
-            aimModule.SetRecoilReceiver(_look);
+
+            BindWeapon();       //처음 꽂혀있는 총도 잡아준다
         }
 
         private void OnDestroy()
         {
+            if (_equip != null)
+                _equip.OnWeaponChanged -= BindWeapon;
+
             if (input == null) return;
 
             input.OnAttackPressed -= HandleAttackPressed;
@@ -60,6 +65,25 @@ namespace NKT.Player.Modules
             input.OnInputUnlocked -= HandleUnlocked;
         }
 
+        private void BindWeapon()
+        {
+            _weapon = _equip.Current;
+            _aim = _weapon != null ? _weapon.GetComponentInChildren<AimModule>(true) : null;
+
+            _aim?.SetRecoilReceiver(_look);
+
+            if (_weapon != null)
+                _weapon.gameObject.SetActive(_gunMode);
+
+            ApplyWeaponEnabled();
+        }
+
+        [ContextMenu("Test")]
+        private void Test()
+        {
+            SetGunMode(true);
+        }
+        
         public void SetGunMode(bool on)
         {
             if (_gunMode == on) return;
@@ -76,7 +100,9 @@ namespace NKT.Player.Modules
                 _robEquip.Equip(_storedRob);
             }
 
-            gunObject.SetActive(on);
+            if (_weapon != null)
+                _weapon.gameObject.SetActive(on);
+
             fishingRig.weight = on ? 0f : 1f;
             gunRig.weight = on ? 1f : 0f;
 
@@ -85,29 +111,32 @@ namespace NKT.Player.Modules
 
         private void Update()
         {
-            if (!_gunMode || _locked || !_attackHeld) return;
-            if (!weapon.WeaponData.IsAuto) return;
+            if (!CanShoot() || !_attackHeld) return;
+            if (!_weapon.WeaponData.IsAuto) return;
 
-            weapon.Fire();      //연사. FireRate로 알아서 걸러진다
+            _weapon.Fire();     //연사. FireRate로 알아서 걸러진다
         }
 
         private void HandleAttackPressed()
         {
             _attackHeld = true;
 
-            if (!_gunMode || _locked) return;
-            if (weapon.WeaponData.IsAuto) return;
+            if (!CanShoot()) return;
+            if (_weapon.WeaponData.IsAuto) return;
 
-            weapon.Fire();      //단발
+            _weapon.Fire();     //단발
         }
 
         private void HandleAttackReleased() => _attackHeld = false;
 
         private void HandleAim(bool aiming)
         {
-            if (!_gunMode || _locked) return;
-            weapon.SetAiming(aiming);
+            if (!CanShoot()) return;
+
+            _weapon.SetAiming(aiming);
         }
+
+        private bool CanShoot() => _gunMode && !_locked && _weapon != null;
 
         private void HandleLocked()
         {
@@ -124,8 +153,8 @@ namespace NKT.Player.Modules
 
         private void ApplyWeaponEnabled()
         {
-            if (weapon != null)
-                weapon.enabled = _gunMode && !_locked;
+            if (_weapon != null)
+                _weapon.enabled = _gunMode && !_locked;
         }
     }
 }
