@@ -13,7 +13,10 @@ MonoBehaviour:
   m_Name: Legendary Bait
   m_EditorClassIdentifier: Assembly-CSharp::NKT.Fishing.Bait.BaitSO
   baitName: Common
+  baitSprite: {fileID: 0}
   grade: 0
+  rarity: 0
+  price: 0
   maxUses: 0
   weights:
   - grade: 0
@@ -25,3 +28,4 @@ MonoBehaviour:
   - grade: 3
     weight: 0
   bossFishData: {fileID: 0}
+  fishesToBuy: {fileID: 11400000, guid: 182a756498a6500449dd1fa4c9182b50, type: 2}
