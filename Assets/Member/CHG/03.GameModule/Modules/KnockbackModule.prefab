@@ -46,3 +46,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CHG._02.Script.CombatSystem.HitFeedback.CHG._02.Script.CombatSystem.HitFeedback.KnockbackModule
   weightInfluence: 0.5
   upMultiplier: 2
+  removeDepth: 1
+  minUp: 0

@@ -1,4 +1,6 @@
 using DevLib.ModuleSystem;
+using NKT;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -10,14 +12,13 @@ namespace Member.JJK._02._Scripts.Weapon
         [SerializeField] private float tiltAmount = 8f;
         [SerializeField] private float maxTilt = 15f;
         [SerializeField] private float smoothTime = 0.15f;
-        [SerializeField] private Camera playerCamera;
+        [SerializeField] private CinemachineCamera playerCamera;
         [SerializeField] private float aimFov = 40f;
         [SerializeField] private float defaultFov = 60f;
         [SerializeField] private float fovLerpSpeed = 10f;
         [SerializeField] private Vector3 hipPosition;
         [SerializeField] private Vector3 adsPosition;
         [SerializeField] private float adsPositionSpeed = 10f;
-        [SerializeField] private MouseLook mouseLook;
 
         [Header("Weapon Visual Recoil")]
         [SerializeField] private float weaponKickBack = 0.05f;
@@ -37,16 +38,20 @@ namespace Member.JJK._02._Scripts.Weapon
         private Vector3 _weaponPosRecoilTarget;
         private float _weaponRotRecoilCurrent;
         private float _weaponRotRecoilTarget;
+        
+        private IRecoilReceiver _recoil;
+        public void SetRecoilReceiver(IRecoilReceiver receiver) => _recoil = receiver;
 
         public void Initialize(ModuleOwner owner)
         {
             _owner = owner;
             hipPosition = _owner.transform.localPosition;
+            _baseLocalRotation = _owner.transform.localEulerAngles;
         }
 
         public void ApplyRecoil(Vector2 recoil)
         {
-            mouseLook.AddRecoil(recoil);
+            _recoil?.AddRecoil(recoil);
             _weaponPosRecoilTarget += new Vector3(0f, weaponKickUp, -weaponKickBack);
             _weaponRotRecoilTarget += weaponRotRecoil;
         }
@@ -54,7 +59,7 @@ namespace Member.JJK._02._Scripts.Weapon
         private void OnDestroy()
         {
             if (playerCamera != null)
-                playerCamera.fieldOfView = defaultFov;
+                playerCamera.Lens.FieldOfView = defaultFov;
         }
 
         public bool IsAiming => _isAiming;
@@ -84,7 +89,7 @@ namespace Member.JJK._02._Scripts.Weapon
             _weaponRotRecoilTarget = Mathf.Lerp(_weaponRotRecoilTarget, 0f, weaponRecoilRecovery * Time.deltaTime);
 
             float targetFov = _isAiming ? aimFov : defaultFov;
-            playerCamera.fieldOfView = Mathf.Lerp(playerCamera.fieldOfView, targetFov, fovLerpSpeed * Time.deltaTime);
+            playerCamera.Lens.FieldOfView = Mathf.Lerp(playerCamera.Lens.FieldOfView, targetFov, fovLerpSpeed * Time.deltaTime);
 
             Vector3 basePos = _isAiming ? adsPosition : hipPosition;
             _owner.transform.localPosition = Vector3.Lerp(_owner.transform.localPosition, basePos + _weaponPosRecoilCurrent, adsPositionSpeed * Time.deltaTime);

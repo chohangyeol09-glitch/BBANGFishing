@@ -29,7 +29,7 @@ namespace CHG._02.Script.FishSystem
         
         public override float MaxHealth => Data.Health;
         public SkillEntry[] SkillEntries => Data.Skills;
-        public bool IsParryable => _lunge != null && _lunge.IsParryable;
+        public bool IsParryable => _parry != null && _parry.IsParryable;
         
         [field:SerializeField] public FishDataSO Data { get; private set; }
 
@@ -40,6 +40,7 @@ namespace CHG._02.Script.FishSystem
         [SerializeField] private float minJumpHeight = 0.8f;
         
         private LungeModule _lunge;
+        private ParryModule _parry;
         private FishFacingModule _facingModule;
         private Rigidbody _rb;
         private bool _hasRisen; //처음에 올라갔는가
@@ -56,6 +57,7 @@ namespace CHG._02.Script.FishSystem
             _rb = GetComponent<Rigidbody>();
             BTAgent = GetComponent<BehaviorGraphAgent>();
             _lunge = GetModule<LungeModule>();
+            _parry = GetModule<ParryModule>();
             _facingModule = GetModule<FishFacingModule>();
             _hitFeedback = GetModule<HitFeedbackModule>();
             _rb.useGravity = false;
@@ -107,7 +109,19 @@ namespace CHG._02.Script.FishSystem
             if (_hasRisen) HasStartedFalling = true;
         }
 
-        public bool TryParry(DamageData data) => _lunge != null && _lunge.TryParry(data);
+        public bool TryParry(DamageData data) => _parry != null && _parry.TryParry(data);
+
+        //돌진·복귀 중에는 일반 공격을 받지 않는다 (데미지, 피격 연출, 넉백 모두 없음)
+        public bool IsInvincible => State is FishStateEnum.Lunge or FishStateEnum.Return;
+
+        public override void TakeDamage(DamageData data)
+        {
+            if (IsInvincible) return;
+            base.TakeDamage(data);
+        }
+
+        //패링 성공 데미지. 돌진 중이라도 들어간다 (ParryModule.TryParry만 부른다)
+        public void TakeParryDamage(DamageData data) => base.TakeDamage(data);
 
         public override void Dead()
         {

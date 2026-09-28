@@ -32,7 +32,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -0, z: 0}
-  m_LocalScale: {x: 0.5981947, y: 0.5981947, z: 0.5981947}
+  m_LocalScale: {x: 0.3126764, y: 0.3126764, z: 0.3126764}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -70,7 +70,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0c352443ff58901409e156da97006964, type: 2}
+  - {fileID: 2100000, guid: b841467762b33ef41a5d5eeb6859a888, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -154,7 +154,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcfffafb980c43fbbe616431178e56d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CHG._02.Script.CombatSystem.Projectile.StraightProjectile
-  <PoolItem>k__BackingField: {fileID: 11400000, guid: aaab9069c946481439209b897ca5d8a8, type: 2}
+  <PoolItem>k__BackingField: {fileID: 11400000, guid: 1ed19e7feb735bd4dae0f8de13a81287, type: 2}
+  hitEffectItem: {fileID: 11400000, guid: bc43e4dd7753e134dbc134a212062811, type: 2}
+  breakEffectItem: {fileID: 11400000, guid: fbfa25f5f92d3f049bdf83e051de92d7, type: 2}
 --- !u!96 &2272893124864959040
 TrailRenderer:
   serializedVersion: 4
@@ -163,7 +165,7 @@ TrailRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1685871216492515845}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1

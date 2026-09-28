@@ -16,5 +16,6 @@ namespace Member.JJK._02._Scripts.Weapon
         [field: SerializeField] public bool IsUnbreakable { get; private set; }
         [field: SerializeField] public GameObject MuzzleFlashPrefab { get; private set; }
         [field: SerializeField] public GameObject ImpactVfxPrefab { get; private set; }
+        [field: SerializeField] public GameObject Prefab { get; private set; }
     }
 }

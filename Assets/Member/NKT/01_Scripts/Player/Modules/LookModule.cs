@@ -4,8 +4,9 @@ using UnityEngine;
 
 namespace NKT.Player.Modules
 {
-    public class LookModule : MonoBehaviour, IModule
+    public class LookModule : MonoBehaviour, IModule, IRecoilReceiver
     {
+        [SerializeField] private Transform lookTarget;
         [SerializeField] private GameObject playerBody;
         [SerializeField] private float sensitivity = 0.1f;
         [SerializeField] private float pitchXLimit = 90f;
@@ -22,14 +23,13 @@ namespace NKT.Player.Modules
 
         public void Initialize(ModuleOwner owner)
         {
-            Camera mainCamera = Camera.main;
-            if (mainCamera == null)
+            if (lookTarget == null)
             {
                 Debug.LogError("카메라 어디갔어");
                 return;
             }
 
-            _cameraTransform = mainCamera.transform;
+            _cameraTransform = lookTarget;
         }
         
         public void OnLookChange(Vector2 obj)
@@ -50,6 +50,12 @@ namespace NKT.Player.Modules
             _cameraTransform.localRotation = Quaternion.Euler(_pitch, _yaw, 0f);
 
             _lookDelta = Vector2.zero;
+        }
+
+        public void AddRecoil(Vector2 recoil)
+        {
+            _yaw = Mathf.Clamp(_yaw + recoil.x, -pitchXLimit, pitchXLimit);
+            _pitch = Mathf.Clamp(_pitch - recoil.y, -pitchUpLimit, pitchDownLimit);
         }
     }
 }

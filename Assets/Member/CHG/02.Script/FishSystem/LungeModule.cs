@@ -1,5 +1,4 @@
 using System;
-using CHG._02.Script.CombatSystem;
 using CHG._02.Script.CoreSystem;
 using DevLib.ModuleSystem;
 using UnityEngine;
@@ -10,7 +9,6 @@ namespace CHG._02.Script.FishSystem
     {
 
         public event Action OnLungeStart;
-        public event Action OnParried;
         public event Action OnReturned;
 
         public GameObject Target { get; set; }
@@ -19,10 +17,6 @@ namespace CHG._02.Script.FishSystem
         public bool IsFlying => _phase != Phase.Idle;
         public bool IsApproaching => _phase == Phase.Approach;
         public bool IsReturning => _phase == Phase.Return;
-
-        public bool IsParryable => _phase == Phase.Approach && Target != null &&
-                                   Vector3.Distance(_body.position, Target.transform.position) <=
-                                   _fish.Data.ParryRange; //일정 거리 안 일때 패링 가능
 
         public Vector3 FlightVelocity => _flightVelocity + Physics.gravity * Mathf.Min(_elapsed, _flightDuration);
 
@@ -78,15 +72,11 @@ namespace CHG._02.Script.FishSystem
             OnLungeStart?.Invoke();
         }
 
-        public bool TryParry(DamageData data)
+        //접근 중이면 도착을 기다리지 않고 바로 바다 지점으로 되돌아간다 (ParryModule이 패링 성공 시 부른다)
+        public void ReturnNow()
         {
-            if (!IsParryable) return false;
-
-            _fish.TakeDamage(data);
-            OnParried?.Invoke();
-            Debug.Log("Parry Success");
-            if (!_fish.IsDead) BeginFlight(Phase.Return, _seaPoint, _fish.Data.ReturnFlightTime);
-            return true;
+            if (_phase != Phase.Approach) return;
+            BeginFlight(Phase.Return, _seaPoint, _fish.Data.ReturnFlightTime);
         }
 
         private void BeginFlight(Phase phase, Vector3 destination, float duration)

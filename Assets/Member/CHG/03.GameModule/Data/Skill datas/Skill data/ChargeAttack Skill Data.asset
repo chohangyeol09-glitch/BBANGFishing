@@ -17,7 +17,7 @@ MonoBehaviour:
   WarningAnimHash: {fileID: 11400000, guid: 1627242ce8813214db4fab2626f9c194, type: 2}
   SkillType: 0
   Damage: 25
-  WarningTime: 2
+  WarningTime: 4.6
   skillCoolTime: 50
   moduleCoolTimeOffset: 2
   ignoreModuleCoolTime: 1

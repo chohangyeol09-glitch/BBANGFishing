@@ -76,6 +76,6 @@ namespace NKT.Fishing.MiniGame
         
         protected abstract void OnGameStart(Grade grade, float f);
         protected abstract void NextStep();
-        private void OnGameStop() { }
+        protected virtual void OnGameStop() { }
     }
 }
