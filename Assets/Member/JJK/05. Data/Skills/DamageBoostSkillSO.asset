@@ -12,8 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 142b4b7b53434218ba74444ea0bfed5b, type: 3}
   m_Name: DamageBoostSkillSO
   m_EditorClassIdentifier: 
-  <SkillName>k__BackingField: Damage Boost
+  <SkillName>k__BackingField: "\uAD11\uC804\uC0AC"
   <Cooldown>k__BackingField: 20
   <Duration>k__BackingField: 8
   <Icon>k__BackingField: {fileID: 21300000, guid: c3845c64636b2b14ebd030bb22480d08, type: 3}
+  skillName: "\uAD11\uC804\uC0AC"
+  descriptionFormat: "\uACF5\uACA9\uB825\uC774 <value>\uCD08\uB3D9\uC548 2\uBC30\uB85C
+    \uC624\uB985\uB2C8\uB2E4."
+  skillSprite: {fileID: 21300000, guid: c3845c64636b2b14ebd030bb22480d08, type: 3}
+  purchasePrice: 10000
+  baseValue: 10
+  valueIncreasePerLevel: 5
+  valueSuffix: '%'
+  maxLevel: 5
+  baseUpgradeCost: 5000
+  upgradeCostIncrease: 5000
   damageMultiplier: 2
