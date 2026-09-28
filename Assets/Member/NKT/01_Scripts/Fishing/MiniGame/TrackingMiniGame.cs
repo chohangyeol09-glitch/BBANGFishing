@@ -130,11 +130,13 @@ namespace NKT.Fishing.MiniGame
             if (_progress >= 1f)
             {
                 _finished = true;
+                BBANGFishing.Audio.GameplayAudio.Play(BBANGFishing.Audio.GameplaySound.Good, Vector3.zero);
                 Finish(true);
             }
             else if (_progress <= 0f)
             {
                 _finished = true;
+                BBANGFishing.Audio.GameplayAudio.Play(BBANGFishing.Audio.GameplaySound.Miss, Vector3.zero);
                 Finish(false);
             }
         }

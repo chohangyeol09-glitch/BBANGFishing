@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using CHG._02.Script.Agents;
 using CHG._02.Script.CombatSystem;
 using CHG._02.Script.CombatSystem.BT.Channel;
@@ -116,7 +116,8 @@ namespace CHG._02.Script.FishSystem
 
         public override void TakeDamage(DamageData data)
         {
-            if (IsInvincible) return;
+            if (IsInvincible || IsDead) return;
+            BBANGFishing.Audio.GameplayAudio.Play(BBANGFishing.Audio.GameplaySound.FishHit, transform.position);
             base.TakeDamage(data);
         }
 
@@ -141,6 +142,8 @@ namespace CHG._02.Script.FishSystem
 
             if (!HasStartedFalling) return;
 
+            if (IsInSea) return;
+            BBANGFishing.Audio.GameplayAudio.Play(BBANGFishing.Audio.GameplaySound.FishSplash, transform.position);
             IsInSea = true;
         }
         
