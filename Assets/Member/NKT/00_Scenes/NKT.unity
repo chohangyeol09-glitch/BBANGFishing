@@ -119,6 +119,17 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &49665084 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4231317381752445613, guid: 971ea883ececf0049a358f3b23f16f70, type: 3}
+  m_PrefabInstance: {fileID: 432801571959886402}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0076f7e827bf49d3a1bdd8ef8d4f56c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &97204396
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -180,6 +191,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 522567392da374d4b9b1f9100a2ac32c, type: 3}
+--- !u!114 &166982009 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7235771590010101167, guid: 971ea883ececf0049a358f3b23f16f70, type: 3}
+  m_PrefabInstance: {fileID: 432801571959886402}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aeda7bfbf984f2a4da5ab4b8967b115d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Animation.Rigging::UnityEngine.Animations.Rigging.TwoBoneIKConstraint
 --- !u!114 &177204295 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6325901303399714952, guid: 23a999d7e1a850e46b298800a7978f41, type: 3}
@@ -534,6 +556,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e704c20d09d4c8690d83086cb74e482, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NKT.Fishing.MiniGame.SkillCheckMiniGame
+--- !u!4 &1180004885 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4809749233914781980, guid: 971ea883ececf0049a358f3b23f16f70, type: 3}
+  m_PrefabInstance: {fileID: 432801571959886402}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1222672728 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8237394561898408890, guid: 971ea883ececf0049a358f3b23f16f70, type: 3}
+  m_PrefabInstance: {fileID: 432801571959886402}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fff0960ef4ea6e04eac66b4a7fd2189d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Animation.Rigging::UnityEngine.Animations.Rigging.RigBuilder
+--- !u!114 &1367469762 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 659044205150333454, guid: 971ea883ececf0049a358f3b23f16f70, type: 3}
+  m_PrefabInstance: {fileID: 432801571959886402}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aeda7bfbf984f2a4da5ab4b8967b115d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Animation.Rigging::UnityEngine.Animations.Rigging.TwoBoneIKConstraint
+--- !u!4 &1437095434 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7050357678044039404, guid: 971ea883ececf0049a358f3b23f16f70, type: 3}
+  m_PrefabInstance: {fileID: 432801571959886402}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1500537128
 GameObject:
   m_ObjectHideFlags: 0
@@ -578,6 +632,55 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5f40c623a554b4da2fada502e3a5d4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NKT.Fishing.MiniGame.TrackingMiniGame
+--- !u!1 &2043676935
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2043676936}
+  - component: {fileID: 2043676937}
+  m_Layer: 3
+  m_Name: WeaponEquipModule
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2043676936
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2043676935}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1437095434}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2043676937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2043676935}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f777586095d84e8aadaad506682bd7d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NKT.Player.Modules.WeaponEquipModule
+  gunSocket: {fileID: 1180004885}
+  rigBuilder: {fileID: 1222672728}
+  rightHandIK: {fileID: 166982009}
+  leftHandIK: {fileID: 1367469762}
+  _current: {fileID: 49665084}
 --- !u!114 &2049575399 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2023191537503031967, guid: ed3e19323a19e044a9e3b04f3169004a, type: 3}
@@ -672,7 +775,10 @@ PrefabInstance:
       objectReference: {fileID: 2049642818}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 7050357678044039404, guid: 971ea883ececf0049a358f3b23f16f70, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2043676936}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 971ea883ececf0049a358f3b23f16f70, type: 3}
 --- !u!1001 &1102437673621049091

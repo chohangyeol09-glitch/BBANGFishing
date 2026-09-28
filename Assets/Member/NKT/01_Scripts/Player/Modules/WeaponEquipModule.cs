@@ -7,7 +7,7 @@ using UnityEngine.Animations.Rigging;
 
 namespace NKT.Player.Modules
 {
-    public class WeaponEquipModule : MonoBehaviour
+    public class WeaponEquipModule : MonoBehaviour, IModule, IAfterInitModule
     {
         [SerializeField] private Transform gunSocket;
         [SerializeField] private RigBuilder rigBuilder;
@@ -76,6 +76,12 @@ namespace NKT.Player.Modules
             leftHandIK.data.target = grip.LeftGrip;
 
             rigBuilder.Build();
+        }
+
+        public void AfterInit()
+        {
+            if (_current != null)
+                _current.OnBroken += HandleBroken;
         }
     }
 }
