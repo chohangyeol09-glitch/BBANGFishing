@@ -38,6 +38,12 @@ namespace NKT.Player
 
         private bool _deathSoundPlayed;
 
+        public void Revive()
+        {
+            CurrentHealth = MaxHealth;
+            _deathSoundPlayed = false;
+        }
+
         public override void Dead()
         {
             if (!_deathSoundPlayed)

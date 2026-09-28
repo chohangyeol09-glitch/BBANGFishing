@@ -41,7 +41,7 @@ namespace CHG._02.Script.CombatSystem.HitFeedback
         {
             if (_rb == null) return;
             if (_gate != null && !_gate.CanBeKnockedBack) return;
-
+            _rb.linearVelocity = Vector3.zero;
             float impulse = PhysicsUtil.ResolveImpulse(data.KnockbackPower, _rb.mass, weightInfluence);
             Vector3 dir = KnockbackDirection(data);
             if (dir.y > 0f) dir.y *= upMultiplier;
@@ -49,30 +49,27 @@ namespace CHG._02.Script.CombatSystem.HitFeedback
             _rb.AddForce(dir * impulse, ForceMode.Impulse);
         }
 
-        //맞은 지점의 반대쪽으로 민다 (왼쪽 아래를 맞으면 오른쪽 위로)
         private Vector3 KnockbackDirection(DamageData data)
         {
-            bool fromOther = data.Attacker != null && data.Attacker != _agent; //자기 자신이 준 데미지(테스트)는 방향 그대로
+            bool fromOther = data.Attacker != null && data.Attacker != _agent; 
 
-            //HitPoint가 없는 공격(투사체·폭탄은 Vector3.zero)은 공격 방향을 쓴다
             Vector3 dir = fromOther && data.HitPoint != Vector3.zero
                 ? _rb.worldCenterOfMass - data.HitPoint
                 : data.HitDirection;
 
-            //공격자 → 대상의 수평 방향(깊이) 성분을 뺀다
             if (removeDepth && fromOther)
             {
                 Vector3 away = Vector3.ProjectOnPlane(_rb.position - data.Attacker.transform.position, Vector3.up);
                 if (away.sqrMagnitude > 0.0001f) dir -= Vector3.Project(dir, away.normalized);
             }
 
-            if (dir.sqrMagnitude < 0.000001f) return Vector3.up; //정중앙을 맞으면 위로
+            if (dir.sqrMagnitude < 0.000001f) return Vector3.up;
             dir.Normalize();
 
             if (dir.y < minUp)
             {
                 dir.y = minUp;
-                if (dir.sqrMagnitude < 0.000001f) return Vector3.up; //바로 위에서 맞고 minUp이 0인 경우
+                if (dir.sqrMagnitude < 0.000001f) return Vector3.up;
                 dir.Normalize();
             }
             return dir;
