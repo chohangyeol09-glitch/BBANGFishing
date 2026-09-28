@@ -5,6 +5,7 @@ namespace Member.JJK._02._Scripts.Skill
     public class PlayerCombatState : MonoBehaviour
     {
         public float DamageMultiplier { get; private set; } = 1f;
+        public float AttackSpeedMultiplier { get; private set; } = 1f;
         public bool HasProjectileShield { get; private set; }
 
         // 상점 등에서 구매하는 영구 강화치. 스킬용 DamageMultiplier(임시 버프, 끝나면 1로 리셋)와는
@@ -13,6 +14,9 @@ namespace Member.JJK._02._Scripts.Skill
         public float FireRateUpgradeBonus { get; private set; }
 
         public void SetDamageMultiplier(float multiplier) => DamageMultiplier = multiplier;
+
+        // 공격속도 버프 스킬용 임시 배율. 영구 강화(FireRateUpgradeBonus)와는 별개로 곱해진다.
+        public void SetAttackSpeedMultiplier(float multiplier) => AttackSpeedMultiplier = multiplier;
 
         // 총SO의 Damage에 더해지는 영구 데미지 강화. 다른 스크립트(상점 등)에서 호출해서 사용한다.
         public void UpgradeDamage(float amount) => DamageUpgradeBonus += amount;
