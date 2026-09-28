@@ -21,7 +21,7 @@ MonoBehaviour:
   minBiteDelay: 5
   maxBiteDelay: 15
   rodName: "\uC5D0\uD53D \uB09A\uC2DC\uB300"
-  rodSprite: {fileID: 0}
+  rodSprite: {fileID: 797089954, guid: b8f2484d137b40949b4e9e5d9ff0f8e0, type: 3}
   rarity: 2
-  price: 0
+  price: 200
   grade: 2

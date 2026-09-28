@@ -5252,6 +5252,10 @@ MonoBehaviour:
   rowsParent: {fileID: 1940367714}
   tooltipUI: {fileID: 942134093}
   detailUI: {fileID: 575159675}
+  previousPageButton: {fileID: 0}
+  nextPageButton: {fileID: 0}
+  pageText: {fileID: 0}
+  startPageCount: 1
   slotsPerRow: 5
 --- !u!224 &313445798
 RectTransform:
