@@ -396,6 +396,29 @@ Transform:
   - {fileID: 2870754998908197739}
   m_Father: {fileID: 4261942614255834578}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &5335069708650814641
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6120021058863831304}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.12
+  m_Height: 0.47053382
+  m_Direction: 2
+  m_Center: {x: 0, y: 0.02539733, z: -0.04188844}
 --- !u!1 &6265883762939908513
 GameObject:
   m_ObjectHideFlags: 0
@@ -809,9 +832,10 @@ MonoBehaviour:
   _maxHealth: 100
   <PoolItem>k__BackingField: {fileID: 11400000, guid: 5d89a87998e9fa148aa82409119db2e0, type: 2}
   <Data>k__BackingField: {fileID: 11400000, guid: 0f0c2ccff1acfa946916f7f8f8fc0c0a, type: 2}
-  airTimeScale: 1
+  airTimeScale: 1.5
   weightInfluence: 0.13
   minJumpHeight: 0.8
+  maxJumpHeight: 12
   testUpSpeed: 8
   testParryDamage: 0.5
   testKnockbackPower: 3.34
@@ -843,29 +867,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!136 &5335069708650814641
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6120021058863831304}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.12
-  m_Height: 0.47053382
-  m_Direction: 0
-  m_Center: {x: 0, y: 0.02539733, z: -0.04188844}
 --- !u!1 &9081408073812847179
 GameObject:
   m_ObjectHideFlags: 0

@@ -1302,6 +1302,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fishSpawnList: {fileID: 11400000, guid: 552b3e982937e2746800f0751acd39d4, type: 2}
   spawnPoint: {fileID: 1177055675}
+  robEquip: {fileID: 0}
+  spawnOffset: {x: 0, y: 0, z: 0}
+  maxSpawnLift: 8
+  spawnClearance: 0.05
   allowDowngrade: 0
   attackTarget: {fileID: 1374227014}
   poolManager: {fileID: 11400000, guid: baebfac5b535afc4b9f1753c62a2bd78, type: 2}
