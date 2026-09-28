@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Unity.IO.LowLevel.Unsafe;
+using UnityEngine;
 
 namespace CHG._02.Script.CoreSystem
 {
@@ -26,7 +27,7 @@ namespace CHG._02.Script.CoreSystem
 
         [SerializeField] private bool isDonDestroy = false;
 
-        private void Awake()
+        protected virtual void Awake()
         {
             if (_instance == null)
             {
