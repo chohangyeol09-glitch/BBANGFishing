@@ -265,7 +265,7 @@ public override void Dead()
 
 [On StateChannel (Restart)]   Assign State to → 블랙보드 State (링크)
  └ Switch [State]
-     ├ Appear → ( Wait [AppearDuration] → Log → Send "Combat" )
+     ├ Appear → ( [Boss] rises [Depth] over [AppearDuration] seconds → Log → Send "Combat" )   ← BossRiseAction
      ├ Combat → Repeat → UseSkillAction ([Agent] = Boss, [Target] = Target)
      ├ Groggy → ( Wait [GroggyDuration] → [Boss] reset groggy → Log → Send "Combat" )
      └ Dead   → ( Log "보스 사망" )          ← 죽음 연출은 여기에 추가
@@ -274,6 +274,8 @@ public override void Dead()
 - **`On StateChannel`의 Mode는 반드시 `Restart`.** `Default`면 자식이 실행 중일 때 온 메시지를 버린다. `Appear` 카드 안의 `Send "Combat"`이 무시되고 `Switch`가 끝난 뒤 영원히 대기하는 증상이 실제로 났다.
 - `Repeat`는 `Combat` 가지에만 있다. 나머지는 한 번 실행 후 `Send`하거나(`Appear`, `Groggy`) 그대로 머문다(`Dead`).
 - `UseSkillAction`의 빨간 X는 쿨타임 중이면 정상이다(`Repeat`가 매 프레임 재시도).
+- `BossRiseAction`은 스폰된 자리를 최종 위치로 보고 `Depth`만큼 아래에서 `Duration`(블랙보드 `AppearDuration` 링크) 동안 떠오르게 한다. 도중에 끊기면 `OnEnd`에서 최종 위치로 맞춘다. 그러지 않으면 재시작된 다음 `OnStart`가 낮은 위치를 최종 위치로 삼아 보스가 점점 가라앉는다.
+- 소환은 `Boss.Summon(target)`(비활성 보스를 켜고 `OnSpawn`)이고, 씬의 `BossSummoner.Summon()`이 부른다. 보스 오브젝트에 붙은 스크립트(`TestBoss` 등)는 보스가 켜지기 전에는 돌지 않으므로 소환을 맡길 수 없다.
 
 ### 11.3 C#과 BT의 책임 분담
 
