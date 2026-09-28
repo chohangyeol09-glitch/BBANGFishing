@@ -6582,7 +6582,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5484a954ab7a43fcb7253f28ed5863b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Member.JJK._02._Scripts.UI.SceneLoader
-  sceneName: FirstScene
+  sceneName: FirstScene_Final
 --- !u!4 &1491281059
 Transform:
   m_ObjectHideFlags: 0
