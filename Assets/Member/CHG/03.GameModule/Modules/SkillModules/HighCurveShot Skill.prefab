@@ -49,7 +49,7 @@ MonoBehaviour:
   executeEffect: {fileID: 0}
   poolManager: {fileID: 11400000, guid: baebfac5b535afc4b9f1753c62a2bd78, type: 2}
   poolItem: {fileID: 11400000, guid: ca979f3db450fcb43a6fe68358af316d, type: 2}
-  travelDuration: 1.32
+  travelDuration: 2.28
   curveOffset: 1.63
   shots:
   - CurveAngle: -30
