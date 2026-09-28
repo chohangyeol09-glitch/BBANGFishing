@@ -31589,6 +31589,8 @@ MonoBehaviour:
   spawnPoint: {fileID: 1724912728}
   robEquip: {fileID: 1125500565}
   spawnOffset: {x: 0, y: 0, z: 0}
+  maxSpawnLift: 8
+  spawnClearance: 0.05
   allowDowngrade: 0
   attackTarget: {fileID: 1410502811}
   poolManager: {fileID: 11400000, guid: baebfac5b535afc4b9f1753c62a2bd78, type: 2}
