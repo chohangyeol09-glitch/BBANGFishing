@@ -22,6 +22,9 @@ namespace CHG._02.Script.CombatSystem.EnemySkillSystem.Skills
 
         protected override IEnumerator ExecuteSkill(GameObject target)
         {
+            float fireTime = Time.time;
+            Debug.Log($"[ChargeAttack] 차지 끝 (WarningTime {Data.WarningTime}초) / Time {fireTime:F2}");
+
             if (target == null) yield break;
 
             PlayAtTarget(impactEffect, target);
@@ -36,6 +39,7 @@ namespace CHG._02.Script.CombatSystem.EnemySkillSystem.Skills
 
             Vector3 dir = (target.transform.position - Owner.transform.position).normalized;
             damageable.TakeDamage(new DamageData(Owner, target.transform.position, -dir, dir, SkillDamage, knockbackPower));
+            Debug.Log($"[ChargeAttack] 데미지 {SkillDamage} → {target.name} / 발동 후 {Time.time - fireTime:F2}초 (impactDelay {impactDelay})");
         }
 
         //발동 뒤 그로기·사망으로 끊기면 발동 이펙트를 멈춘다 (코루틴이 멈춰서 데미지는 들어가지 않는다)
