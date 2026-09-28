@@ -22,7 +22,7 @@ namespace NKT.Fishing.MiniGame
         [SerializeField] private Vector2 goodWindowRange = new Vector2(0.2f, 0.1f);
         [SerializeField] private float noteInterval = 0.35f;
 
-        private static readonly Key[] Keys = { Key.W, Key.A, Key.S, Key.D };
+        private static readonly Key[] Keys = { Key.Z, Key.X, Key.C, Key.V };
         private Vector2 JudgePos => new Vector2(laneAnchors[_keyIndex].anchoredPosition.x, judgeLine.anchoredPosition.y);
 
         private float _travelTime;
