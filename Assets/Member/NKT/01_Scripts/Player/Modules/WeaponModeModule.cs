@@ -97,10 +97,10 @@ namespace NKT.Player.Modules
             _fishing.CancelFishing();
             _robEquip.Hide();
             _equip.Hide();
-            ApplyMode(false);
+            ApplyMode(false, false);
         }
 
-        private void ApplyMode(bool gun)
+        private void ApplyMode(bool gun, bool weight = true)
         {
             _gunMode = gun;
 
@@ -110,6 +110,14 @@ namespace NKT.Player.Modules
 
             fishingRig.weight = gun ? 0f : 1f;
             gunRig.weight = gun ? 1f : 0f;
+
+
+            if (weight)
+            {
+                fishingRig.weight = 0f;
+                gunRig.weight = 0f;
+            }
+            
 
             ApplyWeaponEnabled();
         }

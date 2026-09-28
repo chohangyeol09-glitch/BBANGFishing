@@ -47,6 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NKT.Fishing.Rob.Bobber
   bobberParticle: {fileID: 2236759373585398173}
+  restPoint: {fileID: 0}
 --- !u!1 &4555175442071649452
 GameObject:
   m_ObjectHideFlags: 0

@@ -45,6 +45,9 @@ namespace NKT.Player.Modules
         {
             if (_line.enabled == false) return;
 
+            if(_fishingModule == null)
+                _fishingModule = _owner.GetModule<FishingModule>();
+            
             Bobber bobber = _fishingModule.Bobber;
 
             if (bobber == null) return;
