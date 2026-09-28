@@ -135,22 +135,53 @@ public class SkillSlotUI : MonoBehaviour
 
 
             descriptionText.text =
-                skill.Description;
+                skill.GetDescription(
+                    skillData.Level,
+                    true
+                );
         }
 
 
-        // JJK SkillSO는 레벨 개념이 없어서 업그레이드는 지원하지 않는다.
-        if (upgradeCostText != null)
+        bool isMaxLevel =
+            skillData.Level >=
+            skill.maxLevel;
+
+
+        if (isMaxLevel)
         {
-            upgradeCostText.text =
-                "MAX";
+            if (upgradeCostText != null)
+            {
+                upgradeCostText.text =
+                    "MAX";
+            }
+
+
+            if (upgradeButton != null)
+            {
+                upgradeButton.interactable =
+                    false;
+            }
         }
-
-
-        if (upgradeButton != null)
+        else
         {
-            upgradeButton.interactable =
-                false;
+            int upgradeCost =
+                skill.GetUpgradeCost(
+                    skillData.Level
+                );
+
+
+            if (upgradeCostText != null)
+            {
+                upgradeCostText.text =
+                    $"{upgradeCost:N0}원";
+            }
+
+
+            if (upgradeButton != null)
+            {
+                upgradeButton.interactable =
+                    true;
+            }
         }
     }
 

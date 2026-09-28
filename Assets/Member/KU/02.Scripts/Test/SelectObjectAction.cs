@@ -1,95 +1,126 @@
 using System.Collections;
+using NKT.Player;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class SelectObjectAction : InteractionAction
 {
-    private Camera mainCamera;
-    private CameraLook cameraLook;
+    [Header("플레이어")]
+    [SerializeField]
+    private Player player;
 
+
+    [Header("이동할 오브젝트")]
+    [SerializeField]
     private Transform targetObject;
 
 
-    [Header("카메라 앞 위치")]
+    [Header("카메라")]
     [SerializeField]
-    private float distanceFromCamera = 1f;
+    private Camera mainCamera;
 
+
+    [Header("이동 설정")]
     [SerializeField]
-    private Vector3 positionOffset;
+    private float distanceFromCamera = 1.5f;
 
-
-    [Header("회전")]
-    [SerializeField]
-    private Vector3 rotationOffset;
-
-
-    [Header("이동 연출")]
     [SerializeField]
     private float moveDuration = 0.3f;
 
 
-    [Header("첫 번째 활성화 오브젝트")]
+    [Header("최종 위치 보정")]
     [SerializeField]
-    private GameObject firstDelayedObject;
-
-    [SerializeField]
-    private float firstActiveDelay = 0.3f;
-
-
-    [Header("두 번째 활성화 오브젝트")]
-    [SerializeField]
-    private GameObject secondDelayedObject;
+    private Vector3 positionOffset = Vector3.zero;
 
     [SerializeField]
-    private float secondActiveDelay = 2f;
+    private Vector3 rotationOffset = Vector3.zero;
 
 
-    [Header("상점")]
+    [Header("선택 후 활성화")]
+    [SerializeField]
+    private GameObject firstObject;
+
+    [SerializeField]
+    private GameObject secondObject;
+
+
+    [SerializeField]
+    private float firstObjectDelay = 0.3f;
+
+    [SerializeField]
+    private float secondObjectDelay = 2f;
+
+
+    [Header("상점 UI")]
     [SerializeField]
     private ShopSelectManager shopSelectManager;
-
-
-    private Vector3 originalPosition;
-    private Quaternion originalRotation;
-    private Transform originalParent;
-
-
-    private bool isSelected = false;
-    private bool isMoving = false;
 
 
     private InteractionTarget interactionTarget;
 
 
+    private Vector3 originalPosition;
+
+    private Quaternion originalRotation;
+
+
+    private bool isSelected;
+
+    private bool isMoving;
+
+
+    private Coroutine moveCoroutine;
+
+    private Coroutine activateCoroutine;
+
+
+
     private void Awake()
     {
-        mainCamera = Camera.main;
-
-        targetObject = transform;
-
-
-        if (mainCamera != null)
+        if (targetObject == null)
         {
-            cameraLook =
-                mainCamera.GetComponent<CameraLook>();
+            targetObject =
+                transform;
+        }
+
+
+        if (mainCamera == null)
+        {
+            mainCamera =
+                Camera.main;
         }
 
 
         interactionTarget =
-            GetComponent<InteractionTarget>();
+            targetObject.GetComponent<InteractionTarget>();
 
 
-        if (firstDelayedObject != null)
+        if (interactionTarget == null)
         {
-            firstDelayedObject.SetActive(false);
+            interactionTarget =
+                targetObject.GetComponentInParent<InteractionTarget>();
         }
 
 
-        if (secondDelayedObject != null)
+        originalPosition =
+            targetObject.position;
+
+        originalRotation =
+            targetObject.rotation;
+
+
+        if (firstObject != null)
         {
-            secondDelayedObject.SetActive(false);
+            firstObject.SetActive(false);
+        }
+
+
+        if (secondObject != null)
+        {
+            secondObject.SetActive(false);
         }
     }
+
 
 
     private void Update()
@@ -102,65 +133,51 @@ public class SelectObjectAction : InteractionAction
             return;
 
 
-        if (Keyboard.current.escapeKey.wasPressedThisFrame)
-        {
-            HandleEscape();
-        }
-    }
+        if (!Keyboard.current.escapeKey.wasPressedThisFrame)
+            return;
 
 
-    private void HandleEscape()
-    {
-        // 상점의 서브 페이지에서 ESC를 눌렀다면
-        // 메뉴 화면으로만 돌아가기
+        // 상점 내부 페이지가 열려 있으면
+        // 먼저 홈 화면으로 돌아감
         if (shopSelectManager != null)
         {
-            bool handled =
-                shopSelectManager.TryHandleEscape();
-
-
-            if (handled)
+            if (shopSelectManager.TryHandleEscape())
             {
                 return;
             }
         }
 
 
-        // 메뉴 화면에서 ESC를 눌렀거나
-        // ShopSelectManager가 없는 경우
-        // 상호작용 자체 종료
-        CloseObject();
+        Close();
     }
+
 
 
     public override void Execute()
     {
-        if (isSelected || isMoving)
+        if (isSelected)
             return;
 
 
-        SelectObject();
-    }
+        if (isMoving)
+            return;
 
 
-    private void SelectObject()
-    {
-        if (mainCamera == null ||
-            targetObject == null)
+        if (targetObject == null)
+            return;
+
+
+        if (mainCamera == null)
             return;
 
 
         isSelected = true;
 
 
-        originalPosition =
-            targetObject.position;
-
-        originalRotation =
-            targetObject.rotation;
-
-        originalParent =
-            targetObject.parent;
+        if (player != null)
+        {
+            player.LockLook();
+        }
 
 
         if (interactionTarget != null)
@@ -169,31 +186,20 @@ public class SelectObjectAction : InteractionAction
         }
 
 
-        if (cameraLook != null)
+        if (moveCoroutine != null)
         {
-            cameraLook.LockLook();
+            StopCoroutine(
+                moveCoroutine
+            );
         }
 
 
-        if (firstDelayedObject != null)
-        {
-            firstDelayedObject.SetActive(false);
-        }
-
-
-        if (secondDelayedObject != null)
-        {
-            secondDelayedObject.SetActive(false);
-        }
-
-
-        StopAllCoroutines();
-
-
-        StartCoroutine(
-            MoveToCamera()
-        );
+        moveCoroutine =
+            StartCoroutine(
+                MoveToCamera()
+            );
     }
+
 
 
     private IEnumerator MoveToCamera()
@@ -204,42 +210,83 @@ public class SelectObjectAction : InteractionAction
         Vector3 startPosition =
             targetObject.position;
 
+
         Quaternion startRotation =
             targetObject.rotation;
 
 
-        Vector3 targetPosition =
-            mainCamera.transform.position
-            + mainCamera.transform.forward * distanceFromCamera
-            + mainCamera.transform.right * positionOffset.x
-            + mainCamera.transform.up * positionOffset.y
-            + mainCamera.transform.forward * positionOffset.z;
 
+        // =========================================
+        // 카메라 앞 기본 위치
+        // =========================================
+
+        Vector3 targetPosition =
+            mainCamera.transform.position +
+            mainCamera.transform.forward *
+            distanceFromCamera;
+
+
+
+        // =========================================
+        // Inspector Position Offset 적용
+        //
+        // X = 좌우
+        // Y = 위아래
+        // Z = 앞뒤
+        // =========================================
+
+        targetPosition +=
+            mainCamera.transform.right *
+            positionOffset.x;
+
+        targetPosition +=
+            mainCamera.transform.up *
+            positionOffset.y;
+
+        targetPosition +=
+            mainCamera.transform.forward *
+            positionOffset.z;
+
+
+
+        // =========================================
+        // 기본 회전
+        // 오브젝트가 카메라를 바라봄
+        // =========================================
+
+        Quaternion baseRotation =
+            Quaternion.LookRotation(
+                -mainCamera.transform.forward,
+                Vector3.up
+            );
+
+
+
+        // =========================================
+        // Inspector Rotation Offset 적용
+        // =========================================
 
         Quaternion targetRotation =
-            mainCamera.transform.rotation *
-            Quaternion.Euler(rotationOffset);
+            baseRotation *
+            Quaternion.Euler(
+                rotationOffset
+            );
 
 
-        float elapsedTime = 0f;
+
+        float time = 0f;
 
 
-        while (elapsedTime < moveDuration)
+        while (time < moveDuration)
         {
-            elapsedTime += Time.deltaTime;
+            time +=
+                Time.deltaTime;
 
 
             float t =
                 Mathf.Clamp01(
-                    elapsedTime / moveDuration
+                    time / moveDuration
                 );
-
-
-            t = Mathf.SmoothStep(
-                0f,
-                1f,
-                t
-            );
 
 
             targetObject.position =
@@ -272,67 +319,93 @@ public class SelectObjectAction : InteractionAction
         isMoving = false;
 
 
-        StartCoroutine(
-            ActivateObjectAfterDelay(
-                firstDelayedObject,
-                firstActiveDelay
-            )
-        );
-
-
-        StartCoroutine(
-            ActivateObjectAfterDelay(
-                secondDelayedObject,
-                secondActiveDelay
-            )
-        );
+        activateCoroutine =
+            StartCoroutine(
+                ActivateObjects()
+            );
     }
 
 
-    private IEnumerator ActivateObjectAfterDelay(
-        GameObject target,
-        float delay)
+
+    private IEnumerator ActivateObjects()
     {
-        if (target == null)
-            yield break;
+        if (firstObject != null)
+        {
+            yield return new WaitForSeconds(
+                firstObjectDelay
+            );
 
 
-        yield return new WaitForSeconds(delay);
+            firstObject.SetActive(true);
+        }
 
 
+        float remainingDelay =
+            secondObjectDelay -
+            firstObjectDelay;
+
+
+        if (remainingDelay > 0f)
+        {
+            yield return new WaitForSeconds(
+                remainingDelay
+            );
+        }
+
+
+        if (secondObject != null)
+        {
+            secondObject.SetActive(true);
+        }
+    }
+
+
+
+    private void Close()
+    {
         if (!isSelected)
-            yield break;
-
-
-        target.SetActive(true);
-    }
-
-
-    private void CloseObject()
-    {
-        if (!isSelected || isMoving)
             return;
 
 
-        StopAllCoroutines();
+        isSelected = false;
 
 
-        if (firstDelayedObject != null)
+        if (activateCoroutine != null)
         {
-            firstDelayedObject.SetActive(false);
+            StopCoroutine(
+                activateCoroutine
+            );
+
+            activateCoroutine = null;
         }
 
 
-        if (secondDelayedObject != null)
+        if (firstObject != null)
         {
-            secondDelayedObject.SetActive(false);
+            firstObject.SetActive(false);
         }
 
 
-        StartCoroutine(
-            ReturnObject()
-        );
+        if (secondObject != null)
+        {
+            secondObject.SetActive(false);
+        }
+
+
+        if (moveCoroutine != null)
+        {
+            StopCoroutine(
+                moveCoroutine
+            );
+        }
+
+
+        moveCoroutine =
+            StartCoroutine(
+                ReturnObject()
+            );
     }
+
 
 
     private IEnumerator ReturnObject()
@@ -343,29 +416,24 @@ public class SelectObjectAction : InteractionAction
         Vector3 startPosition =
             targetObject.position;
 
+
         Quaternion startRotation =
             targetObject.rotation;
 
 
-        float elapsedTime = 0f;
+        float time = 0f;
 
 
-        while (elapsedTime < moveDuration)
+        while (time < moveDuration)
         {
-            elapsedTime += Time.deltaTime;
+            time +=
+                Time.deltaTime;
 
 
             float t =
                 Mathf.Clamp01(
-                    elapsedTime / moveDuration
+                    time / moveDuration
                 );
-
-
-            t = Mathf.SmoothStep(
-                0f,
-                1f,
-                t
-            );
 
 
             targetObject.position =
@@ -395,12 +463,6 @@ public class SelectObjectAction : InteractionAction
             originalRotation;
 
 
-        targetObject.SetParent(
-            originalParent
-        );
-
-
-        isSelected = false;
         isMoving = false;
 
 
@@ -410,9 +472,9 @@ public class SelectObjectAction : InteractionAction
         }
 
 
-        if (cameraLook != null)
+        if (player != null)
         {
-            cameraLook.UnlockLook();
+            player.UnlockLook();
         }
     }
 }
