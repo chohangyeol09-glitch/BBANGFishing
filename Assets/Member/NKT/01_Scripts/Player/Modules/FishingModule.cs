@@ -145,9 +145,12 @@ namespace NKT.Player.Modules
         public void ReportReelFinished(bool success)
         {
             if (_state != FishingState.Reeling) return;
-            
-            if(success)
+
+            if (success)
+            {
                 SpawnFish();
+                Debug.Log("Spawn");
+            }
             
             ChangeState(FishingState.Retrieving);
         }
