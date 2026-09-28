@@ -101,8 +101,12 @@ namespace NKT.Player.Modules
 
         public void AfterInit()
         {
-            if (_current != null)
-                _current.OnBroken += HandleBroken;
+            if (_current == null) return;
+
+            _current.OnBroken += HandleBroken;
+
+            //직렬화로 꽂혀있는 시작 총은 Equip을 안 거치니 그립을 여기서 맞춰준다
+            SyncGrip();
         }
     }
 }

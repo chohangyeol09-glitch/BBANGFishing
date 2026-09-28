@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: FishingRob01
   m_EditorClassIdentifier: Assembly-CSharp::NKT.Fishing.Rob.FishingRobSO
   prefab:
-    RobGameobject: {fileID: 0}
-    BobberGameobject: {fileID: 0}
+    RobGameobject: {fileID: 995492234869721171, guid: 965a5c19c9234cd384318e7910edf0e6,
+      type: 3}
+    BobberGameobject: {fileID: 3506138368610051022, guid: 5a4fa9d409cbf9d48a6b97e282240e0e,
+      type: 3}
   power: 12
   minDistance: 0
   maxDistance: 0
