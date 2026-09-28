@@ -372,7 +372,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3758224140703626451}
-  m_Layer: 0
+  - component: {fileID: 5335069708650814641}
+  m_Layer: 9
   m_Name: Pivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -735,7 +736,6 @@ GameObject:
   - component: {fileID: 2302955415390951066}
   - component: {fileID: 4371269290107166124}
   - component: {fileID: 6997672298427728911}
-  - component: {fileID: 5335069708650814641}
   m_Layer: 9
   m_Name: Fish_Type8
   m_TagString: Untagged
@@ -849,7 +849,7 @@ CapsuleCollider:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8206896408910450230}
+  m_GameObject: {fileID: 6120021058863831304}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -864,7 +864,7 @@ CapsuleCollider:
   serializedVersion: 2
   m_Radius: 0.19
   m_Height: 0.79
-  m_Direction: 2
+  m_Direction: 0
   m_Center: {x: 0, y: 0.025397327, z: -0.051301166}
 --- !u!1 &9081408073812847179
 GameObject:
