@@ -48,14 +48,6 @@ public class MoneyManager : MonoBehaviour
         if (Keyboard.current == null)
             return;
 
-
-        // 테스트용 C키
-        if (Keyboard.current.cKey.wasPressedThisFrame)
-        {
-            AddMoney(
-                testAddMoney
-            );
-        }
     }
 
 
