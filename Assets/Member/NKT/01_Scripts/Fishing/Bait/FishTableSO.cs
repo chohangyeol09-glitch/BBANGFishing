@@ -15,8 +15,8 @@ namespace NKT.Fishing.Bait
         {
             if (bait == null) return fishes.Length > 0 ? fishes[0] : null;
 
-            if (bait.bossFishData != null)
-                return bait.bossFishData;
+            // if (bait.bossFishData != null)
+            //     return bait.bossFishData;
 
             Grade grade = PickGrade(bait);
             

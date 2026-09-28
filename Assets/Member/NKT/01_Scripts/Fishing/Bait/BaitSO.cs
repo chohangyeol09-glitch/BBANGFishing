@@ -1,5 +1,6 @@
 ﻿using System;
 using CHG._02.Script;
+using CHG._02.Script.BossSystem;
 using CHG._02.Script.CoreSystem;
 using CHG._02.Script.FishSystem;
 using UnityEngine;
@@ -34,7 +35,7 @@ namespace NKT.Fishing.Bait
         public GradeWeight[] weights;
         
         [Header("보스 미끼용")]
-        public FishDataSO bossFishData;
+        public BossDataSO bossFishData;
 
         [Header("필요한물고기")]
         public FishDataSO fishesToBuy;

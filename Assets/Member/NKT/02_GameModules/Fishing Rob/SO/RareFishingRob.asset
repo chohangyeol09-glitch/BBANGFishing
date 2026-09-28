@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ed1d4591e77a41989bc859b407e0af15, type: 3}
-  m_Name: BaseFishingRob
+  m_Name: RareFishingRob
   m_EditorClassIdentifier: Assembly-CSharp::NKT.Fishing.Rob.FishingRobSO
   prefab:
-    RobGameobject: {fileID: 995492234869721171, guid: 965a5c19c9234cd384318e7910edf0e6, type: 3}
-    BobberGameobject: {fileID: 3506138368610051022, guid: 5a4fa9d409cbf9d48a6b97e282240e0e, type: 3}
-  power: 12
+    RobGameobject: {fileID: 8795380561832855433, guid: 545b1ad579260ca4f8c719ee4b261fe6, type: 3}
+    BobberGameobject: {fileID: 6286828943089419091, guid: 014ed7e25179ee849a80a8fe9f99778e, type: 3}
+  power: 14
   minDistance: 2
   maxDistance: 10
-  minBiteDelay: 10
+  minBiteDelay: 8
   maxBiteDelay: 15
   rodName: 
   rodSprite: {fileID: 0}
-  rarity: 0
+  rarity: 1
   price: 0
-  grade: 0
+  grade: 1
