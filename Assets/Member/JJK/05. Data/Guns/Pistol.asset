@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Pistol
   m_EditorClassIdentifier: 
   <Damage>k__BackingField: 1
-  <FireRate>k__BackingField: 0.1
+  <FireRate>k__BackingField: 0.2
   <KnockbackPower>k__BackingField: 9.93
   <Durability>k__BackingField: 100
   <Recoil>k__BackingField: {x: 0, y: 0.5}
@@ -22,3 +22,4 @@ MonoBehaviour:
   <IsUnbreakable>k__BackingField: 1
   <MuzzleFlashPrefab>k__BackingField: {fileID: 199458, guid: 51b76f616384d4946bed4ecc9a6c2c3e, type: 3}
   <ImpactVfxPrefab>k__BackingField: {fileID: 199458, guid: 51b76f616384d4946bed4ecc9a6c2c3e, type: 3}
+  <Prefab>k__BackingField: {fileID: 0}
