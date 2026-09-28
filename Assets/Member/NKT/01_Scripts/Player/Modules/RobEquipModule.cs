@@ -14,7 +14,9 @@ namespace NKT.Player.Modules
         [SerializeField] private Bobber _currentBobber;
 
         public FishingRob Current => _current;
-        public bool IsEquip => _current != null;
+
+        //Hide()는 참조를 남겨두므로, 실제로 손에 들려 있는지는 활성 상태로 판단한다
+        public bool IsEquip => _current != null && _current.gameObject.activeInHierarchy;
         public Bobber CurrentBobber => _currentBobber;
         
         public event Action OnRobChanged;
@@ -30,16 +32,23 @@ namespace NKT.Player.Modules
         public void Equip(FishingRobSO data)
         {
             if (data == null || data.prefab.RobGameobject == null) return;
-            
+
+            //같은 낚시대면 다시 만들지 않고 켜기만 한다. 핫바는 자주 눌린다
+            if (_current != null && _current.Data == data)
+            {
+                _current.gameObject.SetActive(true);
+                return;
+            }
+
             _fishingModule.CancelFishing();
             DestroyCurrent();
-            
+
             GameObject robObj = Instantiate(data.prefab.RobGameobject, handSocket, false);
-            robObj.transform.localPosition = Vector3.one;
+            robObj.transform.localPosition = Vector3.zero;
             robObj.transform.localRotation = Quaternion.identity;
             _current = robObj.GetComponent<FishingRob>();
 
-            if (data.prefab.RobGameobject != null)
+            if (data.prefab.BobberGameobject != null)
             {
                 GameObject bobberObj = Instantiate(
                     data.prefab.BobberGameobject, _current.BobberTransform, false);
@@ -48,6 +57,15 @@ namespace NKT.Player.Modules
 
             SyncGrip();
             OnRobChanged?.Invoke();
+        }
+
+        //핫바에서 다른 슬롯으로 갔을 때. 파괴하지 않고 숨기기만 한다
+        public void Hide()
+        {
+            if (_current == null) return;
+
+            _fishingModule.CancelFishing();
+            _current.gameObject.SetActive(false);
         }
 
         //낚시대 들때 이거 실행
