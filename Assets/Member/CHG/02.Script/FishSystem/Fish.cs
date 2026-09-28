@@ -48,6 +48,7 @@ namespace CHG._02.Script.FishSystem
         private bool _released;
         private StateChannel _stateChannel;
         private HitFeedbackModule _hitFeedback;
+        private float _spawnGuardUntil;
 
         public float GravityScale => 1f / (airTimeScale * airTimeScale); 
 
@@ -91,13 +92,21 @@ namespace CHG._02.Script.FishSystem
             deltaV /= airTimeScale;
             _rb.AddForce(dir * deltaV, ForceMode.VelocityChange);
             if (_facingModule != null) _facingModule.SnapTo(pullForce);
+
+            _spawnGuardUntil = Time.time + 0.15f; //스폰 직후 다른 콜라이더와 겹쳐서 옆으로 밀리는 걸 잠깐 막는다
         }
 
         private void FixedUpdate()
         {
             if (!_rb.isKinematic)
                 _rb.AddForce(Physics.gravity * GravityScale, ForceMode.Acceleration);
-         
+
+            if (Time.time < _spawnGuardUntil)
+            {
+                Vector3 v = _rb.linearVelocity;
+                _rb.linearVelocity = new Vector3(0f, v.y, 0f);
+            }
+
             if (State != FishStateEnum.Jump) return;
 
             if (_rb.linearVelocity.y > 0.01f)
@@ -117,6 +126,7 @@ namespace CHG._02.Script.FishSystem
         public override void TakeDamage(DamageData data)
         {
             if (IsInvincible || IsDead) return;
+            Debug.Log($"[Fish] 피격: damage={data.Damage} knockback={data.KnockbackPower} hitPoint={data.HitPoint} hitDir={data.HitDirection}");
             BBANGFishing.Audio.GameplayAudio.Play(BBANGFishing.Audio.GameplaySound.FishHit, transform.position);
             base.TakeDamage(data);
         }

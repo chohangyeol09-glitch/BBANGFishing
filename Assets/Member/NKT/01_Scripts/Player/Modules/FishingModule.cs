@@ -268,11 +268,7 @@ namespace NKT.Player.Modules
         {
             if (fishSpawner == null) return;
             
-            Vector3 dir = (transform.position - _bobberObject.transform.position).normalized;
-            dir.y = Mathf.Max(dir.y, 0.4f);
-            dir.Normalize();
-            
-            fishSpawner.TrySpawnFish(_grade, dir * _robEquip.Current.Data.power);
+            fishSpawner.TrySpawnFish(_grade, Vector3.up * _robEquip.Current.Data.power);
         }
 
         private void ReturnBobber()
