@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using CHG._02.Script.CoreSystem;
 using CHG._02.Script.FishSystem;
+using UnityEditor;
 using UnityEngine;
 
-public class FishInventoryManager : MonoBehaviour
+public class FishInventoryManager : MonoSingleton<FishInventoryManager>
 {
     [Header("인벤토리 전체 부모")]
     [SerializeField]

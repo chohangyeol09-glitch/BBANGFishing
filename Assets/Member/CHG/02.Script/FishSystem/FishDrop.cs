@@ -19,10 +19,11 @@ namespace CHG._02.Script.FishSystem
         private Vector3 _start, _lastEnd, _baseScale;
         private float _duration, _arcHeight, _elapsed;
         private bool _released = true;
+        private FishDataSO _fishData;
 
         private void Awake() => _baseScale = transform.localScale;
 
-        public void Fly(Vector3 start, Transform destination, float duration, float arcHeight, PoolManagerSO poolManager)
+        public void Fly(Vector3 start, Transform destination, float duration, float arcHeight, PoolManagerSO poolManager, FishDataSO fishData)
         {
             _poolManager = poolManager;
             _destination = destination;
@@ -32,6 +33,7 @@ namespace CHG._02.Script.FishSystem
             _arcHeight = arcHeight;
             _elapsed = 0f;
             _released = false;
+            _fishData = fishData;
 
             transform.position = start;
             transform.localScale = _baseScale;
@@ -55,13 +57,24 @@ namespace CHG._02.Script.FishSystem
             if (shrinkFrom < 1f && t > shrinkFrom)
                 transform.localScale = _baseScale * (1f - Mathf.InverseLerp(shrinkFrom, 1f, t));
 
-            if (t >= 1f) Release();
+            if (t >= 1f) Arrive();
+        }
+        
+        private void Arrive()
+        {
+            if (_released) return;
+
+            if (_fishData != null && !FishInventoryManager.Instance.AddFish(_fishData))
+                Debug.LogWarning($"인벤토리에 {_fishData.FishName}을(를) 넣지 못했습니다 (가득 참).", this);
+
+            Release();
         }
 
         private void Release()
         {
             if (_released) return;
             _released = true;
+            
 
             if (_poolManager != null) _poolManager.Push(this);
             else Destroy(gameObject);
