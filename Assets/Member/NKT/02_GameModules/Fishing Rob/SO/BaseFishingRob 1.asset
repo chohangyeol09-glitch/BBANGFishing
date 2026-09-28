@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ed1d4591e77a41989bc859b407e0af15, type: 3}
-  m_Name: FishingRodTTT 3
+  m_Name: BaseFishingRob 1
   m_EditorClassIdentifier: Assembly-CSharp::NKT.Fishing.Rob.FishingRobSO
   prefab:
-    RobGameobject: {fileID: 0}
-    BobberGameobject: {fileID: 0}
-  power: 1
-  minDistance: 0
-  maxDistance: 0
-  minBiteDelay: 0
-  maxBiteDelay: 0
-  rodName: "\uB2E4\uC774\uC544 \uB09A\uC2DC\uB300"
-  rodSprite: {fileID: 21300000, guid: d69a9d8abfdaa1240b859c05f089c802, type: 3}
-  rarity: 3
-  price: 500
-  grade: 3
+    RobGameobject: {fileID: 995492234869721171, guid: 965a5c19c9234cd384318e7910edf0e6, type: 3}
+    BobberGameobject: {fileID: 3506138368610051022, guid: 5a4fa9d409cbf9d48a6b97e282240e0e, type: 3}
+  power: 12
+  minDistance: 2
+  maxDistance: 10
+  minBiteDelay: 1
+  maxBiteDelay: 2
+  rodName: 
+  rodSprite: {fileID: 0}
+  rarity: 0
+  price: 0
+  grade: 0

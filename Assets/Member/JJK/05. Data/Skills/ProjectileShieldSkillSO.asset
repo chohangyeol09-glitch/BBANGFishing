@@ -16,3 +16,13 @@ MonoBehaviour:
   <Cooldown>k__BackingField: 12
   <Duration>k__BackingField: 0
   <Icon>k__BackingField: {fileID: 21300000, guid: b375851ef7a430c4990d52eb4088292d, type: 3}
+  skillName: 
+  descriptionFormat: 
+  skillSprite: {fileID: 21300000, guid: b375851ef7a430c4990d52eb4088292d, type: 3}
+  purchasePrice: 10000
+  baseValue: 10
+  valueIncreasePerLevel: 5
+  valueSuffix: '%'
+  maxLevel: 5
+  baseUpgradeCost: 5000
+  upgradeCostIncrease: 5000
