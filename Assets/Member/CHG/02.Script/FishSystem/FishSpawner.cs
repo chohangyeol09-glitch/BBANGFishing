@@ -2,6 +2,7 @@
 using CHG._02.Script.CombatSystem.EnemySkillSystem;
 using CHG._02.Script.CoreSystem;
 using DevLib.ObjectPool.Runtime;
+using NKT.Player.Modules;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -10,7 +11,12 @@ namespace CHG._02.Script.FishSystem
     public class FishSpawner : MonoBehaviour
     {
         [SerializeField] private FishSpawnListSO fishSpawnList;
+        [Tooltip("찌가 없을 때 쓰는 스폰 위치")]
         [SerializeField] private Transform spawnPoint;
+        [Tooltip("연결하면 현재 장착된 낚싯대의 찌 위치에서 스폰한다")]
+        [SerializeField] private RobEquipModule robEquip;
+        [Tooltip("스폰 위치에 더하는 월드 기준 오프셋 (찌보다 위에서 나오게 하려면 Y를 올린다)")]
+        [SerializeField] private Vector3 spawnOffset;
         [SerializeField] private bool allowDowngrade;
         [SerializeField] private GameObject attackTarget;
         [SerializeField] private PoolManagerSO poolManager;
@@ -79,9 +85,19 @@ namespace CHG._02.Script.FishSystem
                 return null;
             }
             
-            fish.transform.SetPositionAndRotation(spawnPoint.position, Quaternion.identity);
+            fish.transform.SetPositionAndRotation(GetSpawnPosition(), Quaternion.identity);
             fish.OnSpawn(pullForce, attackTarget, poolManager);
             return fish;
+        }
+
+        // 찌가 있으면 찌 위치, 없으면 spawnPoint
+        private Vector3 GetSpawnPosition()
+        {
+            Transform point = robEquip != null && robEquip.CurrentBobber != null
+                ? robEquip.CurrentBobber.transform
+                : spawnPoint;
+
+            return point.position + spawnOffset;
         }
         
     }

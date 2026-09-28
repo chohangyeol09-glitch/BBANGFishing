@@ -1,5 +1,6 @@
 using System.Collections;
 using NKT.Player;
+using NKT.Player.Modules;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,6 +9,11 @@ public class SelectObjectAction : InteractionAction
     [Header("플레이어")]
     [SerializeField]
     private Player player;
+
+
+    [Header("무기 / 낚싯대")]
+    [SerializeField]
+    private WeaponModeModule weaponModeModule;
 
 
     [Header("이동할 오브젝트")]
@@ -174,12 +180,27 @@ public class SelectObjectAction : InteractionAction
         isSelected = true;
 
 
+        // =========================================
+        // 손에 들고 있는 총 / 낚싯대 내리기
+        // =========================================
+
+        if (weaponModeModule != null)
+        {
+            weaponModeModule.EquipNothing();
+        }
+
+
+        // =========================================
+        // 플레이어 입력 / 화면 회전 잠금
+        // =========================================
+
         if (player != null)
         {
             player.LockLook();
         }
 
 
+        // 상호작용 중에는 다시 상호작용하지 못하게 함
         if (interactionTarget != null)
         {
             interactionTarget.SetInteractable(false);
@@ -228,7 +249,7 @@ public class SelectObjectAction : InteractionAction
 
 
         // =========================================
-        // Inspector Position Offset 적용
+        // 위치 보정
         //
         // X = 좌우
         // Y = 위아래
@@ -239,9 +260,11 @@ public class SelectObjectAction : InteractionAction
             mainCamera.transform.right *
             positionOffset.x;
 
+
         targetPosition +=
             mainCamera.transform.up *
             positionOffset.y;
+
 
         targetPosition +=
             mainCamera.transform.forward *
@@ -263,7 +286,7 @@ public class SelectObjectAction : InteractionAction
 
 
         // =========================================
-        // Inspector Rotation Offset 적용
+        // 추가 회전값 적용
         // =========================================
 
         Quaternion targetRotation =
@@ -311,6 +334,7 @@ public class SelectObjectAction : InteractionAction
 
         targetObject.position =
             targetPosition;
+
 
         targetObject.rotation =
             targetRotation;
@@ -375,6 +399,7 @@ public class SelectObjectAction : InteractionAction
             StopCoroutine(
                 activateCoroutine
             );
+
 
             activateCoroutine = null;
         }
@@ -459,6 +484,7 @@ public class SelectObjectAction : InteractionAction
         targetObject.position =
             originalPosition;
 
+
         targetObject.rotation =
             originalRotation;
 
@@ -472,6 +498,7 @@ public class SelectObjectAction : InteractionAction
         }
 
 
+        // 플레이어 입력 / 화면 회전 다시 활성화
         if (player != null)
         {
             player.UnlockLook();

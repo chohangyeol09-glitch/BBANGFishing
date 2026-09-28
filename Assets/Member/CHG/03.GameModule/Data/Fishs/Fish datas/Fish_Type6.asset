@@ -27,9 +27,6 @@ MonoBehaviour:
   - Skill: {fileID: 11400000, guid: fcad13ad45826464ab724311d8fad1da, type: 2}
     Priority: 0
     Conditions: []
-  - Skill: {fileID: 11400000, guid: 6f73269344575804e80f0936dd8b9726, type: 2}
-    Priority: 0
-    Conditions: []
   - Skill: {fileID: 11400000, guid: 06476c5f60916ad4ea2667a41ccc9964, type: 2}
     Priority: 0
     Conditions: []
@@ -42,6 +39,6 @@ MonoBehaviour:
   LungeHeightOffset: 0
   ParryRange: 3
   ReturnFlightTime: 1
-  History: 
-  MinWeight: 1
-  MaxWeight: 5
+  History: "\uD751\uAC11\uC774 \uAE4C\uBE44\n"
+  MinWeight: 5
+  MaxWeight: 20
