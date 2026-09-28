@@ -1,4 +1,5 @@
 using System;
+using CHG._02.Script.CoreSystem;
 using DevLib.ModuleSystem;
 using NKT.Fishing.Rob;
 using UnityEngine;
@@ -19,6 +20,11 @@ namespace NKT.Player.Modules
 
         [SerializeField]
         private Bobber _currentBobber;
+
+        // 찌는 장착할 때 생성되므로 인스펙터에서 직접 연결할 수 없다.
+        // 장착/해제 때마다 이 FollowTarget의 대상을 현재 찌로 바꿔 준다
+        [SerializeField]
+        private FollowTarget bobberFollower;
 
 
         public FishingRob Current =>
@@ -55,6 +61,10 @@ namespace NKT.Player.Modules
                     this
                 );
             }
+
+
+            // 인스펙터에 미리 들어 있는 찌가 있으면 처음부터 따라가게 한다
+            SyncBobberFollower();
         }
 
 
@@ -130,6 +140,7 @@ namespace NKT.Player.Modules
             robObj.SetActive(true);
             _current.gameObject.SetActive(true);
             SyncGrip();
+            SyncBobberFollower();
             OnRobChanged?.Invoke();
             Debug.Log($"{data.rodName} 장착 완료");
             return true;
@@ -232,6 +243,19 @@ namespace NKT.Player.Modules
 
 
 
+        private void SyncBobberFollower()
+        {
+            if (bobberFollower == null)
+                return;
+
+
+            bobberFollower.SetTarget(
+                _currentBobber != null ? _currentBobber.transform : null
+            );
+        }
+
+
+
         private void DestroyCurrent()
         {
             if (_currentBobber != null)
@@ -257,6 +281,8 @@ namespace NKT.Player.Modules
 
             _current =
                 null;
+
+            SyncBobberFollower();
         }
     }
 }
