@@ -646,18 +646,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4244222251765503386, guid: 971ea883ececf0049a358f3b23f16f70, type: 3}
-      propertyPath: slotCount
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4244222251765503386, guid: 971ea883ececf0049a358f3b23f16f70, type: 3}
-      propertyPath: startSlots.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4244222251765503386, guid: 971ea883ececf0049a358f3b23f16f70, type: 3}
-      propertyPath: 'startSlots.Array.data[1]'
-      value: 
-      objectReference: {fileID: 11400000, guid: 980a27b4e7c500547a308b312e307342, type: 2}
     - target: {fileID: 7309493229905234099, guid: 971ea883ececf0049a358f3b23f16f70, type: 3}
       propertyPath: volume
       value: 

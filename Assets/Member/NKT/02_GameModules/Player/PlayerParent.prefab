@@ -794,9 +794,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NKT.Player.Modules.HotbarModule
   input: {fileID: 11400000, guid: 0fa2b7ba64b407e46a78479f926d876c, type: 2}
-  slotCount: 3
+  slotCount: 2
   startSlots:
   - {fileID: 11400000, guid: e1ced4423d26e9b409702e7df2a82449, type: 2}
+  - {fileID: 11400000, guid: 980a27b4e7c500547a308b312e307342, type: 2}
 --- !u!1 &6399780155749474625
 GameObject:
   m_ObjectHideFlags: 0
