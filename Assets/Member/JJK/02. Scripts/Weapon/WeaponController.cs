@@ -20,9 +20,11 @@ namespace Member.JJK._02._Scripts.Weapon
             (WeaponData.Damage + (combatState != null ? combatState.DamageUpgradeBonus : 0f))
             * (combatState != null ? combatState.DamageMultiplier : 1f);
 
-        // 발사 간격(초). 영구 강화만큼 줄어들고, 너무 짧아져 발사 로직이 깨지지 않도록 최소값으로 막는다.
+        // 발사 간격(초). 영구 강화만큼 줄어들고 공격속도 스킬 배율만큼 나눠지며(배율이 클수록 더 빨리 쏨),
+        // 너무 짧아져 발사 로직이 깨지지 않도록 최소값으로 막는다.
         public float CurrentFireRate =>
-            Mathf.Max(0.01f, WeaponData.FireRate - (combatState != null ? combatState.FireRateUpgradeBonus : 0f));
+            Mathf.Max(0.01f, (WeaponData.FireRate - (combatState != null ? combatState.FireRateUpgradeBonus : 0f))
+                / (combatState != null ? combatState.AttackSpeedMultiplier : 1f));
 
         private ShootModule _shootModule;
         private AimModule _aimModule;

@@ -40,6 +40,6 @@ MonoBehaviour:
   LungeHeightOffset: 0
   ParryRange: 3
   ReturnFlightTime: 1
-  History: 
-  MinWeight: 1
-  MaxWeight: 5
+  History: "\uBB3C\uACE0\uAE30\uAC00 \uB108\uBB34 \uB531\uB531\uD558\uB2E4"
+  MinWeight: 150
+  MaxWeight: 200
