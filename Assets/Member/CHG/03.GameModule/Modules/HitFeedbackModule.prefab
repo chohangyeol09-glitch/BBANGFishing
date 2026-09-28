@@ -54,5 +54,5 @@ MonoBehaviour:
   damageTextItem: {fileID: 11400000, guid: 9971554f1e67a5148be353a9bcc2d512, type: 2}
   textOffset: {x: 0, y: 0.5, z: 0}
   feedbackChannel: {fileID: 11400000, guid: f655ca2e4a0efb44284ea0fa4bb81f21, type: 2}
-  hitStopDuration: 0.08
+  hitStopDuration: 0.2
   killHitStopDuration: 0.2
