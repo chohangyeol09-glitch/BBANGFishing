@@ -10,6 +10,12 @@ namespace CHG._02.Script.BossSystem
     [RequireComponent(typeof(BehaviorGraphAgent))]
     public class Boss : Agent, ISkillEntrySource, IDamageMultiplier
     {
+        public static event Action<Boss> OnBossDefeated;
+        private bool _deathReported;
+
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        private static void ResetEvents() => OnBossDefeated = null;
+
         public event Action<BossStateEnum> OnStateChanged;
 
         public BossStateEnum State { get; private set; } = BossStateEnum.Appear;
@@ -33,6 +39,7 @@ namespace CHG._02.Script.BossSystem
 
         public void OnSpawn(GameObject target)
         {
+            _deathReported = false;
             CurrentHealth = MaxHealth;
             State = BossStateEnum.Appear;
             
@@ -49,8 +56,11 @@ namespace CHG._02.Script.BossSystem
 
         public override void Dead()
         {
+            if (_deathReported) return;
+            _deathReported = true;
             base.Dead();
             SendState(BossStateEnum.Dead);
+            OnBossDefeated?.Invoke(this);
         }
 
         public void SendState(BossStateEnum newState)
