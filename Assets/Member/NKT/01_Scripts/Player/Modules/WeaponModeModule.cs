@@ -17,7 +17,6 @@ namespace NKT.Player.Modules
         private FishingModule _fishing;
         private WeaponEquipModule _equip;
         private RobEquipModule _robEquip;
-        private FishingRob _storedRob;      //사격 중 낚시대를 잃어버리지 않게 들고 있는다
         private LookModule _look;
 
         private WeaponController _weapon;   //교체되므로 직렬화하지 않는다
@@ -77,34 +76,40 @@ namespace NKT.Player.Modules
 
             ApplyWeaponEnabled();
         }
-
-        [ContextMenu("Test")]
-        private void Test()
+        //핫바가 부르는 입구
+        public void EquipRod(FishingRobSO data)
         {
-            SetGunMode(true);
+            _equip.Hide();
+            _robEquip.Equip(data);
+            ApplyMode(false);
         }
-        
-        public void SetGunMode(bool on)
+
+        public void EquipGun(WeaponSO data, DurabilityRuntimeState durability)
         {
-            if (_gunMode == on) return;
+            _fishing.CancelFishing();
+            _robEquip.Hide();
+            _equip.Equip(data, durability);
+            ApplyMode(true);
+        }
 
-            _gunMode = on;
+        public void EquipNothing()
+        {
+            _fishing.CancelFishing();
+            _robEquip.Hide();
+            _equip.Hide();
+            ApplyMode(false);
+        }
 
-            if (on)
-            {
-                _storedRob = _robEquip.Current;
-                _robEquip.Unequip();            //안에서 CancelFishing까지 한다
-            }
-            else if (_storedRob != null)
-            {
-                _robEquip.Equip(_storedRob);
-            }
+        private void ApplyMode(bool gun)
+        {
+            _gunMode = gun;
 
+            //Equip이 BindWeapon을 거치며 예전 _gunMode로 껐을 수 있으니 여기서 다시 맞춘다
             if (_weapon != null)
-                _weapon.gameObject.SetActive(on);
+                _weapon.gameObject.SetActive(gun);
 
-            fishingRig.weight = on ? 0f : 1f;
-            gunRig.weight = on ? 1f : 0f;
+            fishingRig.weight = gun ? 0f : 1f;
+            gunRig.weight = gun ? 1f : 0f;
 
             ApplyWeaponEnabled();
         }
