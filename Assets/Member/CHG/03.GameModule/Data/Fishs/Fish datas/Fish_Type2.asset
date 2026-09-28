@@ -27,9 +27,6 @@ MonoBehaviour:
   - Skill: {fileID: 11400000, guid: fcad13ad45826464ab724311d8fad1da, type: 2}
     Priority: 0
     Conditions: []
-  - Skill: {fileID: 11400000, guid: 6f73269344575804e80f0936dd8b9726, type: 2}
-    Priority: 0
-    Conditions: []
   - Skill: {fileID: 11400000, guid: 06476c5f60916ad4ea2667a41ccc9964, type: 2}
     Priority: 0
     Conditions: []

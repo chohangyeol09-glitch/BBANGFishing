@@ -38,6 +38,8 @@ namespace CHG._02.Script.FishSystem
         [Header("Catch")]
         [SerializeField, Range(0f,1f)] private float weightInfluence = 0.5f; //무게 반영 비율
         [SerializeField] private float minJumpHeight = 0.8f;
+        [Tooltip("낚싯대 힘이 커도 이 높이 이상으로 솟구치지 않는다 (스폰 위치 기준)")]
+        [SerializeField, Min(0.8f)] private float maxJumpHeight = 12f;
         
         private LungeModule _lunge;
         private ParryModule _parry;
@@ -48,8 +50,10 @@ namespace CHG._02.Script.FishSystem
         private bool _released;
         private StateChannel _stateChannel;
         private HitFeedbackModule _hitFeedback;
+        private float _spawnGuardUntil;
+        private bool _seaTouchReported;
 
-        public float GravityScale => 1f / (airTimeScale * airTimeScale); 
+        public float GravityScale => 1f / (Mathf.Max(1f, airTimeScale) * Mathf.Max(1f, airTimeScale));
 
         protected override void InitializeModules()
         {
@@ -66,7 +70,10 @@ namespace CHG._02.Script.FishSystem
         public void OnSpawn(Vector3 pullForce, GameObject target, PoolManagerSO poolManager)
         {
             _poolManager = poolManager;
-            _rb.mass = Data.Weight;
+            _rb.isKinematic = false;
+            _rb.useGravity = false;
+            _rb.mass = Mathf.Max(0.01f, Data.Weight);
+            _rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
             _rb.linearVelocity = Vector3.zero;
             _rb.angularVelocity = Vector3.zero;
             CurrentHealth = MaxHealth;
@@ -80,24 +87,32 @@ namespace CHG._02.Script.FishSystem
             
             _lunge.Target = target;
 
-            Vector3 dir = pullForce.normalized;
-            float floor = dir.y > 0.1f ?  PhysicsUtil.SpeedForHeight(minJumpHeight) / dir.y : 0f;
-            float deltaV = PhysicsUtil.ResolveDeltaV(pullForce.magnitude, _rb.mass, weightInfluence, floor);
-            float minSpeed = Mathf.Sqrt(2f * Mathf.Abs(Physics.gravity.y) * minJumpHeight);
+            Vector3 dir = pullForce.sqrMagnitude > 0.0001f ? pullForce.normalized : Vector3.up;
+            if (dir.y <= 0.1f) dir = Vector3.up;
+            float minHeight = Mathf.Max(0.1f, minJumpHeight);
+            float maxHeight = Mathf.Max(minHeight, maxJumpHeight);
+            float deltaV = PhysicsUtil.ResolveDeltaV(pullForce.magnitude, _rb.mass,
+                Mathf.Clamp01(weightInfluence));
+            float upSpeed = Mathf.Clamp(deltaV * dir.y,
+                PhysicsUtil.SpeedForHeight(minHeight), PhysicsUtil.SpeedForHeight(maxHeight));
+            Vector3 velocity = dir * (upSpeed / dir.y / Mathf.Max(1f, airTimeScale));
+            _rb.linearVelocity = velocity;
+            if (_facingModule != null) _facingModule.SnapTo(velocity);
 
-            if (dir.y > 0.1f)
-                deltaV = Mathf.Max(deltaV, minSpeed / dir.y);
-
-            deltaV /= airTimeScale;
-            _rb.AddForce(dir * deltaV, ForceMode.VelocityChange);
-            if (_facingModule != null) _facingModule.SnapTo(pullForce);
+            _spawnGuardUntil = Time.time + 0.15f; //스폰 직후 다른 콜라이더와 겹쳐서 옆으로 밀리는 걸 잠깐 막는다
         }
 
         private void FixedUpdate()
         {
             if (!_rb.isKinematic)
                 _rb.AddForce(Physics.gravity * GravityScale, ForceMode.Acceleration);
-         
+
+            if (Time.time < _spawnGuardUntil)
+            {
+                Vector3 v = _rb.linearVelocity;
+                _rb.linearVelocity = new Vector3(0f, v.y, 0f);
+            }
+
             if (State != FishStateEnum.Jump) return;
 
             if (_rb.linearVelocity.y > 0.01f)
@@ -117,6 +132,7 @@ namespace CHG._02.Script.FishSystem
         public override void TakeDamage(DamageData data)
         {
             if (IsInvincible || IsDead) return;
+            Debug.Log($"[Fish] 피격: damage={data.Damage} knockback={data.KnockbackPower} hitPoint={data.HitPoint} hitDir={data.HitDirection}");
             BBANGFishing.Audio.GameplayAudio.Play(BBANGFishing.Audio.GameplaySound.FishHit, transform.position);
             base.TakeDamage(data);
         }
@@ -136,13 +152,24 @@ namespace CHG._02.Script.FishSystem
                 _stateChannel.Event -= HandleStateChanged;
         }
         
-        private void OnTriggerEnter(Collider collision)
+        private void OnTriggerEnter(Collider collision) => CheckSeaTouch(collision);
+
+        // 수면 트리거 안에서 생성되면 하강 시 Enter가 다시 발생하지 않을 수 있다.
+        private void OnTriggerStay(Collider collision) => CheckSeaTouch(collision);
+
+        private void OnTriggerExit(Collider collision)
+        {
+            if (collision.CompareTag("Sea")) _seaTouchReported = false;
+        }
+
+        private void CheckSeaTouch(Collider collision)
         {
             if (!collision.CompareTag("Sea")) return;
 
             if (!HasStartedFalling) return;
 
-            if (IsInSea) return;
+            if (IsInSea || _seaTouchReported) return;
+            _seaTouchReported = true;
             BBANGFishing.Audio.GameplayAudio.Play(BBANGFishing.Audio.GameplaySound.FishSplash, transform.position);
             IsInSea = true;
         }
@@ -152,14 +179,17 @@ namespace CHG._02.Script.FishSystem
             _hitFeedback?.ResetFeedback();
             State = FishStateEnum.Jump;
             IsInSea = false;
+            _seaTouchReported = false;
             _hasRisen = false;
             _released = false;
             HasStartedFalling = false;
 
             _rb.isKinematic = false;
+            _rb.useGravity = false;
             _rb.linearVelocity = Vector3.zero;
             _rb.angularVelocity = Vector3.zero;
             _lunge.ResetLunge();
+            _spawnGuardUntil = 0f;
         }
 
         public void ReleaseToPool()
