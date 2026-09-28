@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 711128197847352260}
   - component: {fileID: 8420674851210240687}
+  - component: {fileID: 8420674851210240688}
   m_Layer: 0
   m_Name: Bobber
   m_TagString: Untagged
@@ -48,6 +49,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::NKT.Fishing.Rob.Bobber
   bobberParticle: {fileID: 2236759373585398173}
   restPoint: {fileID: 0}
+--- !u!114 &8420674851210240688
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3506138368610051022}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 938128e80ac64324b7275b0173ec19a7, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::NKT.Fishing.Rob.BobberProduct
+  bobber: {fileID: 8420674851210240687}
+  biteParticle: {fileID: 0}
+  bobCount: 2
+  bobDepth: 0.25
+  bobDuration: 0.3
+  bobIntervalRange: {x: 0.15, y: 0.3}
 --- !u!1 &4555175442071649452
 GameObject:
   m_ObjectHideFlags: 0

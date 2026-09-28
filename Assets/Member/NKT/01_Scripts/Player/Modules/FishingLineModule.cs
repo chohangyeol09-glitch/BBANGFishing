@@ -8,25 +8,26 @@ namespace NKT.Player.Modules
     [RequireComponent(typeof(LineRenderer))]
     public class FishingLineModule : MonoBehaviour, IModule, IAfterInitModule
     {
-        [SerializeField] private FishingRob fishingRob;
         [SerializeField] private int pointCount = 12;
         [SerializeField] private float sagRatio = 0.08f;
         [SerializeField] private float castingSagRatio = 0.01f;
-        
+
         private ModuleOwner _owner;
         private FishingModule _fishingModule;
+        private RobEquipModule _robEquip;   //낚시대가 교체되므로 직렬화하지 않는다
         private LineRenderer _line;
-        
+
         public void Initialize(ModuleOwner owner)
         {
             _owner = owner;
-            
+
             _line = GetComponent<LineRenderer>();
         }
-        
+
         public void AfterInit()
         {
             _fishingModule = _owner.GetModule<FishingModule>();
+            _robEquip = _owner.GetModule<RobEquipModule>();
         }
         
         private void Start()
@@ -51,8 +52,13 @@ namespace NKT.Player.Modules
             Bobber bobber = _fishingModule.Bobber;
 
             if (bobber == null) return;
-            
-            Vector3 from = fishingRob.RobEdgeTransform.position;
+
+            //낚시대는 교체될 때마다 새로 생기니 매번 현재 것을 가져온다
+            FishingRob rob = _robEquip != null ? _robEquip.Current : null;
+
+            if (rob == null || rob.RobEdgeTransform == null) return;
+
+            Vector3 from = rob.RobEdgeTransform.position;
             Vector3 to = bobber.transform.position;
             
             bool isTaut = _fishingModule.State == FishingState.Casting

@@ -1,5 +1,52 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &155581613671064592
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4957623328490655533}
+  - component: {fileID: 6334968264391239771}
+  m_Layer: 3
+  m_Name: HpModule
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4957623328490655533
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 155581613671064592}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7050357678044039404}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6334968264391239771
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 155581613671064592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1545f88e5b3bf64faffbc641359570c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NKT.Player.Modules.HealthRegenModule
+  regenDelay: 15
+  percentPerSecond: 0.08
+  maxRegenRatio: 1
 --- !u!1 &434301566877419964
 GameObject:
   m_ObjectHideFlags: 0
@@ -471,6 +518,7 @@ Transform:
   - {fileID: 8636950807740392663}
   - {fileID: 4128965620661270183}
   - {fileID: 3082229317966173071}
+  - {fileID: 4957623328490655533}
   m_Father: {fileID: 5920166008622741632}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3870879089508862561
@@ -2475,17 +2523,14 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3506138368610051022, guid: 5a4fa9d409cbf9d48a6b97e282240e0e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7646079165578627762}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5a4fa9d409cbf9d48a6b97e282240e0e, type: 3}
 --- !u!114 &3017848299691586346 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8420674851210240687, guid: 5a4fa9d409cbf9d48a6b97e282240e0e, type: 3}
   m_PrefabInstance: {fileID: 6718722084820849029}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7896495039097811531}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f77dc3019a704974a1796902aa0ef7f8, type: 3}
@@ -2496,29 +2541,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 711128197847352260, guid: 5a4fa9d409cbf9d48a6b97e282240e0e, type: 3}
   m_PrefabInstance: {fileID: 6718722084820849029}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &7896495039097811531 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3506138368610051022, guid: 5a4fa9d409cbf9d48a6b97e282240e0e, type: 3}
-  m_PrefabInstance: {fileID: 6718722084820849029}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &7646079165578627762
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7896495039097811531}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 938128e80ac64324b7275b0173ec19a7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::NKT.Fishing.Rob.BobberProduct
-  bobber: {fileID: 3017848299691586346}
-  biteParticle: {fileID: 0}
-  bobCount: 2
-  bobDepth: 0.25
-  bobDuration: 0.3
-  bobIntervalRange: {x: 0.15, y: 0.3}
 --- !u!1001 &7626981565417084963
 PrefabInstance:
   m_ObjectHideFlags: 0
