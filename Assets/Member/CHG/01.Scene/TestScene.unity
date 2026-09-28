@@ -1085,7 +1085,7 @@ PrefabInstance:
     - target: {fileID: 8492694475815315116, guid: a452971583b58844faa4e3bc9f284896, type: 3}
       propertyPath: playerCamera
       value: 
-      objectReference: {fileID: 449365036}
+      objectReference: {fileID: 2093113287}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1240,7 +1240,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 1815074957011838127, guid: 4c8c98db71f08004caa6d29b5beffda9, type: 3}
+    - {fileID: 8576490699272563684, guid: 4c8c98db71f08004caa6d29b5beffda9, type: 3}
+    - {fileID: 4827560384376959563, guid: 4c8c98db71f08004caa6d29b5beffda9, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 6707767286902099081, guid: 4c8c98db71f08004caa6d29b5beffda9, type: 3}
       insertIndex: -1

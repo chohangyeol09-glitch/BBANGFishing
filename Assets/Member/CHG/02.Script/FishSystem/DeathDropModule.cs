@@ -51,7 +51,8 @@ namespace CHG._02.Script.FishSystem
 
             FishDrop drop = poolManager.Pop<FishDrop>(dropItem);
             if (drop == null) return;
-            drop.Fly(_agent.transform.position + spawnOffset, destination, flyDuration, arcHeight, poolManager);
+            FishDataSO fishData = _agent is Fish fish ? fish.Data : null;
+            drop.Fly(_agent.transform.position + spawnOffset, destination, flyDuration, arcHeight, poolManager, fishData);
         }
     }
 }
