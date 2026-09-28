@@ -20,7 +20,7 @@ MonoBehaviour:
   maxDistance: 10
   minBiteDelay: 5
   maxBiteDelay: 15
-  rodName: 
+  rodName: "\uC5D0\uD53D \uB09A\uC2DC\uB300"
   rodSprite: {fileID: 0}
   rarity: 2
   price: 0
