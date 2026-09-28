@@ -8763,6 +8763,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SelectObjectAction
   player: {fileID: 613470020}
+  weaponModeModule: {fileID: 0}
   targetObject: {fileID: 585054234}
   mainCamera: {fileID: 1244155085}
   distanceFromCamera: 0.35

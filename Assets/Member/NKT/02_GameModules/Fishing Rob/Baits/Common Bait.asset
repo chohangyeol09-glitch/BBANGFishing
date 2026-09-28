@@ -12,16 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 592353fc72b047b4937b7131d0174f33, type: 3}
   m_Name: Common Bait
   m_EditorClassIdentifier: Assembly-CSharp::NKT.Fishing.Bait.BaitSO
-  baitName: Common
+  baitName: "\uC9C0\uB801\uC774"
+  baitSprite: {fileID: 1780358684, guid: ce494b9a305a6e64887312b7fee2fccc, type: 3}
   grade: 0
-  maxUses: 0
+  rarity: 0
+  price: 100
+  maxUses: 3
   weights:
   - grade: 0
-    weight: 0
+    weight: 50
   - grade: 1
-    weight: 0
+    weight: 30
   - grade: 2
-    weight: 0
+    weight: 10
   - grade: 3
-    weight: 0
+    weight: 10
   bossFishData: {fileID: 0}
+  fishesToBuy: {fileID: 11400000, guid: 7e24ce73261f4f1459c2718f9bcf401c, type: 2}
