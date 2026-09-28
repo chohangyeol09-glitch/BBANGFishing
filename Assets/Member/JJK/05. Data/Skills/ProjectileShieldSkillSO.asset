@@ -12,17 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb4feff26dfd4e1bb40287b5c1133d9f, type: 3}
   m_Name: ProjectileShieldSkillSO
   m_EditorClassIdentifier: 
-  <SkillName>k__BackingField: Projectile Shield
+  <SkillName>k__BackingField: "\uBC29\uC5B4\uB9C9"
   <Cooldown>k__BackingField: 12
-  <Duration>k__BackingField: 0
+  <Duration>k__BackingField: 5
   <Icon>k__BackingField: {fileID: 21300000, guid: b375851ef7a430c4990d52eb4088292d, type: 3}
-  skillName: 
-  descriptionFormat: 
+  skillName: "\uBC29\uC5B4\uB9C9"
+  descriptionFormat: "{value}\uCD08\uB3D9\uC548 \uC720\uC9C0\uB418\uB294 \uBC29\uC5B4\uB9C9\uC774
+    \uD22C\uC0AC\uCCB4\uB97C 1\uD68C \uB9C9\uC2B5\uB2C8\uB2E4."
   skillSprite: {fileID: 21300000, guid: b375851ef7a430c4990d52eb4088292d, type: 3}
   purchasePrice: 10000
-  baseValue: 10
+  baseValue: 5
   valueIncreasePerLevel: 5
-  valueSuffix: '%'
+  valueSuffix: 
   maxLevel: 5
   baseUpgradeCost: 5000
   upgradeCostIncrease: 5000
