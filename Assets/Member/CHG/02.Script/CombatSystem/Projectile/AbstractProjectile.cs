@@ -1,4 +1,5 @@
 ﻿using System;
+using CHG._02.Script.CombatSystem.HitFeedback;
 using DevLib.ObjectPool.Runtime;
 using UnityEngine;
 
@@ -15,6 +16,12 @@ namespace CHG._02.Script.CombatSystem.Projectile
         
         protected DamageData DamageTemplate { get; private set; }
         protected PoolManagerSO PoolManager { get; private set; }
+
+        [Header("Effect")]
+        [Tooltip("무언가를 맞혔을 때 재생할 풀 파티클(PoolParticle). 없으면 생략")]
+        [SerializeField] private PoolItemSO hitEffectItem;
+        [Tooltip("공격받아 부서졌을 때 재생할 풀 파티클(PoolParticle). 없으면 생략")]
+        [SerializeField] private PoolItemSO breakEffectItem;
 
         private bool _released;
 
@@ -33,6 +40,7 @@ namespace CHG._02.Script.CombatSystem.Projectile
             if (damageable == null || ReferenceEquals(damageable, DamageTemplate.Attacker)) return; // 자기 자신 무시
 
             damageable.TakeDamage(SetDamageData());
+            PlayEffect(hitEffectItem);
             ReleaseToPool();
         }
 
@@ -51,7 +59,16 @@ namespace CHG._02.Script.CombatSystem.Projectile
         public void Dead()
         {
             OnDeath?.Invoke();
+            PlayEffect(breakEffectItem);
             ReleaseToPool();
+        }
+
+        //투사체가 풀로 돌아가기 전에, 그 자리에서 풀 파티클을 재생한다 (파티클은 끝나면 스스로 반납된다)
+        private void PlayEffect(PoolItemSO effectItem)
+        {
+            if (effectItem == null || PoolManager == null || _released) return;
+            var effect = PoolManager.Pop<PoolParticle>(effectItem);
+            if (effect != null) effect.transform.SetPositionAndRotation(transform.position, transform.rotation);
         }
         
         protected abstract DamageData SetDamageData(); //hit 방향등 자식이 채우고 반환

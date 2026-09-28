@@ -24,7 +24,6 @@ namespace NKT.Player.Modules
     public class FishingModule : MonoBehaviour, IModule, IAfterInitModule
     {
         [SerializeField] private CastCharger charger;
-        [SerializeField] private Bobber bobberObject;
         
         [SerializeField] private float orbitHeight = 3f;
         [SerializeField] private float flightTime = 1.2f;
@@ -38,17 +37,16 @@ namespace NKT.Player.Modules
 
         public event Action<FishingState> OnStateChanged;
         public event Action<CastAim> OnAimUpdated;   //차징 중 궤도 미리보기용
-        public event Action OnReelPressed;
-        public event Action OnReelReleased;
         
         public FishingState State => _state;
-        public Bobber Bobber => bobberObject;
+        public Bobber Bobber => _bobberObject;
         public Grade Grade => _grade;
 
         private FishingState _state = FishingState.Idle;
         private RobEquipModule _robEquip;
         private LookModule _lookModule;
         private BaitModule _bait;
+        private Bobber _bobberObject;
 
         private Coroutine _stateRoutine;
         private Grade _grade;
@@ -65,8 +63,9 @@ namespace NKT.Player.Modules
             charger.OnCharged += OnCharged;
             charger.OnValueChanged += OnChargeValueChanged;
             charger.OnChargeCanceled += OnChargeCanceled;
-            
-            bobberObject.OnLanded += ReportCastLanded;
+
+            _robEquip.OnRobChanged += BindBobber;
+            BindBobber();
         }
 
         private void OnDestroy()
@@ -77,7 +76,19 @@ namespace NKT.Player.Modules
             charger.OnValueChanged -= OnChargeValueChanged;
             charger.OnChargeCanceled -= OnChargeCanceled;
             
-            bobberObject.OnLanded -= ReportCastLanded;
+            _robEquip.OnRobChanged -= BindBobber;
+            _bobberObject.OnLanded -= ReportCastLanded;
+        }
+        
+        private void BindBobber()
+        {
+            if (_bobberObject != null)
+                _bobberObject.OnLanded -= ReportCastLanded;
+
+            _bobberObject = _robEquip.CurrentBobber;
+
+            if (_bobberObject != null)
+                _bobberObject.OnLanded += ReportCastLanded;
         }
 
         public void OnAttackPressed()
@@ -92,9 +103,6 @@ namespace NKT.Player.Modules
                 case FishingState.Waiting:
                     ChangeState(FishingState.Retrieving);     //회수
                     break;
-                case FishingState.Reeling:
-                    OnReelPressed?.Invoke();
-                    break;
                 case FishingState.Biting:
                     ChangeState(FishingState.Reeling);  //후킹
                     break;
@@ -103,12 +111,6 @@ namespace NKT.Player.Modules
 
         public void OnAttackReleased()
         {
-            if (_state == FishingState.Reeling)
-            {
-                OnReelReleased?.Invoke();
-                return;
-            }
-            
             if (_state != FishingState.Charging) return;
 
             charger.ProgressEnd();
@@ -147,7 +149,7 @@ namespace NKT.Player.Modules
             if(success)
                 SpawnFish();
             
-            ChangeState(FishingState.Idle);
+            ChangeState(FishingState.Retrieving);
         }
 
         //낚시대를 집어넣는 등 중간에 끊을때
@@ -162,7 +164,7 @@ namespace NKT.Player.Modules
         {
             CastAim aim = BuildAim(power);
 
-            bobberObject.Launch(aim, flightTime);
+            _bobberObject.Launch(aim, flightTime);
 
             ChangeState(FishingState.Casting);
         }
@@ -255,7 +257,7 @@ namespace NKT.Player.Modules
         {
             yield return new WaitForSeconds(_robEquip.Current.Data.GetBiteDelay());
             
-            bobberObject.PlayBite();
+            _bobberObject.PlayBite();
             ReportBite();
         }
         
@@ -263,7 +265,7 @@ namespace NKT.Player.Modules
         {
             if (fishSpawner == null) return;
             
-            Vector3 dir = (transform.position - bobberObject.transform.position).normalized;
+            Vector3 dir = (transform.position - _bobberObject.transform.position).normalized;
             dir.y = Mathf.Max(dir.y, 0.4f);
             dir.Normalize();
             
@@ -272,15 +274,15 @@ namespace NKT.Player.Modules
 
         private void ReturnBobber()
         {
-            if (bobberObject == null) return;
+            if (_bobberObject == null) return;
             
-            bobberObject.Return(returnTime, orbitHeight);
+            _bobberObject.Return(returnTime, orbitHeight);
         }
         private void ClearBobber()
         {
-            if (bobberObject == null) return;
+            if (_bobberObject == null) return;
             
-            bobberObject.PositionInit();
+            _bobberObject.PositionInit();
 
         }
 

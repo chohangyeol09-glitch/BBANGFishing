@@ -18,8 +18,22 @@ namespace NKT.Fishing.Rob
 
         private void Awake()
         {
-            bobberParticle.Pause();
+            StopParticle();
             restPoint = transform.parent;
+        }
+
+        //핫바로 낚시대를 숨겼다 꺼내면 Play On Awake가 다시 돈다. 던지기 전엔 꺼져 있어야 한다
+        private void OnEnable()
+        {
+            if (_isAttached) StopParticle();
+        }
+
+        private void StopParticle()
+        {
+            if (bobberParticle == null) return;
+
+            //Pause는 이미 떠 있는 입자를 멈춘 채 남긴다. 지워야 깨끗하다
+            bobberParticle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
         }
 
         public void PositionInit()
@@ -94,6 +108,7 @@ namespace NKT.Fishing.Rob
 
             transform.rotation = Quaternion.identity;
             OnLanded?.Invoke();
+            bobberParticle.Stop();
         }
     }
 }

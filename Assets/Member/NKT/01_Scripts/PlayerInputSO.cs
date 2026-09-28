@@ -13,6 +13,10 @@ namespace NKT
         public Action OnAttackReleased;
         public Action OnInteractChange;
         public Action OnInputLocked;
+        public Action<bool> OnAimChanged;
+        public Action OnInputUnlocked;
+        public Action<float> OnHotbarScrolled;      //휠. 양수면 위로
+        public Action<int> OnHotbarSlotSelected;    //숫자키. 0부터 세는 슬롯 번호
       
         private Controls _control;
         private Camera _mainCam;
@@ -72,6 +76,31 @@ namespace NKT
                 OnInteractChange?.Invoke();
         }
 
+        public void OnAim(InputAction.CallbackContext context)
+        {
+            if (context.performed) OnAimChanged?.Invoke(true);
+            else if (context.canceled) OnAimChanged?.Invoke(false);
+        }
+
+        public void OnHotbarScroll(InputAction.CallbackContext context)
+        {
+            if (!context.performed) return;
+
+            float delta = context.ReadValue<float>();
+            if (Mathf.Approximately(delta, 0f)) return;
+
+            OnHotbarScrolled?.Invoke(delta);
+        }
+
+        public void OnHotbarSlot(InputAction.CallbackContext context)
+        {
+            if (!context.performed) return;
+
+            //바인딩된 숫자키 이름이 곧 슬롯 번호다. 1번 키가 0번 슬롯
+            if (int.TryParse(context.control.name, out int number))
+                OnHotbarSlotSelected?.Invoke(number - 1);
+        }
+
         public void PushLock()
         {
             _lockCount++;
@@ -90,6 +119,7 @@ namespace NKT
             _lockCount = Mathf.Max(0, _lockCount - 1);
             if (_lockCount > 0) return;
             
+            OnInputUnlocked?.Invoke();
             _control.UI.Disable();
             _control.Player.Enable();
             

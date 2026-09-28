@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using NKT.Fishing.Bait;
 using NKT.Fishing.Rob;
 using UnityEngine;
@@ -40,48 +41,57 @@ public class BuyPageManager : MonoBehaviour
 
     private bool isCreated = false;
 
+    private readonly List<FishingRodShopCard> rodCards =
+        new List<FishingRodShopCard>();
+
+    private bool[] purchasedRodFlags;
+
+
+    private void Awake()
+    {
+        if (rods != null)
+        {
+            purchasedRodFlags =
+                new bool[rods.Length];
+        }
+    }
+
 
     private void OnEnable()
     {
         if (!isCreated)
         {
             CreateShopItems();
-
             isCreated = true;
         }
 
-
         OpenBaitPage();
+        RefreshRodCards();
     }
 
 
     private void CreateShopItems()
     {
         CreateBaitCards();
-
         CreateRodCards();
     }
 
 
     private void CreateBaitCards()
     {
-        if (baitContent == null ||
-            baitCardPrefab == null)
+        if (baitContent == null || baitCardPrefab == null)
             return;
-
 
         foreach (BaitSO bait in baits)
         {
             if (bait == null)
                 continue;
 
-
             BaitShopCard card =
                 Instantiate(
                     baitCardPrefab,
                     baitContent
                 );
-
 
             card.Setup(bait);
         }
@@ -90,16 +100,17 @@ public class BuyPageManager : MonoBehaviour
 
     private void CreateRodCards()
     {
-        if (rodContent == null ||
-            rodCardPrefab == null)
+        rodCards.Clear();
+
+        if (rodContent == null || rodCardPrefab == null)
             return;
 
-
-        foreach (FishingRobSO rod in rods)
+        for (int i = 0; i < rods.Length; i++)
         {
+            FishingRobSO rod = rods[i];
+
             if (rod == null)
                 continue;
-
 
             FishingRodShopCard card =
                 Instantiate(
@@ -107,9 +118,116 @@ public class BuyPageManager : MonoBehaviour
                     rodContent
                 );
 
+            card.Setup(
+                rod,
+                i,
+                this
+            );
 
-            card.Setup(rod);
+            rodCards.Add(card);
         }
+
+        RefreshRodCards();
+    }
+
+
+    public void TryBuyRod(int rodIndex)
+    {
+        if (!IsValidRodIndex(rodIndex))
+            return;
+
+        if (IsRodPurchased(rodIndex))
+            return;
+
+        if (!IsRodUnlocked(rodIndex))
+        {
+            Debug.Log("이전 낚싯대를 먼저 구매해야 합니다.");
+            return;
+        }
+
+        FishingRobSO rod = rods[rodIndex];
+
+        if (rod == null)
+            return;
+
+        if (MoneyManager.Instance == null)
+        {
+            Debug.LogWarning("MoneyManager가 없습니다.");
+            return;
+        }
+
+        int price =
+            Mathf.RoundToInt(rod.price);
+
+        bool success =
+            MoneyManager.Instance
+                .TrySpendMoney(price);
+
+        if (!success)
+            return;
+
+        purchasedRodFlags[rodIndex] = true;
+
+        Debug.Log($"{rod.rodName} 구매 완료");
+
+        // 나중에 여기서 실제 낚싯대 지급 처리
+
+        RefreshRodCards();
+    }
+
+
+    private void RefreshRodCards()
+    {
+        for (int i = 0; i < rodCards.Count; i++)
+        {
+            FishingRodShopCard card = rodCards[i];
+
+            if (card == null)
+                continue;
+
+            int rodIndex = card.RodIndex;
+
+            bool unlocked = IsRodUnlocked(rodIndex);
+            bool purchased = IsRodPurchased(rodIndex);
+
+            card.RefreshState(
+                unlocked,
+                purchased
+            );
+        }
+    }
+
+
+    private bool IsRodUnlocked(int rodIndex)
+    {
+        if (!IsValidRodIndex(rodIndex))
+            return false;
+
+        // 첫 번째 낚싯대는 항상 열려있음
+        if (rodIndex == 0)
+            return true;
+
+        // 바로 전 낚싯대를 구매했으면 열림
+        return purchasedRodFlags[rodIndex - 1];
+    }
+
+
+    private bool IsRodPurchased(int rodIndex)
+    {
+        if (!IsValidRodIndex(rodIndex))
+            return false;
+
+        return purchasedRodFlags[rodIndex];
+    }
+
+
+    private bool IsValidRodIndex(int rodIndex)
+    {
+        if (purchasedRodFlags == null)
+            return false;
+
+        return rodIndex >= 0 &&
+               rodIndex < purchasedRodFlags.Length;
     }
 
 
@@ -119,7 +237,6 @@ public class BuyPageManager : MonoBehaviour
         {
             baitPage.SetActive(true);
         }
-
 
         if (rodPage != null)
         {
@@ -135,10 +252,11 @@ public class BuyPageManager : MonoBehaviour
             baitPage.SetActive(false);
         }
 
-
         if (rodPage != null)
         {
             rodPage.SetActive(true);
         }
+
+        RefreshRodCards();
     }
 }

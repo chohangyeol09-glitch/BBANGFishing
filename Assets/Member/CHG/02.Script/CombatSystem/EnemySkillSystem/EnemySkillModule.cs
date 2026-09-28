@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using CHG._02.Script.Agents;
 using DevLib.ModuleSystem;
 using UnityEngine;
@@ -20,11 +19,19 @@ namespace CHG._02.Script.CombatSystem.EnemySkillSystem
         private bool _usingSkill; 
         private float _lastActionCoolTime = float.NegativeInfinity;
         private float _currentModuleCoolTime;
+        
         public void Initialize(ModuleOwner owner)
         {
             _owner = owner as Agent;
-            _skillDict = GetComponentsInChildren<AbstractEnemySkill>()
-                .ToDictionary(k => k.Data.SkillIdHash.HashValue, v => v);
+
+            _skillDict = new Dictionary<int, AbstractEnemySkill>();
+            foreach (var skill in GetComponentsInChildren<AbstractEnemySkill>())
+            {
+                int id = skill.Data.SkillIdHash.HashValue;
+                if (!_skillDict.TryAdd(id, skill))
+                    Debug.LogError($"스킬 ID 중복: {skill.name}와 {_skillDict[id].name}가 같은 SkillIdHash({skill.Data.SkillIdHash.name})를 사용합니다. 뒤의 스킬은 무시됩니다.", skill);
+            }
+
             foreach (var skill in _skillDict.Values) skill.InitSkill(_owner);
         }
 

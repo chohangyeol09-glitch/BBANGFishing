@@ -298,7 +298,7 @@ public override void Dead()
 ### 11.5 패턴 파훼 (`PatternBreakModule`)
 
 - 파훼 가능한 스킬은 `BossDataSO.BreakableSkills` (`BreakableSkillEntry { Skill(HashDataSO), BreakDamage, GroggyAmount }`)에 둔다. Fish와 공유하는 `EnemySkillDataSO`에는 넣지 않는다.
-- 보스가 목록의 스킬을 쓰는 동안(`EnemySkillModule.CurrentSkill`, **경고 시간 포함**) 받은 데미지를 누적한다. 기준 이상이면 `CurrentSkill.StopSkill()` → `OnPatternBroken` → `GroggyModule.AddGroggy(GroggyAmount)` 순서로 처리한다(`StopSkill`을 먼저 해야 그로기 전이와 섞이지 않는다).
+- 보스가 목록의 스킬을 **차징하는 동안**(`CurrentSkill.IsWarning`, 즉 `WarningTime` 동안)만 받은 데미지를 누적한다. 발동한 뒤에는 맞아도 쌓이지 않으므로 `WarningTime`이 0인 스킬은 파훼되지 않는다. `BreakDamage`와 `GroggyAmount`는 항목마다(스킬마다) 따로 정한다. `ChargeAttackSkill`(차징 → 발동 → `impactDelay` 뒤 반드시 명중, 회피 판정 없음)은 이 파훼로만 막을 수 있는 스킬이다. 기준 이상이면 `CurrentSkill.StopSkill()` → `OnPatternBroken` → `GroggyModule.AddGroggy(GroggyAmount)` 순서로 처리한다(`StopSkill`을 먼저 해야 그로기 전이와 섞이지 않는다).
 - 파훼는 상태 전이가 아니다. `Combat`에 머물고, `UseSkillAction`은 `CurrentSkill == null`을 보고 `Success`로 끝나 다음 스킬로 넘어간다. 파훼된 스킬도 쿨타임은 정상적으로 돈다.
 - 누적은 `EnemySkillModule.OnSkillEnd`(정상/강제 종료 모두)에서 초기화된다. UI용으로 `OnBreakProgress`(0~1)를 낸다.
 - 데미지 종류는 구분하지 않는다. "파훼 스킬로 준 데미지만 인정"이 필요해지면 공용 `DamageData`를 건드리지 않는 방식으로 따로 설계한다.

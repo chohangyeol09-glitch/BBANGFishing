@@ -41,7 +41,6 @@ namespace NKT.Player.Modules
         
         private void OnStateChanged(FishingState state)
         {
-            Debug.Log("OnStateChanged : " + state);
             switch (state)
             {
                 case FishingState.Idle:

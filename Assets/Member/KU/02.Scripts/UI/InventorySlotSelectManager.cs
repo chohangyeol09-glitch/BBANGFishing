@@ -1,6 +1,6 @@
 using System;
+using NKT.Player.Modules;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class InventorySlotSelectManager : MonoBehaviour
@@ -29,6 +29,11 @@ public class InventorySlotSelectManager : MonoBehaviour
     private RectTransform selectFrame;
 
 
+    [Header("핫바")]
+    [SerializeField]
+    private HotbarModule hotbar;
+
+
     [Header("설정")]
     [SerializeField]
     private bool selectFirstSlotOnStart = true;
@@ -40,6 +45,30 @@ public class InventorySlotSelectManager : MonoBehaviour
     public int SelectedIndex => selectedIndex;
 
 
+    // 선택과 슬롯 내용은 HotbarModule이 정한다.
+    // 여기서 키를 직접 읽으면 선택 상태가 둘로 갈라지고, UI 잠금도 통과해 버린다.
+    private void OnEnable()
+    {
+        if (hotbar == null)
+            return;
+
+
+        hotbar.OnSelectionChanged += SelectSlot;
+        hotbar.OnSlotChanged += SetSlotSprite;
+    }
+
+
+    private void OnDisable()
+    {
+        if (hotbar == null)
+            return;
+
+
+        hotbar.OnSelectionChanged -= SelectSlot;
+        hotbar.OnSlotChanged -= SetSlotSprite;
+    }
+
+
     private void Start()
     {
         RefreshSlotImages();
@@ -49,43 +78,21 @@ public class InventorySlotSelectManager : MonoBehaviour
             return;
 
 
-        if (selectFirstSlotOnStart &&
-            slots != null &&
-            slots.Length > 0)
+        // 핫바가 있으면 그쪽 선택을 따르고, 없으면 기존처럼 첫 칸을 고른다
+        if (hotbar != null)
+        {
+            // 구독이 늦어 초기 이벤트를 놓쳤을 수 있으니 한 번 다시 받는다
+            hotbar.RefreshView();
+        }
+        else if (selectFirstSlotOnStart &&
+                 slots != null &&
+                 slots.Length > 0)
         {
             SelectSlot(0);
         }
         else
         {
             selectFrame.gameObject.SetActive(false);
-        }
-    }
-
-
-    private void Update()
-    {
-        if (Keyboard.current == null)
-            return;
-
-
-        if (Keyboard.current.digit1Key.wasPressedThisFrame ||
-            Keyboard.current.numpad1Key.wasPressedThisFrame)
-        {
-            SelectSlot(0);
-        }
-
-
-        if (Keyboard.current.digit2Key.wasPressedThisFrame ||
-            Keyboard.current.numpad2Key.wasPressedThisFrame)
-        {
-            SelectSlot(1);
-        }
-
-
-        if (Keyboard.current.digit3Key.wasPressedThisFrame ||
-            Keyboard.current.numpad3Key.wasPressedThisFrame)
-        {
-            SelectSlot(2);
         }
     }
 

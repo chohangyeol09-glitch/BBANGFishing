@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c7ea7f77fcf4d2e952d07abf37167f0, type: 3}
+  m_Name: Fish_Type15
+  m_EditorClassIdentifier: 
+  Name: "\uB9AC\uD504\uD540"
+  Grade: 2
+  Health: 12
+  Weight: 3.52
+  JumpPower: 25.6
+  Skills:
+  - Skill: {fileID: 11400000, guid: fcad13ad45826464ab724311d8fad1da, type: 2}
+    Priority: 0
+    Conditions: []
+  - Skill: {fileID: 11400000, guid: ab5b95f8cea53ad4d96580edd99c8c7e, type: 2}
+    Priority: 0
+    Conditions: []
+  - Skill: {fileID: 11400000, guid: a68848dd858854f4081799da8776d5e0, type: 2}
+    Priority: 0
+    Conditions: []
+  - Skill: {fileID: 11400000, guid: b0751b0e62cfb5043a6cb3e0591c68ea, type: 2}
+    Priority: 0
+    Conditions: []
+  - Skill: {fileID: 11400000, guid: 09e15d0e00b73cc49a72fea677d2208d, type: 2}
+    Priority: 0
+    Conditions: []
+  - Skill: {fileID: 11400000, guid: 26579476780121b428f0be819d2da418, type: 2}
+    Priority: 0
+    Conditions: []
+  DamageMultiplier: 2
+  Sprite: {fileID: 21300000, guid: bb48515ad8a09994fb4e5b33cedb6beb, type: 3}
+  Price: 5
+  CanLunge: 1
+  LungeFlightTime: 1
+  LungeFrontDistance: 1.5
+  LungeHeightOffset: 0
+  ParryRange: 3
+  ReturnFlightTime: 1
+  History: 
+  MinWeight: 1
+  MaxWeight: 5

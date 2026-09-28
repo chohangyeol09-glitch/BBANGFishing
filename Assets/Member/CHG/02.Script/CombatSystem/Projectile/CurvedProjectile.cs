@@ -29,7 +29,7 @@ namespace CHG._02.Script.CombatSystem.Projectile
             Vector3 prev = transform.position;
             transform.position = PhysicsUtil.Bezier(t,_p0, _p1, _p2);
             if (transform.position != prev) transform.rotation = Quaternion.LookRotation(transform.position - prev);
-            if (t >= 1f) PoolManager.Push(this);
+            if (t >= 1f) ReleaseToPool(); //_released로 중복 반납을 막는 경로
         }
 
 
