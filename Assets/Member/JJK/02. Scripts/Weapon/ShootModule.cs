@@ -11,12 +11,9 @@ namespace Member.JJK._02._Scripts.Weapon
         [SerializeField] private Transform muzzleTrm;
         [SerializeField] private CinemachineImpulseSource impulseSource;
         [SerializeField] private float shakeForce = 1f;
-        
-        private DurabilityRuntimeState Durability => _weaponController.DurabilityState;
 
         private WeaponController _weaponController;
         private WeaponSO _weaponData;
-        private DurabilityRuntimeState _durabilityState;
         private AimModule _aimModule;
         private BulletTracerModule _tracerModule;
         private float _lastFireTime;
@@ -37,12 +34,6 @@ namespace Member.JJK._02._Scripts.Weapon
             FireRayCast();
             if (impulseSource != null)
                 impulseSource.GenerateImpulse(shakeForce);
-
-            if (_weaponData.IsUnbreakable) return;
-
-            Durability.Consume(1);
-            if (Durability.IsBroken)
-                _weaponController.Break();
         }
 
         private void FireRayCast()
