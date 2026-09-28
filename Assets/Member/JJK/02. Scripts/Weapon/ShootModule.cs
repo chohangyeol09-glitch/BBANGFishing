@@ -31,7 +31,7 @@ namespace Member.JJK._02._Scripts.Weapon
 
         public void TryFire()
         {
-            if (Time.time - _lastFireTime < _weaponData.FireRate) return;
+            if (Time.time - _lastFireTime < _weaponController.CurrentFireRate) return;
 
             _lastFireTime = Time.time;
             FireRayCast();
