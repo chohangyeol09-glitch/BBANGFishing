@@ -310,9 +310,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NKT.Player.Modules.WeaponModeModule
   input: {fileID: 11400000, guid: 0fa2b7ba64b407e46a78479f926d876c, type: 2}
-  weapon: {fileID: 4231317381752445613}
-  aimModule: {fileID: 8767108210168971823}
-  gunObject: {fileID: 2084956225329985731}
   fishingRig: {fileID: 6482196014202769256}
   gunRig: {fileID: 8183509047384675281}
 --- !u!1 &1988275252802604050
@@ -472,6 +469,8 @@ Transform:
   - {fileID: 3958876940305805207}
   - {fileID: 3827875045590950608}
   - {fileID: 8636950807740392663}
+  - {fileID: 4128965620661270183}
+  - {fileID: 3082229317966173071}
   m_Father: {fileID: 5920166008622741632}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3870879089508862561
@@ -644,6 +643,55 @@ Transform:
   m_Children: []
   m_Father: {fileID: 9067888652756787144}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5206086924317476685
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4128965620661270183}
+  - component: {fileID: 2321917872965886693}
+  m_Layer: 3
+  m_Name: WeaponEquipModule
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4128965620661270183
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5206086924317476685}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7050357678044039404}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2321917872965886693
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5206086924317476685}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f777586095d84e8aadaad506682bd7d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NKT.Player.Modules.WeaponEquipModule
+  gunSocket: {fileID: 4809749233914781980}
+  rigBuilder: {fileID: 8237394561898408890}
+  rightHandIK: {fileID: 7235771590010101167}
+  leftHandIK: {fileID: 659044205150333454}
+  _current: {fileID: 4231317381752445613}
 --- !u!1 &5360000306736539734
 GameObject:
   m_ObjectHideFlags: 0
@@ -701,6 +749,55 @@ MonoBehaviour:
     m_HintWeight: 1
     m_MaintainTargetPositionOffset: 0
     m_MaintainTargetRotationOffset: 0
+--- !u!1 &6193117008478375365
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3082229317966173071}
+  - component: {fileID: 4244222251765503386}
+  m_Layer: 3
+  m_Name: HotbarModule
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3082229317966173071
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6193117008478375365}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7050357678044039404}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4244222251765503386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6193117008478375365}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 445f0d17b2c4d364b98ff1490128590e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NKT.Player.Modules.HotbarModule
+  input: {fileID: 11400000, guid: 0fa2b7ba64b407e46a78479f926d876c, type: 2}
+  slotCount: 2
+  startSlots:
+  - {fileID: 11400000, guid: e1ced4423d26e9b409702e7df2a82449, type: 2}
+  - {fileID: 11400000, guid: 980a27b4e7c500547a308b312e307342, type: 2}
 --- !u!1 &6399780155749474625
 GameObject:
   m_ObjectHideFlags: 0
@@ -814,7 +911,7 @@ Transform:
   m_GameObject: {fileID: 7429886087007272154}
   serializedVersion: 2
   m_LocalRotation: {x: 0.0047341464, y: 0.017919222, z: -0.9997963, w: -0.007999646}
-  m_LocalPosition: {x: 0.803, y: 0.6904894, z: 0.108}
+  m_LocalPosition: {x: 0.807, y: 0.704, z: -0.273}
   m_LocalScale: {x: 0.49999997, y: 0.49999997, z: 0.50000006}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -901,6 +998,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxHealth: 100
   brain: {fileID: 4916701357715650092}
+  playerInput: {fileID: 0}
 --- !u!114 &1478251061478145898
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1900,6 +1998,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8059608481141017455, guid: 79012899d4d5a8e4c80656eb483db5f5, type: 3}
   m_PrefabInstance: {fileID: 752135172959943376}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8237394561898408890 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8656204638416720234, guid: 79012899d4d5a8e4c80656eb483db5f5, type: 3}
+  m_PrefabInstance: {fileID: 752135172959943376}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fff0960ef4ea6e04eac66b4a7fd2189d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Animation.Rigging::UnityEngine.Animations.Rigging.RigBuilder
 --- !u!4 &8579501839769640078 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9034394042667705950, guid: 79012899d4d5a8e4c80656eb483db5f5, type: 3}
@@ -2150,13 +2259,30 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4979467616392159351, guid: c4d7cd5646256c2459b0b78bb2c66892, type: 3}
       insertIndex: -1
       addedObject: {fileID: 626343203400214635}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1601118637789248337, guid: c4d7cd5646256c2459b0b78bb2c66892, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 137137363942072413}
   m_SourcePrefab: {fileID: 100100000, guid: c4d7cd5646256c2459b0b78bb2c66892, type: 3}
 --- !u!1 &2084956225329985731 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1601118637789248337, guid: c4d7cd5646256c2459b0b78bb2c66892, type: 3}
   m_PrefabInstance: {fileID: 781110965816460178}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &137137363942072413
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2084956225329985731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2c833be2a654d03b8cdaf7e055052d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NKT.Fishing.Rob.WeaponGrip
+  rightGrip: {fileID: 3321906392439659357}
+  leftGrip: {fileID: 626343203400214635}
 --- !u!114 &4231317381752445613 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3490211601073396031, guid: c4d7cd5646256c2459b0b78bb2c66892, type: 3}
@@ -2173,17 +2299,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4979467616392159351, guid: c4d7cd5646256c2459b0b78bb2c66892, type: 3}
   m_PrefabInstance: {fileID: 781110965816460178}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8767108210168971823 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8321550672943071677, guid: c4d7cd5646256c2459b0b78bb2c66892, type: 3}
-  m_PrefabInstance: {fileID: 781110965816460178}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 92e717c0a8a842bbafd800faca585cae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &4114818886519376611
 PrefabInstance:
   m_ObjectHideFlags: 0
