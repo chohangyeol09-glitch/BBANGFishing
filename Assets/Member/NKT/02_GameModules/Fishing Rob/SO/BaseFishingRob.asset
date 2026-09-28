@@ -18,8 +18,8 @@ MonoBehaviour:
   power: 12
   minDistance: 2
   maxDistance: 10
-  minBiteDelay: 1
-  maxBiteDelay: 2
+  minBiteDelay: 10
+  maxBiteDelay: 15
   rodName: 
   rodSprite: {fileID: 0}
   rarity: 0

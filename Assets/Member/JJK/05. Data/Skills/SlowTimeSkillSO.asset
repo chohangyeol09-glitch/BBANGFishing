@@ -12,17 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 579779a5c7b9469aaf065a4831c64f5e, type: 3}
   m_Name: SlowTimeSkillSO
   m_EditorClassIdentifier: 
-  <SkillName>k__BackingField: Slow Time
+  <SkillName>k__BackingField: "\uC0B0\uB370\uBE44\uC2A4\uD0C4"
   <Cooldown>k__BackingField: 15
   <Duration>k__BackingField: 5
   <Icon>k__BackingField: {fileID: 21300000, guid: ab278071729b84f4d88a0375646d295c, type: 3}
-  skillName: 
-  descriptionFormat: 
+  skillName: "\uC0B0\uB370\uBE44\uC2A4\uD0C4"
+  descriptionFormat: "\uC801\uC758 \uC18D\uB3C4\uAC00 {value}\uCD08 \uB3D9\uC548
+    \uB290\uB824\uC9C4\uB2E4."
   skillSprite: {fileID: 21300000, guid: ab278071729b84f4d88a0375646d295c, type: 3}
   purchasePrice: 10000
-  baseValue: 10
-  valueIncreasePerLevel: 5
-  valueSuffix: '%'
+  baseValue: 3
+  valueIncreasePerLevel: 2
+  valueSuffix: 
   maxLevel: 5
   baseUpgradeCost: 5000
   upgradeCostIncrease: 5000

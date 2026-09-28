@@ -20772,7 +20772,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 36eb7ebbd6854b20ae451ad7f24490a0, type: 2}
   - {fileID: 11400000, guid: cbe3bc7954304f9e8fae25c9ad4bc1ca, type: 2}
   - {fileID: 11400000, guid: 17bf4961afcb44fead165b166ff71593, type: 2}
-  playerSkillController: {fileID: 0}
+  playerSkillController: {fileID: 613470019}
   currentSkillImage: {fileID: 846645394}
   currentSkillNameText: {fileID: 1623676456}
   currentSkillDescriptionText: {fileID: 1335269870}
