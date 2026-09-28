@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using CHG._02.Script.FishSystem;
 using NKT.Fishing.Bait;
@@ -107,6 +107,7 @@ namespace NKT.Fishing.Rob
             }
 
             transform.rotation = Quaternion.identity;
+            BBANGFishing.Audio.GameplayAudio.Play(BBANGFishing.Audio.GameplaySound.BobberSplash, transform.position);
             OnLanded?.Invoke();
             bobberParticle.Stop();
         }

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using CHG._02.Script.CombatSystem;
 using DevLib.ModuleSystem;
 using UnityEngine;
@@ -32,8 +32,9 @@ namespace CHG._02.Script.FishSystem
 
         public bool TryParry(DamageData data)
         {
-            if (!IsParryable) return false;
+            if (!IsParryable || _fish.IsDead) return false;
 
+            BBANGFishing.Audio.GameplayAudio.Play(BBANGFishing.Audio.GameplaySound.Parry, _fish.transform.position);
             data.Damage = _fish.MaxHealth * maxHealthRatio; //들어온 공격 데미지 대신 최대 체력 비율로 고정
             _fish.TakeParryDamage(data); //돌진 중 무적을 무시하는 패링 전용 경로
             OnParried?.Invoke();

@@ -37,6 +37,13 @@ namespace NKT.Fishing.MiniGame
         
         public void Show(Vector2 notePos, Judgement judgement)
         {
+            var sound = judgement switch
+            {
+                Judgement.Perfect => BBANGFishing.Audio.GameplaySound.Perfect,
+                Judgement.Good => BBANGFishing.Audio.GameplaySound.Good,
+                _ => BBANGFishing.Audio.GameplaySound.Miss
+            };
+            BBANGFishing.Audio.GameplayAudio.Play(sound, Vector3.zero);
             Text.text = judgement switch
             {
                 Judgement.Perfect => "PERFECT!!",

@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae8ed6d582928b745b9284733f27b95b, type: 3}
+  m_Name: Library
+  m_EditorClassIdentifier: Assembly-CSharp::BBANGFishing.Audio.GameplaySoundLibrary
+  managerPrefab: {fileID: 2235763395650398743, guid: ddee0327ca49bb0498c1af9f0f49262c, type: 3}
+  soundPool: {fileID: 11400000, guid: d98f5b962443e5344bdd02f78bea1fa3, type: 2}
+  clips:
+  - {fileID: 11400000, guid: f8b8329593c379549b084910281b8c02, type: 2}
+  - {fileID: 11400000, guid: 5bc089aeb40b53543872b0adda0eb01d, type: 2}
+  - {fileID: 11400000, guid: e086ad967669cda46bb44ac9e8d018b3, type: 2}
+  - {fileID: 11400000, guid: 80654005e7e94a94197384fd8d5353c5, type: 2}
+  - {fileID: 11400000, guid: c315c43d40252e7459f701aa28e24426, type: 2}
+  - {fileID: 11400000, guid: 48f6d9f87b299bf4484b54f377e925ee, type: 2}
+  - {fileID: 11400000, guid: 259e668625145634797336c2b019898d, type: 2}
+  - {fileID: 11400000, guid: 427476e7de2fdf94b9bea6489c995a36, type: 2}
+  - {fileID: 11400000, guid: d6c63a6fc42600a428ed024b73367ee8, type: 2}
