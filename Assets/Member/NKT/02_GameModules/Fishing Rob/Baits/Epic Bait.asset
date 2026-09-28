@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::NKT.Fishing.Bait.BaitSO
   baitName: Common
   baitSprite: {fileID: -1601368728, guid: ce494b9a305a6e64887312b7fee2fccc, type: 3}
-  grade: 0
-  rarity: 0
-  price: 0
-  maxUses: 0
+  grade: 2
+  rarity: 2
+  price: 300
+  maxUses: 3
   weights:
   - grade: 0
     weight: 0
@@ -28,4 +28,4 @@ MonoBehaviour:
   - grade: 3
     weight: 0
   bossFishData: {fileID: 0}
-  fishesToBuy: {fileID: 0}
+  fishesToBuy: {fileID: 11400000, guid: 1d806ad4e10024d49bff1a8becb72342, type: 2}

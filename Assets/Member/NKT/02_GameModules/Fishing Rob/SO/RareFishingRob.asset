@@ -20,8 +20,8 @@ MonoBehaviour:
   maxDistance: 10
   minBiteDelay: 8
   maxBiteDelay: 15
-  rodName: 
-  rodSprite: {fileID: 0}
+  rodName: "\uB808\uC5B4 \uB09A\uC2DC\uB300"
+  rodSprite: {fileID: -1426614795, guid: b8f2484d137b40949b4e9e5d9ff0f8e0, type: 3}
   rarity: 1
-  price: 0
+  price: 1000
   grade: 1

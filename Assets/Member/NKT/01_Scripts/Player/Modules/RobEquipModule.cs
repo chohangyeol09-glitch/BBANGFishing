@@ -89,6 +89,7 @@ namespace NKT.Player.Modules
             if (_current != null && _current.Data == data)
             {
                 _current.gameObject.SetActive(true);
+                SyncGrip();
                 return true;
             }
 
@@ -103,6 +104,11 @@ namespace NKT.Player.Modules
             if (template.RobEdgeTransform == null)
             {
                 Debug.LogError($"{rodLabel} : FishingRob의 Rob Edge Transform이 연결되어 있지 않습니다.", data);
+                return false;
+            }
+            if (rightGrip == null || template.GripPoint == null)
+            {
+                Debug.LogError($"{rodLabel} : 오른손 IK 목표와 낚싯대 Grip Point 연결을 확인하세요.", this);
                 return false;
             }
             if (data.prefab.BobberGameobject != null && template.BobberTransform == null)
@@ -196,6 +202,7 @@ namespace NKT.Player.Modules
             _current =
                 fishing;
             _currentRoot = fishing.gameObject;
+            SyncGrip();
         }
 
 
@@ -234,11 +241,11 @@ namespace NKT.Player.Modules
             }
 
 
-            rightGrip.localPosition =
-                _current.GripPoint.localPosition;
-
-            rightGrip.localRotation =
-                _current.GripPoint.localRotation;
+            // IK 목표는 교체되지 않는 장착 소켓 아래에 유지한다.
+            // 낚싯대의 스케일과 서로 다른 부모 좌표계를 반영한다.
+            rightGrip.SetPositionAndRotation(
+                _current.GripPoint.position,
+                _current.GripPoint.rotation);
         }
 
 
