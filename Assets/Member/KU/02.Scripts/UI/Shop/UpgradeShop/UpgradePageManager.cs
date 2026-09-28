@@ -54,6 +54,7 @@ public class UpgradePageManager : MonoBehaviour
     private bool isCreated = false;
 
 
+
     private void OnEnable()
     {
         if (!isCreated)
@@ -66,6 +67,7 @@ public class UpgradePageManager : MonoBehaviour
 
         OpenGunPage();
     }
+
 
 
     private void CreateUpgradeItems()
@@ -89,6 +91,7 @@ public class UpgradePageManager : MonoBehaviour
     }
 
 
+
     private void CreateItems(
         UpgradeStatData[] upgrades,
         Transform parent)
@@ -96,8 +99,10 @@ public class UpgradePageManager : MonoBehaviour
         if (upgrades == null)
             return;
 
+
         if (parent == null)
             return;
+
 
         if (upgradeItemPrefab == null)
             return;
@@ -124,6 +129,11 @@ public class UpgradePageManager : MonoBehaviour
     }
 
 
+
+    // =========================================
+    // 페이지
+    // =========================================
+
     public void OpenGunPage()
     {
         CloseAllPages();
@@ -134,6 +144,7 @@ public class UpgradePageManager : MonoBehaviour
             gunPage.SetActive(true);
         }
     }
+
 
 
     public void OpenStatPage()
@@ -148,6 +159,7 @@ public class UpgradePageManager : MonoBehaviour
     }
 
 
+
     public void OpenCapacityPage()
     {
         CloseAllPages();
@@ -158,6 +170,7 @@ public class UpgradePageManager : MonoBehaviour
             capacityPage.SetActive(true);
         }
     }
+
 
 
     private void CloseAllPages()
@@ -180,6 +193,11 @@ public class UpgradePageManager : MonoBehaviour
         }
     }
 
+
+
+    // =========================================
+    // 업그레이드
+    // =========================================
 
     public void UpgradeStat(
         UpgradeStatData stat,
@@ -213,6 +231,10 @@ public class UpgradePageManager : MonoBehaviour
             stat.CurrentCost;
 
 
+        // =========================================
+        // 돈 확인
+        // =========================================
+
         if (!MoneyManager.Instance
             .CanAfford(cost))
         {
@@ -224,15 +246,18 @@ public class UpgradePageManager : MonoBehaviour
         }
 
 
-        // =============================
-        // 업그레이드 전 수치 저장
-        // =============================
+        // =========================================
+        // 업그레이드 전 값
+        // =========================================
 
         float previousValue =
             stat.CurrentValue;
 
 
-        // 실제 업그레이드
+        // =========================================
+        // 데이터 업그레이드
+        // =========================================
+
         bool success =
             stat.Upgrade();
 
@@ -241,28 +266,37 @@ public class UpgradePageManager : MonoBehaviour
             return;
 
 
-        // =============================
-        // 실제로 증가한 수치 계산
-        // =============================
+        // =========================================
+        // 이번 업그레이드 증가량
+        // =========================================
 
         float upgradeAmount =
             stat.CurrentValue -
             previousValue;
 
 
+        // =========================================
         // 돈 차감
+        // =========================================
+
         MoneyManager.Instance
             .TrySpendMoney(cost);
 
 
-        // 실제 게임 시스템에 적용
+        // =========================================
+        // 실제 게임에 적용
+        // =========================================
+
         ApplyUpgrade(
             stat,
             upgradeAmount
         );
 
 
+        // =========================================
         // UI 갱신
+        // =========================================
+
         if (itemUI != null)
         {
             itemUI.Refresh();
@@ -278,6 +312,11 @@ public class UpgradePageManager : MonoBehaviour
     }
 
 
+
+    // =========================================
+    // 실제 업그레이드 적용
+    // =========================================
+
     private void ApplyUpgrade(
         UpgradeStatData stat,
         float upgradeAmount)
@@ -285,7 +324,7 @@ public class UpgradePageManager : MonoBehaviour
         switch (stat.statType)
         {
             // =====================================
-            // 총기 공격력
+            // 공격력
             // =====================================
 
             case UpgradeStatType.AttackDamage:
@@ -294,6 +333,12 @@ public class UpgradePageManager : MonoBehaviour
                 {
                     weaponController.UpgradeDamage(
                         upgradeAmount
+                    );
+                }
+                else
+                {
+                    Debug.LogWarning(
+                        "WeaponController가 연결되어 있지 않습니다."
                     );
                 }
 
@@ -305,8 +350,9 @@ public class UpgradePageManager : MonoBehaviour
                 break;
 
 
+
             // =====================================
-            // 총기 공격 속도
+            // 공격 속도
             // =====================================
 
             case UpgradeStatType.AttackSpeed:
@@ -315,6 +361,12 @@ public class UpgradePageManager : MonoBehaviour
                 {
                     weaponController.UpgradeFireRate(
                         upgradeAmount
+                    );
+                }
+                else
+                {
+                    Debug.LogWarning(
+                        "WeaponController가 연결되어 있지 않습니다."
                     );
                 }
 
@@ -326,8 +378,9 @@ public class UpgradePageManager : MonoBehaviour
                 break;
 
 
+
             // =====================================
-            // 플레이어 체력
+            // 체력
             // =====================================
 
             case UpgradeStatType.Health:
@@ -336,12 +389,17 @@ public class UpgradePageManager : MonoBehaviour
                     $"체력 +{upgradeAmount}"
                 );
 
-                // 나중에 실제 플레이어 체력 시스템 연결
+
+                // 나중에 실제 체력 시스템 연결
                 //
                 // 예:
-                // health.UpgradeMaxHealth(upgradeAmount);
+                //
+                // health.UpgradeMaxHealth(
+                //     upgradeAmount
+                // );
 
                 break;
+
 
 
             // =====================================
@@ -350,17 +408,28 @@ public class UpgradePageManager : MonoBehaviour
 
             case UpgradeStatType.FishCapacity:
 
-                Debug.Log(
-                    $"물고기 용량 +{upgradeAmount}"
-                );
+                if (FishInventoryManager.Instance == null)
+                {
+                    Debug.LogWarning(
+                        "FishInventoryManager가 없습니다."
+                    );
 
-                // 나중에 실제 인벤토리 용량 시스템 연결
-                //
-                // 예:
-                // fishInventoryManager
-                //     .UpgradeCapacity(
-                //         Mathf.RoundToInt(upgradeAmount)
-                //     );
+                    break;
+                }
+
+
+                // 용량 업그레이드 1회
+                // =
+                // 인벤토리 페이지 1개 추가
+                FishInventoryManager.Instance
+                    .UnlockNextPage();
+
+
+                Debug.Log(
+                    $"물고기 인벤토리 페이지 증가 / " +
+                    $"현재 " +
+                    $"{FishInventoryManager.Instance.UnlockedPageCount}페이지"
+                );
 
                 break;
         }

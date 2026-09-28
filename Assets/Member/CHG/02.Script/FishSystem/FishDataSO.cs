@@ -23,9 +23,11 @@ namespace CHG._02.Script.FishSystem
 
         public float Health;
 
-        public float Weight;
+        [Tooltip("낚아 올릴 때 적용하는 기준 무게. 무거울수록 상승 속도가 낮아진다.")]
+        [Min(0.01f)] public float Weight;
 
-        public float JumpPower;
+        [Tooltip("이전 데이터 호환용. 낚아 올리는 힘은 낚싯대 SO의 power와 Weight로 계산한다.")]
+        [HideInInspector] public float JumpPower;
 
 
         public SkillEntry[] Skills;

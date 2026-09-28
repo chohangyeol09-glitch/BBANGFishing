@@ -5950,10 +5950,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7429fb795ce73b04eb54008b54eeb553, type: 2}
   - {fileID: 11400000, guid: 23373e8f08395b6489ffd6d889819890, type: 2}
   rods:
-  - {fileID: 11400000, guid: e1ced4423d26e9b409702e7df2a82449, type: 2}
-  - {fileID: 11400000, guid: f2fb6958e0d8f4b418c1ea1a42ef887a, type: 2}
-  - {fileID: 11400000, guid: c8cd1b6b7ff67814997ae05999b83ff7, type: 2}
-  - {fileID: 11400000, guid: 446ee83b51b5c6748b9e365cab09fb45, type: 2}
+  - {fileID: 11400000, guid: 9189af88d63fa234c94962234aa4635b, type: 2}
+  - {fileID: 11400000, guid: ea9a84d9033a70d42941d04c400bc2aa, type: 2}
+  - {fileID: 11400000, guid: 35992ce1fa4ea814ba41c7af440cfe48, type: 2}
   robEquipModule: {fileID: 1125500565}
 --- !u!224 &385977609
 RectTransform:
@@ -6081,7 +6080,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &389292085
 MonoBehaviour:
@@ -6826,7 +6825,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 655631794, guid: c6a3af0336f6b3d4f8f5a17d8017d566, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -9591,11 +9590,11 @@ RectTransform:
   - {fileID: 389292084}
   m_Father: {fileID: 842061555}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 1, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &618449625
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9609,14 +9608,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.HorizontalLayoutGroup
   m_Padding:
-    m_Left: -171
-    m_Right: 30
+    m_Left: 0
+    m_Right: 50
     m_Top: 0
-    m_Bottom: 50
+    m_Bottom: 30
   m_ChildAlignment: 8
-  m_Spacing: 30
-  m_ChildForceExpandWidth: 1
-  m_ChildForceExpandHeight: 1
+  m_Spacing: 58.6
+  m_ChildForceExpandWidth: 0
+  m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
   m_ChildControlHeight: 0
   m_ChildScaleWidth: 0
@@ -9887,11 +9886,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1115004903}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -70}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: 32}
   m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &630745855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16266,7 +16265,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1115004904
 MonoBehaviour:
@@ -30468,7 +30467,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: -1382930758, guid: c6a3af0336f6b3d4f8f5a17d8017d566, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -31589,6 +31588,8 @@ MonoBehaviour:
   spawnPoint: {fileID: 1724912728}
   robEquip: {fileID: 1125500565}
   spawnOffset: {x: 0, y: 0, z: 0}
+  maxSpawnLift: 8
+  spawnClearance: 0.05
   allowDowngrade: 0
   attackTarget: {fileID: 1410502811}
   poolManager: {fileID: 11400000, guid: baebfac5b535afc4b9f1753c62a2bd78, type: 2}
@@ -32153,11 +32154,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 389292084}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -70}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: 32}
   m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &2133440240
 MonoBehaviour:
   m_ObjectHideFlags: 0
