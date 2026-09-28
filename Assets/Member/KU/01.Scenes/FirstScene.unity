@@ -2480,7 +2480,9 @@ MonoBehaviour:
   fishImage: {fileID: 1241354613}
   fishNameText: {fileID: 1233853567}
   weightText: {fileID: 1935917558}
-  historyText: {fileID: 358846820}
+  fishContentText: {fileID: 0}
+  gradeText: {fileID: 0}
+  priceText: {fileID: 0}
 --- !u!1001 &203630670
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10287,7 +10289,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a4074c7584dcb445b976411310583dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FisihInventoryAction
-  fishInventoryUI: {fileID: 114735484}
   fishInventoryManager: {fileID: 114735488}
 --- !u!1001 &1106984022
 PrefabInstance:
@@ -11984,6 +11985,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4f8bb98799a6244861b2a6627123d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FishTooltipUI
+  tooltipRoot: {fileID: 0}
   canvas: {fileID: 374236150}
   tooltipRect: {fileID: 1281451096}
   fishNameText: {fileID: 41833988}
