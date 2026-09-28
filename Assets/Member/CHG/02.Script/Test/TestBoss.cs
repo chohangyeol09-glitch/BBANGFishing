@@ -23,7 +23,8 @@ namespace CHG._02.Script.Test
             PatternBreakModule breakModule = boss.GetModule<PatternBreakModule>();
             breakModule.OnBreakProgress += value => Debug.Log($"파훼 진행: {value:P0}");
             breakModule.OnPatternBroken += () => Debug.Log("패턴 파훼!");
-            boss.OnSpawn(target);
+            //소환(OnSpawn)은 BossSummoner가 한다. 보스가 켜진 뒤에야 이 Start가 돌기 때문
+            //보스를 켜 둔 채 테스트하려면 BossSummoner 없이 여기서 boss.OnSpawn(target)을 부른다
         }
 
         private void Update()

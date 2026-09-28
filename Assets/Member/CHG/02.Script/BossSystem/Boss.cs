@@ -10,6 +10,12 @@ namespace CHG._02.Script.BossSystem
     [RequireComponent(typeof(BehaviorGraphAgent))]
     public class Boss : Agent, ISkillEntrySource, IDamageMultiplier
     {
+        public static event Action<Boss> OnBossDefeated;
+        private bool _deathReported;
+
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        private static void ResetEvents() => OnBossDefeated = null;
+
         public event Action<BossStateEnum> OnStateChanged;
 
         public BossStateEnum State { get; private set; } = BossStateEnum.Appear;
@@ -31,8 +37,22 @@ namespace CHG._02.Script.BossSystem
             base.InitializeModules();
         }
 
+        //씬에 비활성으로 둔 보스를 켜고 등장시킨다. 그래프가 Appear(떠오르기) → Combat으로 진행한다
+        public void Summon(GameObject target)
+        {
+            if (gameObject.activeInHierarchy)
+            {
+                Debug.LogWarning("이미 소환된 보스입니다.", this);
+                return;
+            }
+
+            gameObject.SetActive(true); //이 안에서 Awake가 돌아 모듈이 초기화된다
+            OnSpawn(target);
+        }
+
         public void OnSpawn(GameObject target)
         {
+            _deathReported = false;
             CurrentHealth = MaxHealth;
             State = BossStateEnum.Appear;
             
@@ -49,8 +69,11 @@ namespace CHG._02.Script.BossSystem
 
         public override void Dead()
         {
+            if (_deathReported) return;
+            _deathReported = true;
             base.Dead();
             SendState(BossStateEnum.Dead);
+            OnBossDefeated?.Invoke(this);
         }
 
         public void SendState(BossStateEnum newState)

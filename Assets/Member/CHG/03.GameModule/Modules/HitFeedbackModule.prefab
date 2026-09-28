@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CHG._02.Script.CombatSystem.HitFeedback.HitFeedbackModule
   flashMaterial: {fileID: 2100000, guid: 3128d9a1cf372e4468c46fbace2c497c, type: 2}
-  flashDuration: 0.1
+  flashDuration: 0.3
   visualRoot: {fileID: 0}
   punchAmount: 0.1
   punchDuration: 0.15
