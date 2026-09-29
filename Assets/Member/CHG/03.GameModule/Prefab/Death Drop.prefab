@@ -245,7 +245,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd7005fd355c3e04db40c6d9dab4a68c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CHG._02.Script.FishSystem.FishDrop
-  <PoolItem>k__BackingField: {fileID: 11400000, guid: aaab9069c946481439209b897ca5d8a8, type: 2}
+  <PoolItem>k__BackingField: {fileID: 11400000, guid: 1ed19e7feb735bd4dae0f8de13a81287, type: 2}
   moveCurve:
     serializedVersion: 2
     m_Curve:
