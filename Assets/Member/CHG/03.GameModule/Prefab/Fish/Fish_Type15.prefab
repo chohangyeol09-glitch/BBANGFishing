@@ -832,7 +832,7 @@ MonoBehaviour:
   _maxHealth: 100
   <PoolItem>k__BackingField: {fileID: 11400000, guid: 1f9432d5b526a2249b3d94338f57e5d1, type: 2}
   <Data>k__BackingField: {fileID: 11400000, guid: db4734fc8f5739b439e3a9d74b4182b1, type: 2}
-  airTimeScale: 1.5
+  airTimeScale: 2
   weightInfluence: 0.13
   minJumpHeight: 6
   maxJumpHeight: 12
