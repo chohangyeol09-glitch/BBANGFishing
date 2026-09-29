@@ -19,10 +19,12 @@ namespace CHG._02.Script.CombatSystem.BT.Action
             _lunge = Fish.Value.GetModule<LungeModule>();
         
             if (_lunge == null) return Status.Failure;
-        
-            Fish.Value.ConsumeSeaTouch();
+
             _lunge.StartLunge();
-            return _lunge.IsApproaching ? Status.Running : Status.Failure;
+            if (!_lunge.IsApproaching) return Status.Failure; // 실패하면 IsInSea를 건드리지 않음
+
+            Fish.Value.ConsumeSeaTouch();
+            return Status.Running;
         }
 
         protected override Status OnUpdate() => _lunge.IsApproaching ? Status.Running : Status.Success;

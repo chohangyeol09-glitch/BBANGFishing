@@ -20,11 +20,11 @@ MonoBehaviour:
   maxUses: 3
   weights:
   - grade: 0
-    weight: 0
+    weight: 60
   - grade: 1
-    weight: 0
+    weight: 30
   - grade: 2
-    weight: 0
+    weight: 10
   - grade: 3
     weight: 0
   bossFishData: {fileID: 0}

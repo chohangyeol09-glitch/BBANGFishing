@@ -33,7 +33,7 @@ MonoBehaviour:
     Conditions: []
   DamageMultiplier: 1.5
   Sprite: {fileID: 21300000, guid: 691e7fc53fc4ee7458ed2f0e987d5c72, type: 3}
-  Price: 5
+  Price: 50
   CanLunge: 1
   LungeFlightTime: 1
   LungeFrontDistance: 1.5

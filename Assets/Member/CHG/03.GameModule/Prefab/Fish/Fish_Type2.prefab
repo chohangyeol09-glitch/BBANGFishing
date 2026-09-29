@@ -802,7 +802,7 @@ MonoBehaviour:
   <Data>k__BackingField: {fileID: 11400000, guid: 7e24ce73261f4f1459c2718f9bcf401c, type: 2}
   airTimeScale: 1.5
   weightInfluence: 0.13
-  minJumpHeight: 0.8
+  minJumpHeight: 6
   maxJumpHeight: 12
   testUpSpeed: 8
   testParryDamage: 0.5
