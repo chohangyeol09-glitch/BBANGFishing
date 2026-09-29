@@ -20,12 +20,12 @@ MonoBehaviour:
   maxUses: 3
   weights:
   - grade: 0
-    weight: 50
+    weight: 80
   - grade: 1
-    weight: 30
+    weight: 20
   - grade: 2
-    weight: 10
+    weight: 0
   - grade: 3
-    weight: 10
+    weight: 0
   bossFishData: {fileID: 0}
   fishesToBuy: {fileID: 11400000, guid: 7e24ce73261f4f1459c2718f9bcf401c, type: 2}

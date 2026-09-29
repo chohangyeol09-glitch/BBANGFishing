@@ -22,10 +22,10 @@ MonoBehaviour:
   - grade: 0
     weight: 0
   - grade: 1
-    weight: 0
+    weight: 20
   - grade: 2
-    weight: 0
+    weight: 30
   - grade: 3
-    weight: 0
+    weight: 50
   bossFishData: {fileID: 11400000, guid: 0b85ed36ebdc3984bb43c2358ad3956b, type: 2}
   fishesToBuy: {fileID: 11400000, guid: 182a756498a6500449dd1fa4c9182b50, type: 2}

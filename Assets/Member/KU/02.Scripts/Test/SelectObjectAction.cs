@@ -36,10 +36,12 @@ public class SelectObjectAction : InteractionAction
 
     [Header("최종 위치 보정")]
     [SerializeField]
-    private Vector3 positionOffset = Vector3.zero;
+    private Vector3 positionOffset =
+        Vector3.zero;
 
     [SerializeField]
-    private Vector3 rotationOffset = Vector3.zero;
+    private Vector3 rotationOffset =
+        Vector3.zero;
 
 
     [Header("선택 후 활성화")]
@@ -98,18 +100,21 @@ public class SelectObjectAction : InteractionAction
 
 
         interactionTarget =
-            targetObject.GetComponent<InteractionTarget>();
+            targetObject
+                .GetComponent<InteractionTarget>();
 
 
         if (interactionTarget == null)
         {
             interactionTarget =
-                targetObject.GetComponentInParent<InteractionTarget>();
+                targetObject
+                    .GetComponentInParent<InteractionTarget>();
         }
 
 
         originalPosition =
             targetObject.position;
+
 
         originalRotation =
             targetObject.rotation;
@@ -139,15 +144,23 @@ public class SelectObjectAction : InteractionAction
             return;
 
 
-        if (!Keyboard.current.escapeKey.wasPressedThisFrame)
+        if (!Keyboard.current
+            .escapeKey
+            .wasPressedThisFrame)
+        {
             return;
+        }
 
 
+        // =========================================
         // 상점 내부 페이지가 열려 있으면
-        // 먼저 홈 화면으로 돌아감
+        // 먼저 홈으로 돌아감
+        // =========================================
+
         if (shopSelectManager != null)
         {
-            if (shopSelectManager.TryHandleEscape())
+            if (shopSelectManager
+                .TryHandleEscape())
             {
                 return;
             }
@@ -180,14 +193,18 @@ public class SelectObjectAction : InteractionAction
         isSelected = true;
 
 
+
         // =========================================
-        // 손에 들고 있는 총 / 낚싯대 내리기
+        // 현재 들고 있던 장비를 기억하고
+        // UI 보는 동안 잠시 숨김
         // =========================================
 
         if (weaponModeModule != null)
         {
-            weaponModeModule.EquipNothing();
+            weaponModeModule
+                .HideEquipmentForUI();
         }
+
 
 
         // =========================================
@@ -200,11 +217,17 @@ public class SelectObjectAction : InteractionAction
         }
 
 
-        // 상호작용 중에는 다시 상호작용하지 못하게 함
+
+        // =========================================
+        // 중복 상호작용 방지
+        // =========================================
+
         if (interactionTarget != null)
         {
-            interactionTarget.SetInteractable(false);
+            interactionTarget
+                .SetInteractable(false);
         }
+
 
 
         if (moveCoroutine != null)
@@ -249,11 +272,7 @@ public class SelectObjectAction : InteractionAction
 
 
         // =========================================
-        // 위치 보정
-        //
-        // X = 좌우
-        // Y = 위아래
-        // Z = 앞뒤
+        // 위치 Offset
         // =========================================
 
         targetPosition +=
@@ -273,8 +292,7 @@ public class SelectObjectAction : InteractionAction
 
 
         // =========================================
-        // 기본 회전
-        // 오브젝트가 카메라를 바라봄
+        // 카메라 방향 기준 회전
         // =========================================
 
         Quaternion baseRotation =
@@ -283,11 +301,6 @@ public class SelectObjectAction : InteractionAction
                 Vector3.up
             );
 
-
-
-        // =========================================
-        // 추가 회전값 적용
-        // =========================================
 
         Quaternion targetRotation =
             baseRotation *
@@ -353,16 +366,26 @@ public class SelectObjectAction : InteractionAction
 
     private IEnumerator ActivateObjects()
     {
+        // =========================================
+        // 첫 번째 UI
+        // =========================================
+
         if (firstObject != null)
         {
-            yield return new WaitForSeconds(
-                firstObjectDelay
-            );
+            yield return
+                new WaitForSeconds(
+                    firstObjectDelay
+                );
 
 
             firstObject.SetActive(true);
         }
 
+
+
+        // =========================================
+        // 두 번째 UI
+        // =========================================
 
         float remainingDelay =
             secondObjectDelay -
@@ -371,9 +394,10 @@ public class SelectObjectAction : InteractionAction
 
         if (remainingDelay > 0f)
         {
-            yield return new WaitForSeconds(
-                remainingDelay
-            );
+            yield return
+                new WaitForSeconds(
+                    remainingDelay
+                );
         }
 
 
@@ -394,6 +418,7 @@ public class SelectObjectAction : InteractionAction
         isSelected = false;
 
 
+
         if (activateCoroutine != null)
         {
             StopCoroutine(
@@ -401,9 +426,15 @@ public class SelectObjectAction : InteractionAction
             );
 
 
-            activateCoroutine = null;
+            activateCoroutine =
+                null;
         }
 
+
+
+        // =========================================
+        // UI 닫기
+        // =========================================
 
         if (firstObject != null)
         {
@@ -417,6 +448,7 @@ public class SelectObjectAction : InteractionAction
         }
 
 
+
         if (moveCoroutine != null)
         {
             StopCoroutine(
@@ -424,6 +456,11 @@ public class SelectObjectAction : InteractionAction
             );
         }
 
+
+
+        // =========================================
+        // 오브젝트 원위치
+        // =========================================
 
         moveCoroutine =
             StartCoroutine(
@@ -481,6 +518,7 @@ public class SelectObjectAction : InteractionAction
         }
 
 
+
         targetObject.position =
             originalPosition;
 
@@ -492,13 +530,35 @@ public class SelectObjectAction : InteractionAction
         isMoving = false;
 
 
+
+        // =========================================
+        // 다시 상호작용 가능
+        // =========================================
+
         if (interactionTarget != null)
         {
-            interactionTarget.SetInteractable(true);
+            interactionTarget
+                .SetInteractable(true);
         }
 
 
-        // 플레이어 입력 / 화면 회전 다시 활성화
+
+        // =========================================
+        // UI 열기 전에 들고 있던 장비 복구
+        // =========================================
+
+        if (weaponModeModule != null)
+        {
+            weaponModeModule
+                .RestoreEquipmentAfterUI();
+        }
+
+
+
+        // =========================================
+        // 플레이어 조작 복구
+        // =========================================
+
         if (player != null)
         {
             player.UnlockLook();
