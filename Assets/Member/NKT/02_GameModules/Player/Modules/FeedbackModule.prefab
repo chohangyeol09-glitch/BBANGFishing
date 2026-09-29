@@ -45,5 +45,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NKT.Player.Modules.PlayerDamageReactionModule
   volume: {fileID: 0}
-  maxIntensity: 0.5
-  fadeTime: 2
+  maxIntensity: 0.9
+  fadeTime: 1.2
