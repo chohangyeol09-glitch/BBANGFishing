@@ -6,7 +6,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class FishInventoryManager : MonoSingleton<FishInventoryManager>
+public class FishInventoryManager
+    : MonoSingleton<FishInventoryManager>
 {
     [Header("인벤토리 전체 부모")]
     [SerializeField]
@@ -48,11 +49,8 @@ public class FishInventoryManager : MonoSingleton<FishInventoryManager>
         new List<FishInventoryItem>();
 
 
-    // 0부터 시작
     private int currentPage = 0;
 
-
-    // 현재 해금된 페이지 개수
     private int unlockedPageCount = 1;
 
 
@@ -65,17 +63,15 @@ public class FishInventoryManager : MonoSingleton<FishInventoryManager>
         inventory.Count;
 
 
-    // 한 페이지에 들어가는 슬롯 개수
     public int PageCapacity =>
         slots.Count;
 
 
-    // 전체 최대 물고기 수
     public int MaxFishCount =>
-        PageCapacity * unlockedPageCount;
+        PageCapacity *
+        unlockedPageCount;
 
 
-    // 외부에서 현재 페이지 확인용
     public int CurrentPage =>
         currentPage + 1;
 
@@ -91,6 +87,8 @@ public class FishInventoryManager : MonoSingleton<FishInventoryManager>
     protected override void Awake()
     {
         base.Awake();
+
+
         FindSlots();
 
 
@@ -149,7 +147,9 @@ public class FishInventoryManager : MonoSingleton<FishInventoryManager>
              rowIndex++)
         {
             Transform row =
-                rowsParent.GetChild(rowIndex);
+                rowsParent.GetChild(
+                    rowIndex
+                );
 
 
             int foundSlotCount = 0;
@@ -160,7 +160,9 @@ public class FishInventoryManager : MonoSingleton<FishInventoryManager>
                  slotIndex++)
             {
                 Transform slotTransform =
-                    row.GetChild(slotIndex);
+                    row.GetChild(
+                        slotIndex
+                    );
 
 
                 FishInventorySlot slot =
@@ -178,13 +180,17 @@ public class FishInventoryManager : MonoSingleton<FishInventoryManager>
                 );
 
 
-                slots.Add(slot);
+                slots.Add(
+                    slot
+                );
+
 
                 foundSlotCount++;
             }
 
 
-            if (foundSlotCount != slotsPerRow)
+            if (foundSlotCount !=
+                slotsPerRow)
             {
                 Debug.LogWarning(
                     $"{row.name}에 FishInventorySlot이 " +
@@ -232,7 +238,6 @@ public class FishInventoryManager : MonoSingleton<FishInventoryManager>
             return false;
 
 
-        // 전체 페이지가 꽉 찼는지 확인
         if (IsFull())
         {
             Debug.Log(
@@ -275,7 +280,153 @@ public class FishInventoryManager : MonoSingleton<FishInventoryManager>
 
 
     // =========================================
-    // 물고기 삭제
+    // 특정 물고기 개수 확인
+    // =========================================
+
+    public int GetFishCount(
+        FishDataSO fishData)
+    {
+        if (fishData == null)
+            return 0;
+
+
+        int count = 0;
+
+
+        for (int i = 0;
+             i < inventory.Count;
+             i++)
+        {
+            FishInventoryItem item =
+                inventory[i];
+
+
+            if (item == null)
+                continue;
+
+
+            if (item.FishData ==
+                fishData)
+            {
+                count++;
+            }
+        }
+
+
+        return count;
+    }
+
+
+
+    // =========================================
+    // 특정 물고기를 가지고 있는지 확인
+    // =========================================
+
+    public bool HasFish(
+        FishDataSO fishData,
+        int count = 1)
+    {
+        if (fishData == null)
+            return false;
+
+
+        if (count <= 0)
+            return true;
+
+
+        return GetFishCount(
+                   fishData
+               ) >= count;
+    }
+
+
+
+    // =========================================
+    // 특정 물고기 소비
+    // =========================================
+
+    public bool ConsumeFish(
+        FishDataSO fishData,
+        int count = 1)
+    {
+        if (fishData == null)
+            return false;
+
+
+        if (count <= 0)
+            return true;
+
+
+        // 충분히 없으면 아무것도 삭제하지 않음
+        if (!HasFish(
+                fishData,
+                count))
+        {
+            return false;
+        }
+
+
+        int removedCount = 0;
+
+
+        // 뒤에서부터 삭제
+        for (int i =
+                 inventory.Count - 1;
+             i >= 0;
+             i--)
+        {
+            FishInventoryItem item =
+                inventory[i];
+
+
+            if (item == null)
+                continue;
+
+
+            if (item.FishData !=
+                fishData)
+            {
+                continue;
+            }
+
+
+            inventory.RemoveAt(
+                i
+            );
+
+
+            removedCount++;
+
+
+            if (removedCount >=
+                count)
+            {
+                break;
+            }
+        }
+
+
+        RefreshSlots();
+
+        ResetUIState();
+
+
+        OnInventoryChanged?.Invoke();
+
+
+        Debug.Log(
+            $"{fishData.Name} " +
+            $"{removedCount}마리 소비"
+        );
+
+
+        return true;
+    }
+
+
+
+    // =========================================
+    // 물고기 1마리 삭제
     // =========================================
 
     public bool RemoveFish(
@@ -307,6 +458,10 @@ public class FishInventoryManager : MonoSingleton<FishInventoryManager>
     }
 
 
+
+    // =========================================
+    // 여러 마리 삭제
+    // =========================================
 
     public void RemoveFishes(
         IReadOnlyList<FishInventoryItem> fishes)
@@ -374,7 +529,7 @@ public class FishInventoryManager : MonoSingleton<FishInventoryManager>
 
 
     // =========================================
-    // 페이지 이동
+    // 다음 페이지
     // =========================================
 
     public void NextPage()
@@ -397,6 +552,10 @@ public class FishInventoryManager : MonoSingleton<FishInventoryManager>
     }
 
 
+
+    // =========================================
+    // 이전 페이지
+    // =========================================
 
     public void PreviousPage()
     {
@@ -422,7 +581,6 @@ public class FishInventoryManager : MonoSingleton<FishInventoryManager>
 
     private void RefreshSlots()
     {
-        // 화면에 보이는 슬롯 전부 비움
         for (int i = 0;
              i < slots.Count;
              i++)
@@ -438,7 +596,6 @@ public class FishInventoryManager : MonoSingleton<FishInventoryManager>
             return;
 
 
-        // 현재 페이지가 시작하는 인벤토리 인덱스
         int startIndex =
             currentPage *
             PageCapacity;
@@ -465,7 +622,9 @@ public class FishInventoryManager : MonoSingleton<FishInventoryManager>
 
 
             slots[slotIndex].SetItem(
-                inventory[inventoryIndex]
+                inventory[
+                    inventoryIndex
+                ]
             );
         }
     }
@@ -481,7 +640,8 @@ public class FishInventoryManager : MonoSingleton<FishInventoryManager>
         if (pageText != null)
         {
             pageText.text =
-                $"{currentPage + 1} / {unlockedPageCount}";
+                $"{currentPage + 1} / " +
+                $"{unlockedPageCount}";
         }
 
 
@@ -501,10 +661,6 @@ public class FishInventoryManager : MonoSingleton<FishInventoryManager>
     }
 
 
-
-    // =========================================
-    // 기타
-    // =========================================
 
     public bool IsFull()
     {
