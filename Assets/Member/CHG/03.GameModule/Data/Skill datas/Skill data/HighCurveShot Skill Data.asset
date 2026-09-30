@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: HighCurveShot Skill Data
   m_EditorClassIdentifier: Assembly-CSharp::CHG._02.Script.CombatSystem.EnemySkillSystem.EnemySkillDataSO
   SkillIdHash: {fileID: 11400000, guid: a68848dd858854f4081799da8776d5e0, type: 2}
-  SkillAnimHash: {fileID: 11400000, guid: c4424e535cc23ea4ab8a2a357239ed78, type: 2}
+  SkillAnimHash: {fileID: 11400000, guid: 0358ddc6e43945e4d992114497201800, type: 2}
   WarningAnimHash: {fileID: 0}
   SkillType: 0
   Damage: 2
