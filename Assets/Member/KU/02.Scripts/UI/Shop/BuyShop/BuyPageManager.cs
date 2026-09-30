@@ -45,6 +45,11 @@ public class BuyPageManager : MonoBehaviour
     private RobEquipModule robEquipModule;
 
 
+    [Header("핫바")]
+    [SerializeField]
+    private HotbarModule hotbarModule;
+
+
     private bool isCreated = false;
 
 
@@ -244,8 +249,15 @@ public class BuyPageManager : MonoBehaviour
             return;
 
 
+        // 핫바를 거쳐야 슬롯까지 갱신된다.
+        // 직접 TryEquip 하면 총을 들었다 돌아올 때 슬롯의 옛 낚싯대로 되돌아간다.
+        bool equipped = hotbarModule != null
+            ? hotbarModule.EquipRod(rod)
+            : robEquipModule.TryEquip(rod);
+
+
         // 장착에 실패하면 금액을 복구하고 구매/잠금 해제를 진행하지 않는다.
-        if (!robEquipModule.TryEquip(rod))
+        if (!equipped)
         {
             MoneyManager.Instance.AddMoney(price);
             return;

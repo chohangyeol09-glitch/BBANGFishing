@@ -185,18 +185,20 @@ namespace NKT.Player.Modules
         // 낚싯대 장착
         // =========================================
 
-        public void EquipRod(
+        public bool EquipRod(
             FishingRobSO data)
         {
             _equip.Hide();
 
 
-            _robEquip.Equip(
+            bool ok = _robEquip.TryEquip(
                 data
             );
 
 
             ApplyMode(false);
+
+            return ok;
         }
 
 

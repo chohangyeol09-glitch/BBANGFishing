@@ -85,6 +85,36 @@ namespace NKT.Player.Modules
             if (index == _selected) ApplySlot();
         }
 
+        //상점에서 낚시대를 사면 이걸로 부른다.
+        //슬롯까지 갱신해야 총을 들었다 돌아와도 산 낚시대가 유지된다
+        public bool EquipRod(FishingRobSO data)
+        {
+            if (data == null) return false;
+
+            int index = FindSlotOfRod();
+            if (index < 0) index = _selected;
+
+            _slots[index] = data;
+            OnSlotChanged?.Invoke(index, SpriteOf(data));
+
+            if (index != _selected)
+            {
+                _selected = index;
+                OnSelectionChanged?.Invoke(_selected);
+            }
+
+            return _mode.EquipRod(data);
+        }
+
+        //낚시대가 들어있는 첫 슬롯. 없으면 -1
+        private int FindSlotOfRod()
+        {
+            for (int i = 0; i < slotCount; i++)
+                if (_slots[i] is FishingRobSO) return i;
+
+            return -1;
+        }
+
         public ScriptableObject GetSlot(int index)
             => IsValid(index) ? _slots[index] : null;
 
